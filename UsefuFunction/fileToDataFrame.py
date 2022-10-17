@@ -22,7 +22,7 @@ class Set01KnackSack:
 		print("-------DATA--------")
 		for i in range(len(self.Data)):
 			print(i," Value : ",self.Data.V[i]," Weigh : ",self.Data.W[i])
-
+# create a method of the class uploadData instead ?,, More logical ?
 # input : name of the data file use. (this file must be in ./Generators/output)
 # output : an object with wmax and n and Data (a dataFrame with V, W)
 def uploadData_01KnackSack(nameOfFile):
