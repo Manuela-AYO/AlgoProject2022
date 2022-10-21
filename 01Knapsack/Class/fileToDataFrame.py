@@ -35,7 +35,7 @@ def uploadData_01KnackSack(nameOfFile):
 	returnObject = Set01KnackSack()
 
 	# opening the CSV file
-	with open('./Generators/output/'+nameOfFile, mode ='r')as file:
+	with open('./Output/'+nameOfFile, mode ='r')as file:
 		# reading the CSV file
 		csvFile = csv.reader(file)
 		lineRead = 0;
@@ -52,3 +52,4 @@ def uploadData_01KnackSack(nameOfFile):
 
 	return returnObject
 	
+uploadData_01KnackSack("0_1_kp_REF_10_100_221016.csv")
