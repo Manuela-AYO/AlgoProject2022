@@ -16,7 +16,12 @@ References: if there is
 '''
 
 
-Your file should contain one global Class or Function that can be call from outside
+Your file should contain at least global Class or Function that can be call from outside
+	Don't hesitate for each usefull function/method to comment them with :
+		# Decription : 
+		# Input : 
+		# Output : 
+		At the beginning
 
 And also, a way to execute the file locally with this lines of code :
 
