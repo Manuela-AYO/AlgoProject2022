@@ -1,17 +1,21 @@
-import UsefuFunction.fileToDataFrame as m
 import pandas
 import numpy
 from natsort import index_natsorted
 
+import sys, os
+sys.path.append(os.path.join(os.path.dirname(__file__),'..', '..', "Class"))
+import Set01KnackSack as m
+
+
 # penser à prendre le ratio total pour le remplacer. et check si y a mieux que total value / total poid 
 
 # ----Upload Data------ #
-test = m.uploadData_01KnackSack("Landrytest.csv")
+test = m.Set01KnackSack().uploadCsvFile("Landrytest.csv")
 test.display()
 
 
 # create a new data frame
-curent = pandas.DataFrame({"W":test.Data.W, "V":test.Data.V, "EmptyW":[0.0]*len(test.Data), "VoverW":[0.0]*len(test.Data)})
+curent = pandas.DataFrame({"W":test.data.W, "V":test.data.V, "EmptyW":[0.0]*len(test.data), "VoverW":[0.0]*len(test.data)})
 
 def calculeVoverW(dataFrame):
     for i in range(len(dataFrame)):
