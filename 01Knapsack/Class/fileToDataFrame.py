@@ -35,7 +35,7 @@ def uploadData_01KnackSack(nameOfFile):
 	returnObject = Set01KnackSack()
 
 	# opening the CSV file
-	with open('./Output/'+nameOfFile, mode ='r')as file:
+	with open('./Input/'+nameOfFile, mode ='r')as file:
 		# reading the CSV file
 		csvFile = csv.reader(file)
 		lineRead = 0;
