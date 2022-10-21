@@ -13,6 +13,8 @@ References: ...
 import pandas
 import numpy
 import csv
+import os
+
 
 
 
@@ -33,9 +35,9 @@ class Set01KnackSack:
 # output : an object with wmax and n and Data (a dataFrame with V, W)
 def uploadData_01KnackSack(nameOfFile):
 	returnObject = Set01KnackSack()
-
+	print(__file__)
 	# opening the CSV file
-	with open('./Input/'+nameOfFile, mode ='r')as file:
+	with open(os.path.join(os.path.dirname(__file__), '..', 'Input', nameOfFile), mode ='r')as file:
 		# reading the CSV file
 		csvFile = csv.reader(file)
 		lineRead = 0;
@@ -51,5 +53,3 @@ def uploadData_01KnackSack(nameOfFile):
 			lineRead=lineRead+1
 
 	return returnObject
-	
-uploadData_01KnackSack("0_1_kp_REF_10_100_221016.csv")
