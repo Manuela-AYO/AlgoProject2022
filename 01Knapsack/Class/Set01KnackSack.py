@@ -59,10 +59,10 @@ class Set01KnackSack:
 			# displaying the contents of the CSV file
 			for lines in csvFile:
 				if lineRead==0:
-					self.n=lines[0]
-					self.wmax=lines[1]
+					self.n=int(lines[0])
+					self.wmax=int(lines[1])
 				else:
-					new_value = [lines[0], lines[1]]
+					new_value = [int(lines[0]), int(lines[1])]
 					self.data.loc[len(self.data)] = new_value
 				lineRead=lineRead+1
 		return self
