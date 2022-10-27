@@ -8,6 +8,7 @@ Description: This module is about the branch and bound algorithm of the knapsack
     With branch and bound, there are 2 things to consider : 
     1. The form of the solution : the solution is a vector v of bits such that for an object at
         the position i, v[i] = 0 if we don't take the object and 1 else
+        e.g : if nb_ojects = 4, v = <?,?,?,?>
     2. The evaluation function : it's the bound that helps cut branches. There, our lower bound 
         is the minimum value that we lose after a decision(take or not an object)
 
@@ -20,7 +21,7 @@ import numpy as np
 
 
 # evaluation function on each node
-def evaluation_function(i : int, v : np.array, weights_tab : np.array, values_tab : np.array, w : float):
+def evaluation_function(i : int, v : np.array, weights_tab : np.array, values_tab : np.array, w : float) -> float:
     """_summary_
         The evaluation function computes a on each node the lower bound,
         which is necessary to cut useless branches
@@ -75,9 +76,31 @@ def evaluation_function(i : int, v : np.array, weights_tab : np.array, values_ta
     return g+h
 
 
+
+# branch and bound function : returns the vector of bits with 1 if an object on a position is taken and 0 else
+def branch_bound(v : np.array, weights_tab : np.array, values_tab : np.array, max_weight : float) -> np.array:
+    # iterate on the vector
+    for i in range(len(v)):
+        # what if we don't take the object
+        v[i] = 0
+        ev1 = evaluation_function(i,v,weights_tab, values_tab,max_weight)
+        # what if we take the object
+        v[i] = 1
+        ev2 = evaluation_function(i,v,weights_tab,values_tab,max_weight)
+        
+        # choose of the least loss value
+        if ev1 < ev2:
+            v[i] = 0
+        else :
+            v[i] = 1
+    
+    # final vector
+    return v
+    
+    
 # small test
-w = np.array([2,3,2,10,3])
-v = np.array([40,50,100,95,30])
-vector = -1*np.ones(5)
-vector[0] = 1
-print(evaluation_function(0,vector,w,v,10))
+w = np.array([10,6,4])
+v = np.array([8,6,7])
+vector = -1*np.ones(3, dtype=int)
+v1 = branch_bound(vector, w, v, 10)
+
