@@ -35,9 +35,11 @@ for i in range(2):
     # take the first data in order to full the KnackSack
     sizeleft = test.wmax
     answer = []
+    totalValue = 0
     for d in range(len(curent)):
         if (curent.W[d] <= sizeleft):
             answer.append(d)
+            totalValue = current.W[d]
             sizeleft = sizeleft - curent.W[d]
 
 
