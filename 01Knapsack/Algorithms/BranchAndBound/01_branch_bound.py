@@ -30,12 +30,11 @@ def evaluation_function(i : int, v : np.array, weights_tab : np.array, values_ta
         - The actual loss : that simply means that : for an object in the position i, 
             we decide either to take it(v[i]=1) or not(v[i]=0). If we don't take it the actual lost
             just summarizes all the values of the objects we took before and add
-            the value of the object i.
+            the value of the object i with respect to the weight
             
         - The previsional loss : after a decision(take or not an object), we have consequences. If we take 
         an object, as it has a weight, we'll reduce the weight available(w) in the knapsack. So, the 
-        previsional loss will just sum up all the values of the objects that can no longer enter in the sack after 
-        our decision. It's important to keep in mind that this loss is a lower bound
+        previsional loss will just return the values I lose if I put the object with respect to the weight. 
         
         Complexity : O(n) [in the order of len(v)]
         
@@ -60,18 +59,30 @@ def evaluation_function(i : int, v : np.array, weights_tab : np.array, values_ta
     
     # compute the actual loss
     for l in range(0,i+1):
-        if v[l] == 0:
-            g += values_tab[l]
-        else :
-            w_left -= weights_tab[l]
+        g += (1-v[l]) * values_tab[l]
+        w_left -= v[l] * weights_tab[l]
+        if w_left < 0:
+            g = pow(10,10)
+            break
         
-    # ****************** Need to refind this previsional loss : not sure it's less than the optimal one **************
+    if i != len(v) - 1: 
+        # weight before the decision on i
+        w2 = w_left + i*weights_tab[i]
         
-    # compute the previsional loss
-    for l in range(i+1, len(v)):
-        # lost bound
-        if weights_tab[l] > w_left:
-            h += values_tab[l]
+        # map values_tab and weights_tab
+        map = zip(values_tab[i+1:], weights_tab[i+1:])
+        
+        # sort the map by decreasing values 
+        tab = sorted(map, key = lambda x : x[0], reverse=True)
+        
+        # compute the previsional loss
+        # this loop simply gives the lower bound of the maximum value we loose
+        for item in tab : 
+            # we only take the objects which can no longer be inserted in the sack after 
+            # the insertion of item i
+            if w2 - item[1] >= 0 and item[1] > w_left:
+                h += item[0]
+                w2 -= item[1]
             
     return g+h
 
@@ -99,8 +110,8 @@ def branch_bound(v : np.array, weights_tab : np.array, values_tab : np.array, ma
     
     
 # small test
-w = np.array([10,6,4])
-v = np.array([8,6,7])
-vector = -1*np.ones(3, dtype=int)
-v1 = branch_bound(vector, w, v, 10)
-
+w = np.array([43,22,20,7])
+v = np.array([24,11,10,4])
+vector = -1*np.ones(4, dtype=int)
+v1 = branch_bound(vector, w, v, 50)
+print(v1)
