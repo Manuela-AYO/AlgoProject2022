@@ -23,7 +23,7 @@ import numpy as np
 # evaluation function on each node
 def evaluation_function(i : int, v : np.array, weights_tab : np.array, values_tab : np.array, w : float) -> float:
     """_summary_
-        The evaluation function computes a on each node the lower bound,
+        The evaluation function computes on each node the lower bound,
         which is necessary to cut useless branches
         
         This function is actually the sum of two(2) functions :
@@ -107,11 +107,3 @@ def branch_bound(v : np.array, weights_tab : np.array, values_tab : np.array, ma
     
     # final vector
     return v
-    
-    
-# small test
-w = np.array([43,22,20,7])
-v = np.array([24,11,10,4])
-vector = -1*np.ones(4, dtype=int)
-v1 = branch_bound(vector, w, v, 50)
-print(v1)
