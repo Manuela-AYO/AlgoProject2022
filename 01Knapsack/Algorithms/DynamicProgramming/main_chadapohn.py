@@ -9,6 +9,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__),'..', '..', "Class"))
 import Set01KnackSack as f
 
 def bottom_up(values: np.array, weights: np.array, maximum_weight: int):
+    
     num_items = len(weights)
     table = np.zeros((num_items + 1, maximum_weight + 1))
     for i in range(num_items + 1): # The weight of the current object
@@ -31,11 +32,14 @@ def bottom_up(values: np.array, weights: np.array, maximum_weight: int):
                 # Excluding the current object, get the total value from the previous row
                 table[i][j] = table[i-1][j]            
 
+    # The bottom-up table
     print(table)
+    # The maximum total value from the bottom-up approach
     print(table[num_items][maximum_weight])
+    # The objects that are taken
 
 ######################################################
-##### Testing section for the bottom-up appraoch #####
+##### Testing section for the bottom-up approach #####
 ######################################################
 
 # The 0/1 Knapsack instaces from the excercise sheet
