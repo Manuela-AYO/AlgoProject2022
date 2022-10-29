@@ -2,3 +2,5 @@ Algorithm	 	Total number of items	 Max weight	 Items value	 Nb items chosen	 Occ
 ______________________________________________________________________________________________________________________________
 
 Branch and bound 			10		 				100.0			 	485.0		 		6		 			86.0		 		270.0
+
+Branch and bound 			10		 				100.0			 	485.0		 		6		 			86.0		 		270.0

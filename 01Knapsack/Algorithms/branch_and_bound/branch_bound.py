@@ -15,16 +15,30 @@ Description: This module is about the branch and bound algorithm of the knapsack
 Author: Christiane Manuela AYO NDAZO'O
 
 References :
-    - Time a function : https://www.pythoncentral.io/time-a-python-function/
+    - Time a function : https://dev.to/s9k96/calculating-run-time-of-a-function-using-python-decorators-148o
 
 """
 
 # some important modules
+import functools
 import numpy as np
 import pandas as pd
 import csv
 import os
-import timeit
+from datetime import datetime
+
+
+
+# *********************** wrapper to benchmark the running time of the branch and bound algorithm *********************** #
+def compute_run_time(f) :
+    @functools.wraps(f)
+    def wrap(*args, **kwargs):
+        start = datetime.now()
+        x = f(*args, **kwargs)
+        print(f"Time taken : {datetime.now() - start}")
+        return x
+    return wrap
+
 
 # *********************** evaluation function on each node ***************************** #
 def evaluation_function(i : int, v : np.array, weights_tab : np.array, values_tab : np.array, w : float) -> float:
@@ -93,8 +107,8 @@ def evaluation_function(i : int, v : np.array, weights_tab : np.array, values_ta
     return g+h
 
 
-
 # *********************** branch and bound function *********************** # 
+@compute_run_time   
 def branch_bound(v : np.array, weights_tab : np.array, values_tab : np.array, max_weight : float) -> np.array:
     """_summary_
         The branch and bound function performs the branch and bound algorithm by 
@@ -108,6 +122,8 @@ def branch_bound(v : np.array, weights_tab : np.array, values_tab : np.array, ma
 
     Returns:
         np.array: the final vector of items with 0 if an item at position i isn't selected and 1 else
+        
+    Complexity : O(n) [number of the items]
     """
     nb_items_chosen = 0
     total_weight = 0
@@ -168,7 +184,7 @@ def read_csv(filename : str) -> tuple([int, float, float, np.array, np.array]) :
 def write_output(filename : str, output : str) -> str:
     output_root = filename.split(".")[0]
     output_root += ".txt"
-    outputfile_path = os.path.join("o_one_knapsack", "Output", output_root)
+    outputfile_path = os.path.join("01Knapsack", "Output", output_root)
     
     with open(outputfile_path, "a") as f : 
         # if it's an empty file, create the header
@@ -182,15 +198,11 @@ def write_output(filename : str, output : str) -> str:
       
   
 
-# *********************** wrapper to benchmark the running time of the branch and bound algorithm *********************** #
-def wrapper() :
-    pass
-
 
    
 if __name__ == '__main__':
     # read the file
-    file_name = os.path.join("o_one_knapsack","Input","0_1_kp_REF_10_100_221016.csv")
+    file_name = os.path.join("01Knapsack","Input","0_1_kp_REF_10_100_221016.csv")
     
     # branch and bound parameters
     nb_items, sack_weight, items_value, values_tab, weights_tab = read_csv(file_name)
