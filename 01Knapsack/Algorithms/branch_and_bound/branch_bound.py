@@ -42,7 +42,7 @@ def evaluation_function(i : int, v : np.array, weights_tab : np.array, values_ta
         an object, as it has a weight, we'll reduce the weight available(w) in the knapsack. So, the 
         previsional loss will just return the values I lose if I put the object with respect to the weight. 
         
-        Complexity : O(n) [in the order of len(v)]
+        Complexity : O(nlogn) [sort over the decreasing values]
         
     Args:
         i (int): Index of the object we are studying
@@ -180,7 +180,14 @@ def write_output(filename : str, output : str) -> str:
         
     print("Successfully completed")
       
-        
+  
+
+# *********************** wrapper to benchmark the running time of the branch and bound algorithm *********************** #
+def wrapper() :
+    pass
+
+
+   
 if __name__ == '__main__':
     # read the file
     file_name = os.path.join("o_one_knapsack","Input","0_1_kp_REF_10_100_221016.csv")
