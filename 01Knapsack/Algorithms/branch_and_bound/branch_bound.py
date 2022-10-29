@@ -14,13 +14,19 @@ Description: This module is about the branch and bound algorithm of the knapsack
 
 Author: Christiane Manuela AYO NDAZO'O
 
+References :
+    - Time a function : https://www.pythoncentral.io/time-a-python-function/
+
 """
 
 # some important modules
 import numpy as np
+import pandas as pd
+import csv
+import os
+import timeit
 
-
-# evaluation function on each node
+# *********************** evaluation function on each node ***************************** #
 def evaluation_function(i : int, v : np.array, weights_tab : np.array, values_tab : np.array, w : float) -> float:
     """_summary_
         The evaluation function computes on each node the lower bound,
@@ -88,8 +94,25 @@ def evaluation_function(i : int, v : np.array, weights_tab : np.array, values_ta
 
 
 
-# branch and bound function : returns the vector of bits with 1 if an object on a position is taken and 0 else
+# *********************** branch and bound function *********************** # 
 def branch_bound(v : np.array, weights_tab : np.array, values_tab : np.array, max_weight : float) -> np.array:
+    """_summary_
+        The branch and bound function performs the branch and bound algorithm by 
+        going through most promising paths to find its best solution
+
+    Args:
+        v (np.array) : Initialization -1 vector of size of the number of objects
+        weights_tab (np.array): Array containing the weight of each item
+        values_tab (np.array): Array containing the value of each item
+        max_weight (float): Weight of the bag
+
+    Returns:
+        np.array: the final vector of items with 0 if an item at position i isn't selected and 1 else
+    """
+    nb_items_chosen = 0
+    total_weight = 0
+    total_value = 0
+    
     # iterate on the vector
     for i in range(len(v)):
         # what if we don't take the object
@@ -104,6 +127,76 @@ def branch_bound(v : np.array, weights_tab : np.array, values_tab : np.array, ma
             v[i] = 0
         else :
             v[i] = 1
+            nb_items_chosen += 1
+            total_weight += weights_tab[i]
+            total_value += values_tab[i]
     
     # final vector
-    return v
+    return v, nb_items_chosen, total_weight, total_value
+
+
+
+# *********************** temporary function before solving module import and load Landry's function *********************** #
+def read_csv(filename : str) -> tuple([int, float, float, np.array, np.array]) :
+    nb_items = 0 # total number of items
+    sack_weight = 0 # weight of the bag
+    total_value = 0.0 # total value of items
+    if not os.path.exists(file_name) :
+        print("This file doesn't exit")
+        return None
+    
+    else : 
+        list_weights = []
+        list_values = []
+        with open(filename, "r") as f:
+            lines = csv.reader(f)
+            lineRead = 0
+            for line in lines:
+                if lineRead == 0 :
+                    nb_items = int(line[0])
+                    sack_weight = float(line[1])
+                else :
+                    list_values.append(float(line[0]))
+                    total_value += float(line[0])
+                    list_weights.append(float(line[1]))
+                lineRead += 1
+    return nb_items, sack_weight, total_value, np.array(list_values), np.array(list_weights)
+
+
+# *********************** write on the results of the algorithm in the output file *********************** # 
+# will be on class module when the import problem will be solved
+def write_output(filename : str, output : str) -> str:
+    output_root = filename.split(".")[0]
+    output_root += ".txt"
+    outputfile_path = os.path.join("o_one_knapsack", "Output", output_root)
+    
+    with open(outputfile_path, "a") as f : 
+        # if it's an empty file, create the header
+        if os.path.getsize(outputfile_path) == 0 :
+            f.write("Algorithm\t \tTotal number of items\t Max weight\t Items value\t Nb items chosen\t Occupied weight\t Total value of items\n")
+            f.write("______________________________________________________________________________________________________________________________\n")
+        # update with the content of the output of the algorithm 
+        f.write(f"\n{output}\n")
+        
+    print("Successfully completed")
+      
+        
+if __name__ == '__main__':
+    # read the file
+    file_name = os.path.join("o_one_knapsack","Input","0_1_kp_REF_10_100_221016.csv")
+    
+    # branch and bound parameters
+    nb_items, sack_weight, items_value, values_tab, weights_tab = read_csv(file_name)
+    v = -1 * np.ones(nb_items, dtype=int) # vector solution
+    
+    # launch the branch and bound function
+    v, nb_items_chosen, total_weight, total_value = branch_bound(v, weights_tab, values_tab, sack_weight)
+    
+    # write the result in the output file
+    text = f"Branch and bound \t\t\t{nb_items}\t\t \t\t\t\t{sack_weight}\t\t\t \t{items_value}\t\t \t\t{nb_items_chosen}\t\t \t\t\t{total_weight}\t\t \t\t{total_value}"
+    write_output("0_1_kp_REF_10_100_221016.csv", text) 
+    
+        
+        
+# form of the output file
+# nb_total items max_weight nb_items_chosen total_weight_items total_value_items running_time

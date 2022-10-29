@@ -1,0 +1,4 @@
+Algorithm	 	Total number of items	 Max weight	 Items value	 Nb items chosen	 Occupied weight	 Total value of items
+______________________________________________________________________________________________________________________________
+
+Branch and bound 			10		 				100.0			 	485.0		 		6		 			86.0		 		270.0
