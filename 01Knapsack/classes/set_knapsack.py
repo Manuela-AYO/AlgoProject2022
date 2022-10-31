@@ -27,6 +27,7 @@ class Set01KnapSack:
     def __init__(self) -> None:
         self.n = 0
         self.wmax = 0
+        self.items_values = 0
         self.data = pandas.DataFrame({"V":[], "W":[]})
         self.file_name = ""
         
@@ -62,7 +63,25 @@ class Set01KnapSack:
                     self.wmax=int(lines[1])
                 else:
                     new_value = [int(lines[0]), int(lines[1])]
+                    self.items_values += float(lines[0])
                     self.data.loc[len(self.data)] = new_value
                 lineRead+=1
-        return self.n, self.wmax, self.data
+        return self.n, self.wmax, self.items_values, self.data
+    
+    
+    # *********************** write on the results of the algorithm in the output file *********************** # 
+    def write_output(self, filename : str, output : str) -> str:
+        output_root = filename.split(".")[0]
+        output_root += ".txt"
+        outputfile_path = os.path.join("01Knapsack", "Output", output_root)
+        
+        with open(outputfile_path, "a") as f : 
+            # if it's an empty file, create the header
+            if os.path.getsize(outputfile_path) == 0 :
+                f.write("Algorithm\t \tTotal number of items\t Max weight\t Items value\t Nb items chosen\t Occupied weight\t Total value of items\t Running time(ms)\n")
+                f.write("______________________________________________________________________________________________________________________________________________\n")
+            # update with the content of the output of the algorithm 
+            f.write(f"\n{output}\n")
+            
+        print("Successfully completed")
     #endregion

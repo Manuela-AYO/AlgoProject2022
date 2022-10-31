@@ -21,13 +21,20 @@ References :
 
 # some important modules
 import functools
+from time import time
 import numpy as np
 import pandas as pd
 import csv
 import os
 from datetime import datetime
+from pathlib import Path
+import sys
 
-
+# external module imports
+if not str(Path(__file__).resolve().parent.parent) in sys.path:
+	sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+ 
+from classes import Set01KnapSack
 
 # *********************** wrapper to benchmark the running time of the branch and bound algorithm *********************** #
 def compute_run_time(f) :
@@ -35,8 +42,8 @@ def compute_run_time(f) :
     def wrap(*args, **kwargs):
         start = datetime.now()
         x = f(*args, **kwargs)
-        print(f"Time taken : {datetime.now() - start}")
-        return x
+        time_taken = datetime.now() - start
+        return x, time_taken
     return wrap
 
 
@@ -150,72 +157,25 @@ def branch_bound(v : np.array, weights_tab : np.array, values_tab : np.array, ma
     # final vector
     return v, nb_items_chosen, total_weight, total_value
 
-
-
-# *********************** temporary function before solving module import and load Landry's function *********************** #
-def read_csv(filename : str) -> tuple([int, float, float, np.array, np.array]) :
-    nb_items = 0 # total number of items
-    sack_weight = 0 # weight of the bag
-    total_value = 0.0 # total value of items
-    if not os.path.exists(file_name) :
-        print("This file doesn't exit")
-        return None
-    
-    else : 
-        list_weights = []
-        list_values = []
-        with open(filename, "r") as f:
-            lines = csv.reader(f)
-            lineRead = 0
-            for line in lines:
-                if lineRead == 0 :
-                    nb_items = int(line[0])
-                    sack_weight = float(line[1])
-                else :
-                    list_values.append(float(line[0]))
-                    total_value += float(line[0])
-                    list_weights.append(float(line[1]))
-                lineRead += 1
-    return nb_items, sack_weight, total_value, np.array(list_values), np.array(list_weights)
-
-
-# *********************** write on the results of the algorithm in the output file *********************** # 
-# will be on class module when the import problem will be solved
-def write_output(filename : str, output : str) -> str:
-    output_root = filename.split(".")[0]
-    output_root += ".txt"
-    outputfile_path = os.path.join("01Knapsack", "Output", output_root)
-    
-    with open(outputfile_path, "a") as f : 
-        # if it's an empty file, create the header
-        if os.path.getsize(outputfile_path) == 0 :
-            f.write("Algorithm\t \tTotal number of items\t Max weight\t Items value\t Nb items chosen\t Occupied weight\t Total value of items\n")
-            f.write("______________________________________________________________________________________________________________________________\n")
-        # update with the content of the output of the algorithm 
-        f.write(f"\n{output}\n")
-        
-    print("Successfully completed")
-      
   
 
-
-   
 if __name__ == '__main__':
-    # read the file
-    file_name = os.path.join("01Knapsack","Input","0_1_kp_REF_10_100_221016.csv")
+    # import Set01KnapSack object 
+    knapsack = Set01KnapSack()
     
-    # branch and bound parameters
-    nb_items, sack_weight, items_value, values_tab, weights_tab = read_csv(file_name)
-    v = -1 * np.ones(nb_items, dtype=int) # vector solution
+    # read the csv file and collect the data
+    nb_items, sack_weight, items_value, df = knapsack.uploadCsvFile(os.path.join("0_1_kp_REF_10_100_221016.csv"))
     
-    # launch the branch and bound function
-    v, nb_items_chosen, total_weight, total_value = branch_bound(v, weights_tab, values_tab, sack_weight)
+    # create the weights, values array and the vector of values
+    weights_tab = np.array(df["W"])
+    values_tab = np.array(df["V"])
+    v = -1 * np.ones(nb_items, dtype=int)
+    
+    # apply the branch and bound algorithm
+    solution = branch_bound(v, weights_tab, values_tab, sack_weight)
+    v, nb_items_chosen, total_weight, total_value = solution[0]
+    time_taken = solution[1]
     
     # write the result in the output file
-    text = f"Branch and bound \t\t\t{nb_items}\t\t \t\t\t\t{sack_weight}\t\t\t \t{items_value}\t\t \t\t{nb_items_chosen}\t\t \t\t\t{total_weight}\t\t \t\t{total_value}"
-    write_output("0_1_kp_REF_10_100_221016.csv", text) 
-    
-        
-        
-# form of the output file
-# nb_total items max_weight nb_items_chosen total_weight_items total_value_items running_time
+    text = f"Branch and bound \t\t\t{nb_items}\t\t \t\t{sack_weight}\t\t \t{items_value}\t\t \t\t{nb_items_chosen}\t\t \t\t\t{total_weight}\t\t \t\t\t{total_value}\t\t\t \t\t{time_taken}"
+    knapsack.write_output(knapsack.file_name, text) 
