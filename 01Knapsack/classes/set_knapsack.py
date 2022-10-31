@@ -29,7 +29,7 @@ class Set01KnapSack:
         self.wmax = 0
         self.items_values = 0
         self.data = pandas.DataFrame({"V":[], "W":[]})
-        self.file_name = ""
+    
         
     def __str__(self) -> str:
         # Description : this method show the object in the console
@@ -44,41 +44,51 @@ class Set01KnapSack:
             text += f"{i} Value : {self.data.V[i]} Weight : {self.data.W[i]} \n"
         return text
     
-    def uploadCsvFile(self, nameOfFile):
+    
+    def uploadFile(self, nameOfFile : str, type : str) -> tuple([int, float, float, pandas.DataFrame]):
         # Description : initialize the object
         # Input : path to the csv file relative to the Input folder - test with : "0_1_kp_REF_10_100_221016.csv"
         # Output : ...
         
-        # opening the csv file
-        with open(os.path.join(os.path.dirname(__file__),'..','Input',nameOfFile), mode='r') as file:
-            self.file_name = nameOfFile
-            # reading the csv file 
-            csvFile = csv.reader(file)
+        lines = []
+        
+        # check if the file exists
+        if not os.path.exists(nameOfFile) : 
+            print("The file doesn't exist")
+            return None
+        
+        # opening the file
+        with open(nameOfFile, mode='r') as file:
             lineRead = 0
             
-            # displaying the contents of the CSV file
-            for lines in csvFile:
+            # distinguish between the type of file(t : text, c : csv file)
+            if type == "t": 
+                lines = csv.reader(file, delimiter=" ")
+            else :
+                lines = csv.reader(file)
+                
+            # get the lines 
+            for line in lines :
                 if lineRead==0:
-                    self.n=int(lines[0])
-                    self.wmax=int(lines[1])
+                    self.n=int(line[0])
+                    self.wmax=float(line[1])
                 else:
-                    new_value = [int(lines[0]), int(lines[1])]
-                    self.items_values += float(lines[0])
+                    new_value = [float(line[0]), float(line[1])]
+                    self.items_values += float(line[0])
                     self.data.loc[len(self.data)] = new_value
                 lineRead+=1
         return self.n, self.wmax, self.items_values, self.data
     
     
+    
     # *********************** write on the results of the algorithm in the output file *********************** # 
-    def write_output(self, filename : str, output : str) -> str:
-        output_root = filename.split(".")[0]
-        output_root += ".txt"
-        outputfile_path = os.path.join("01Knapsack", "Output", output_root)
+    def write_output(self, output : str) -> str:
+        outputfile_path = os.path.join("01Knapsack", "Output", "results.txt")
         
         with open(outputfile_path, "a") as f : 
             # if it's an empty file, create the header
             if os.path.getsize(outputfile_path) == 0 :
-                f.write("Algorithm\t \tTotal number of items\t Max weight\t Items value\t Nb items chosen\t Occupied weight\t Total value of items\t Running time(ms)\n")
+                f.write("Algorithm\t \tTotal number of items\t \t\tMax weight\t \t\tItems value\t \t\tNb items chosen\t \t\tOccupied weight\t \t\tTotal value of items\t \t\tRunning time(ms)\n")
                 f.write("______________________________________________________________________________________________________________________________________________\n")
             # update with the content of the output of the algorithm 
             f.write(f"\n{output}\n")

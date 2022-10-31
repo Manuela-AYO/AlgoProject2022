@@ -1,4 +1,0 @@
-Algorithm	 	Total number of items	 Max weight	 Items value	 Nb items chosen	 Occupied weight	 Total value of items	 Running time(ms)
-______________________________________________________________________________________________________________________________________________
-
-Branch and bound 			10		 		100		 	485.0		 		6		 			86		 			270			 		0:00:00.000113

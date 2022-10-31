@@ -15,6 +15,7 @@ Description: This module is about the branch and bound algorithm of the knapsack
 Author: Christiane Manuela AYO NDAZO'O
 
 References :
+    - Algorithm : https://www.geeksforgeeks.org/0-1-knapsack-using-branch-and-bound/
     - Time a function : https://dev.to/s9k96/calculating-run-time-of-a-function-using-python-decorators-148o
 
 """
@@ -163,8 +164,15 @@ if __name__ == '__main__':
     # import Set01KnapSack object 
     knapsack = Set01KnapSack()
     
+    type = input("Which type of file is it(t for text, c for csv) ? ")
+    path = input("Path to the file[e.g : file/my_file.csv] : ")
+
+    # normalize the path to the file
+    path = path.split("/")
+    path_file = os.path.join(*path)
+    
     # read the csv file and collect the data
-    nb_items, sack_weight, items_value, df = knapsack.uploadCsvFile(os.path.join("0_1_kp_REF_10_100_221016.csv"))
+    nb_items, sack_weight, items_value, df = knapsack.uploadFile(path_file, type)
     
     # create the weights, values array and the vector of values
     weights_tab = np.array(df["W"])
@@ -176,6 +184,6 @@ if __name__ == '__main__':
     v, nb_items_chosen, total_weight, total_value = solution[0]
     time_taken = solution[1]
     
-    # write the result in the output file
-    text = f"Branch and bound \t\t\t{nb_items}\t\t \t\t{sack_weight}\t\t \t{items_value}\t\t \t\t{nb_items_chosen}\t\t \t\t\t{total_weight}\t\t \t\t\t{total_value}\t\t\t \t\t{time_taken}"
-    knapsack.write_output(knapsack.file_name, text) 
+    # write the result in the output filec
+    text = f"Branch and bound \t\t\t{nb_items}\t\t \t\t\t\t{sack_weight}\t \t\t\t\t{items_value}\t\t \t\t\t\t{nb_items_chosen}\t\t \t\t\t{total_weight}\t \t\t{total_value}\t\t \t\t\t{time_taken}"
+    knapsack.write_output(text) 
