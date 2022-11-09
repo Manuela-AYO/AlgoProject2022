@@ -49,7 +49,7 @@ def compute_run_time(f) :
 
 
 # *********************** evaluation function on each node ***************************** #
-def evaluation_function(i : int, v : np.array, weights_tab : np.array, values_tab : np.array, w : float) -> float:
+def evaluation_function(i : int, v : np.array, weights_tab : np.array, values_tab : np.array, w : int) -> float:
     """_summary_
         The evaluation function computes on each node the lower bound,
         which is necessary to cut useless branches
@@ -117,25 +117,30 @@ def evaluation_function(i : int, v : np.array, weights_tab : np.array, values_ta
 
 # *********************** branch and bound function *********************** # 
 @compute_run_time   
-def branch_bound(v : np.array, weights_tab : np.array, values_tab : np.array, max_weight : float) -> np.array:
+def branch_bound(weights_tab : np.array, values_tab : np.array, max_weight : int) -> tuple([np.array, int, int, int]):
     """_summary_
         The branch and bound function performs the branch and bound algorithm by 
         going through most promising paths to find its best solution
 
     Args:
-        v (np.array) : Initialization -1 vector of size of the number of objects
         weights_tab (np.array): Array containing the weight of each item
         values_tab (np.array): Array containing the value of each item
-        max_weight (float): Weight of the bag
+        max_weight (int): Weight of the bag
 
     Returns:
         np.array: the final vector of items with 0 if an item at position i isn't selected and 1 else
+        int : number of items choses
+        int : weight of those items
+        int : value of those items
         
     Complexity : O(n) [number of the items]
     """
     nb_items_chosen = 0
     total_weight = 0
     total_value = 0
+    
+    # vector of items
+    v = -1 * np.ones(len(weights_tab), dtype=int)
     
     # iterate on the vector
     for i in range(len(v)):
@@ -174,13 +179,12 @@ if __name__ == '__main__':
     # read the csv file and collect the data
     nb_items, sack_weight, items_value, df = knapsack.uploadFile(path_file, type)
     
-    # create the weights, values array and the vector of values
+    # create the weights, values array and the vector
     weights_tab = np.array(df["W"])
     values_tab = np.array(df["V"])
-    v = -1 * np.ones(nb_items, dtype=int)
     
     # apply the branch and bound algorithm
-    solution = branch_bound(v, weights_tab, values_tab, sack_weight)
+    solution = branch_bound(weights_tab, values_tab, sack_weight)
     v, nb_items_chosen, total_weight, total_value = solution[0]
     time_taken = solution[1]
     

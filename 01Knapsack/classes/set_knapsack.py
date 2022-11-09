@@ -45,7 +45,7 @@ class Set01KnapSack:
         return text
     
     
-    def uploadFile(self, nameOfFile : str, type : str) -> tuple([int, float, float, pandas.DataFrame]):
+    def uploadFile(self, nameOfFile : str, type : str) -> tuple([int, int, int, pandas.DataFrame]):
         # Description : initialize the object
         # Input : path to the csv file relative to the Input folder - test with : "0_1_kp_REF_10_100_221016.csv"
         # Output : ...
@@ -71,10 +71,10 @@ class Set01KnapSack:
             for line in lines :
                 if lineRead==0:
                     self.n=int(line[0])
-                    self.wmax=float(line[1])
+                    self.wmax=int(line[1])
                 else:
-                    new_value = [float(line[0]), float(line[1])]
-                    self.items_values += float(line[0])
+                    new_value = [int(line[0]), int(line[1])]
+                    self.items_values += int(line[0])
                     self.data.loc[len(self.data)] = new_value
                 lineRead+=1
         return self.n, self.wmax, self.items_values, self.data
