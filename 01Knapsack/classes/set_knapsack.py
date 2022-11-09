@@ -80,9 +80,22 @@ class Set01KnapSack:
         return self.n, self.wmax, self.items_values, self.data
     
     
+    # read a text file containing the value of epsilon for the fptas algorithm
+    def getEpsilon(self, nameOfFile : str) -> float:
+        # check if the file exists
+        if not os.path.exists(nameOfFile) : 
+            print("The file doesn't exist")
+            return None
+        
+        # opening the file
+        
+        with open(nameOfFile, mode='r') as file:
+            line = file.read()   
+        return float(line)
+    
     
     # *********************** write on the results of the algorithm in the output file *********************** # 
-    def write_output(self, output : str) -> str:
+    def writeOutput(self, output : str) -> str:
         outputfile_path = os.path.join("01Knapsack", "Output", "results.txt")
         
         with open(outputfile_path, "a") as f : 

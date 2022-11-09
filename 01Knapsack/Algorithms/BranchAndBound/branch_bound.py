@@ -21,31 +21,19 @@ References :
 """
 
 # some important modules
-import functools
-from time import time
 import numpy as np
 import pandas as pd
-import csv
 import os
-from datetime import datetime
 from pathlib import Path
 import sys
 
 # external module imports
-if not str(Path(__file__).resolve().parent.parent) in sys.path:
-	sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+if not str(Path(__file__).resolve().parent.parent) in sys.path :
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
  
 from classes import Set01KnapSack
-
-# *********************** wrapper to benchmark the running time of the branch and bound algorithm *********************** #
-def compute_run_time(f) :
-    @functools.wraps(f)
-    def wrap(*args, **kwargs):
-        start = datetime.now()
-        x = f(*args, **kwargs)
-        time_taken = datetime.now() - start
-        return x, time_taken
-    return wrap
+from external import compute_run_time
 
 
 # *********************** evaluation function on each node ***************************** #
@@ -190,4 +178,4 @@ if __name__ == '__main__':
     
     # write the result in the output filec
     text = f"Branch and bound \t\t\t{nb_items}\t\t \t\t\t\t{sack_weight}\t \t\t\t\t{items_value}\t\t \t\t\t\t{nb_items_chosen}\t\t \t\t\t{total_weight}\t \t\t{total_value}\t\t \t\t\t{time_taken}"
-    knapsack.write_output(text) 
+    knapsack.writeOutput(text) 

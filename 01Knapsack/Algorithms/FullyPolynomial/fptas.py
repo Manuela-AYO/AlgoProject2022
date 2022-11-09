@@ -14,22 +14,20 @@
 
 
 # some important modules
-import functools
-from time import time
 import numpy as np
-import csv
 import os
 from datetime import datetime
 from pathlib import Path
 import sys
 
-print(Path(__file__).resolve().parent.parent.parent)
 
 # external module imports
 if not str(Path(__file__).resolve().parent.parent) in sys.path:
-	sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
  
 from classes import Set01KnapSack
+from external import compute_run_time
 
 
 # ******************************** Compute the max value in the row i, column thres_weight *********************** #
@@ -138,6 +136,7 @@ def get_knap_items(nb_items : int, max_weight : int, weights_tab : np.array, val
  
 
 # ************************** Fully polynomial time approximation scheme function ******************************* #  
+@compute_run_time
 def fptas(weights_tab : np.array, values_tab : np.array, max_weight : int, epsilon : float) -> tuple([np.array, int, int, int]):
     """_summary_
         The fptas function performs the fully polynomial time approximation scheme algorithm by choosing
@@ -166,8 +165,8 @@ def fptas(weights_tab : np.array, values_tab : np.array, max_weight : int, epsil
     delta = epsilon*max_value/len(weights_tab)
     
     # scale the values
-    values_tab_scale = np.copy(values_tab)
-    values_tab_scale = int(values_tab_scale/delta)
+    values_tab_scale = values_tab/delta
+    values_tab_scale = np.array(values_tab_scale, dtype=int)
     
     # get the vector of items, nb_items_chosen, total_weight of the objects and total value of the objects
     v, nb_items_chosen, total_weight, total_value = get_knap_items(len(weights_tab), max_weight, weights_tab, values_tab_scale)
@@ -180,6 +179,9 @@ if __name__ == "__main__":
     # import Set01KnapSack object 
     knapsack = Set01KnapSack()
     
+    print(sys.path)
+    print()
+    
     type = input("Which type of file is it(t for text, c for csv) ? ")
     path = input("Path to the file[e.g : file/my_file.csv] : ")
 
@@ -190,23 +192,36 @@ if __name__ == "__main__":
     # read the csv file and collect the data
     nb_items, sack_weight, items_value, df = knapsack.uploadFile(path_file, type)
     
-    # create the file for the values of epsilon
+    path = input("Path to the ε file[e.g : file/my_file.csv] : ")
+    
+    # normalize the path to the ε file
+    path = path.split("/")
+    path_file = os.path.join(*path)
+    
+    # get the value of ε
+    epsilon = knapsack.getEpsilon(path_file)
     
     # create the weights, values array and the vector of values
     weights_tab = np.array(df["W"])
     values_tab = np.array(df["V"])
-    epsilon = 0.5
     
     # apply the branch and bound algorithm
     solution = fptas(weights_tab, values_tab, sack_weight, epsilon)
+    # v, nb_items_chosen, total_weight, total_value = fptas(weights_tab, values_tab, sack_weight, epsilon) # solution[0]
     v, nb_items_chosen, total_weight, total_value = solution[0]
     time_taken = solution[1]
+    print(f"Vector = {v}\n")
+    print(f"Nb items = {nb_items_chosen}\n")
+    print(f"Total weight = {total_weight}\n")
+    print(f"Total value = {total_value}\n")
+    print(f"Time taken = {time_taken}")
     
     # write the result in the output filec
-    text = f"FPTAS \t\t\t{nb_items}\t\t \t\t\t\t{sack_weight}\t \t\t\t\t{items_value}\t\t \t\t\t\t{nb_items_chosen}\t\t \t\t\t{total_weight}\t \t\t{total_value}\t\t \t\t\t{time_taken}"
-    knapsack.write_output(text) 
+    # text = f"FPTAS \t\t\t{nb_items}\t\t \t\t\t\t{sack_weight}\t \t\t\t\t{items_value}\t\t \t\t\t\t{nb_items_chosen}\t\t \t\t\t{total_weight}\t \t\t{total_value}\t\t \t\t\t{time_taken}"
+    # knapsack.writeOutput(text) 
 
 
-tab_weight = np.array([23, 26, 20, 18, 32, 27, 29, 26, 30, 27])
-tab_value = np.array([505, 352, 458, 220, 354, 414, 498, 545, 473, 543])
-v, nb_items, opt_weight, opt_val =  get_knap_items(10, 67, tab_weight, tab_value)
+################################################# TO DO ############################################
+# - Should I remultiply the values by delta ?
+# - Write the output on the output file
+# - in the output file, may be better to additionnaly specify the name of the input file we used
