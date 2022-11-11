@@ -125,19 +125,34 @@ def mutation(offsprings):
     
 def operation(no_of_generations, population, weights, values, threshold, no_items):
     fitness_history = []
-    # num_parents = int(pop_size[0]/2)
-    for i in range(no_of_generations):
+    genetic_solution = []
+    no_parents = int(len(population)/2)
+    for i in range(no_of_generations - 1):
         fitness = calc_fitness(population=population, weight=weights, value=values, threshold=threshold)
         fitness_history.append(fitness)
         # TODO: check how to choose no of parents
-        fit_parents = select_fittest(individuals_fitnesses=fitness, population=population, no_of_parents=3)
+        fit_parents = select_fittest(individuals_fitnesses=fitness, population=population, no_of_parents=no_parents)
         offsprings = crossover(no_of_items=no_items, parents=fit_parents)
         mutants = mutation(offsprings=offsprings)
 
         # mix the mutants with the parents to make a new population
         population[0: len(fit_parents)] = fit_parents
-        population[len(fit_parents):] = mutants
-    pass
+
+        try:
+            population[:,len(fit_parents):len(mutants)] = mutants.shape[0]
+            population[len(fit_parents):len(mutants):, ] = mutants.shape[1]
+        except TypeError:
+            print("there are no mutants, so muteants has no length")
+        except AttributeError:
+            print("No mutants so mutants has no shape as it's a numpy array")
+
+    final_gen_fitness = calc_fitness(population=population, weight=weights, value=values, threshold=threshold)
+    print("POPPPP")
+    print(final_gen_fitness)
+    max_fitness_index = np.where(final_gen_fitness == np.max(final_gen_fitness)) # (array([4], dtype=int64),)
+    genetic_solution.append(population[max_fitness_index[0][0]])
+    print("AGGGHHHH")
+    print(np.array(genetic_solution))
 
  
 
@@ -152,4 +167,4 @@ operation(no_of_generations=2,
             values=VALUE,
             threshold=KNAPSACK_THRESHOLD,
             no_items=NO_OF_ITEMS)
-print(mutants)
+# print(mutants)
