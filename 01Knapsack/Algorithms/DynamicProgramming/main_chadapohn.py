@@ -48,11 +48,55 @@ def solution(i: int, j: int, weights: np.array, table: np.array, item_indices_of
         solution(i-1, j, weights, table)
         return item_indices_of_optimal_knapsack
 
+def top_down(i: int, j: int, table: np.array, weights: np.array, values: np.array):
+    print(i, j)
+    # print(table)
+    
+    if i == 0 or j <= 0:
+        table[i, j] = 0
+        return values[i-1]
+    
+    if table[i-1, j] == -1:
+        table[i-1, j] = top_down(i-1, j, table, weights, values)
+
+    if weights[i-1] > j:
+        table[i, j] = table[i-1, j]
+    else:
+        if table[i-1, j-weights[i-1]] == -1:
+            table[i-1, j-weights[i-1]] = top_down(i-1, j-weights[i-1], table, weights, values)
+        table[i, j] = max(table[i-1, j], table[i-1, j-weights[i-1]] + values[i-1])
+
+    return values[i-1]
+
+# values = np.array([6, 5, 9])
+# weights = np.array([10, 7, 6])
+values = np.array([1, 2, 10])
+weights = np.array([3, 4, 7])
+maximum_weight = 10
+num_items = len(weights)
+table = -1*np.ones((num_items + 1, maximum_weight + 1))
+maximum_value = top_down(num_items, maximum_weight, table, weights, values)
+print(maximum_value)
 ######################################################
 ##### Testing section for the bottom-up approach #####
 ######################################################
 
-# The 0/1 Knapsack instaces from the excercise sheet
+# # The 0/1 Knapsack instaces from the excercise sheet
+# values = np.array([1, 2, 10])
+# weights = np.array([3, 4, 7])
+# maximum_weight = 10
+# num_items = len(weights)
+# maximum_value, table = bottom_up(values, weights, maximum_weight, num_items)
+# item_indices_of_optimal_knapsack = solution(num_items, maximum_weight, weights, table)
+# print('#############################################')
+# print(values)
+# print(weights)
+# print(maximum_value)
+# print(maximum_weight)
+# print(table)
+# print(item_indices_of_optimal_knapsack)
+
+
 # values = np.array([10, 1, 2])
 # weights = np.array([7, 3, 4])
 # maximum_weight = 10
@@ -67,19 +111,19 @@ def solution(i: int, j: int, weights: np.array, table: np.array, item_indices_of
 # print(table)
 # print(item_indices_of_optimal_knapsack)
 
-values = np.array([6, 5, 9])
-weights = np.array([10, 7, 6])
-maximum_weight = 10
-num_items = len(weights)
-maximum_value, table = bottom_up(values, weights, maximum_weight, num_items)
-item_indices_of_optimal_knapsack = solution(num_items, maximum_weight, weights, table)
-print('#############################################')
-print(values)
-print(weights)
-print(maximum_value)
-print(maximum_weight)
-print(table)
-print(item_indices_of_optimal_knapsack)
+# values = np.array([6, 5, 9])
+# weights = np.array([10, 7, 6])
+# maximum_weight = 10
+# num_items = len(weights)
+# maximum_value, table = bottom_up(values, weights, maximum_weight, num_items)
+# item_indices_of_optimal_knapsack = solution(num_items, maximum_weight, weights, table)
+# print('#############################################')
+# print(values)
+# print(weights)
+# print(maximum_value)
+# print(maximum_weight)
+# print(table)
+# print(item_indices_of_optimal_knapsack)
 
 # The 0/1 Knapsack instances from the generator: num_items= 10, the_maximum_weight=100
 # objectData = f.Set01KnackSack().uploadCsvFile("0_1_kp_REF_10_100_221016.csv")
