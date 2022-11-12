@@ -37,7 +37,6 @@ def bottom_up(values: np.array, weights: np.array, maximum_weight: int, num_item
     return maximum_value, table
 
 def solution(i: int, j: int, weights: np.array, table: np.array, item_indices_of_optimal_knapsack: list=[]) -> list:
-    print(i, j)
     if i == 0:
         return item_indices_of_optimal_knapsack
     if table[i, j] > table[i-1, j]:
@@ -49,24 +48,23 @@ def solution(i: int, j: int, weights: np.array, table: np.array, item_indices_of
         return item_indices_of_optimal_knapsack
 
 def top_down(i: int, j: int, table: np.array, weights: np.array, values: np.array):
-    print(i, j)
-    # print(table)
-    
     if i == 0 or j <= 0:
         table[i, j] = 0
-        return values[i-1]
+        return table[i, j], table
     
     if table[i-1, j] == -1:
-        table[i-1, j] = top_down(i-1, j, table, weights, values)
+        v, table = top_down(i-1, j, table, weights, values)
+        table[i-1, j] = v
 
     if weights[i-1] > j:
         table[i, j] = table[i-1, j]
     else:
         if table[i-1, j-weights[i-1]] == -1:
-            table[i-1, j-weights[i-1]] = top_down(i-1, j-weights[i-1], table, weights, values)
+            v, table = top_down(i-1, j-weights[i-1], table, weights, values)
+            table[i-1, j-weights[i-1]] = v
         table[i, j] = max(table[i-1, j], table[i-1, j-weights[i-1]] + values[i-1])
 
-    return values[i-1]
+    return table[i, j], table
 
 # values = np.array([6, 5, 9])
 # weights = np.array([10, 7, 6])
@@ -75,8 +73,11 @@ weights = np.array([3, 4, 7])
 maximum_weight = 10
 num_items = len(weights)
 table = -1*np.ones((num_items + 1, maximum_weight + 1))
-maximum_value = top_down(num_items, maximum_weight, table, weights, values)
+maximum_value, table = top_down(num_items, maximum_weight, table, weights, values)
 print(maximum_value)
+print(table)
+item_indices_of_optimal_knapsack = solution(num_items, maximum_weight, weights, table)
+print(item_indices_of_optimal_knapsack)
 ######################################################
 ##### Testing section for the bottom-up approach #####
 ######################################################
