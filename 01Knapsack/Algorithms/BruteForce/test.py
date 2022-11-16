@@ -8,9 +8,10 @@ import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__),'..', '..', "classes"))
 import set_knapsack as m
 
-
+sys.path.append(os.path.join(os.path.dirname(__file__),'..', '..', "Input"))
 # ----Upload Data------ #
-test = m.Set01KnapSack().uploadCsvFile("Landrytest.csv")
+# test = m.Set01KnapSack().uploadFile(os.path.join(os.path.dirname(__file__),'..', '..', "Input","Landrytest.csv"),"c")
+test = m.Set01KnapSack().uploadInputFile("Landrytest.csv")
 print(test)
 
 
