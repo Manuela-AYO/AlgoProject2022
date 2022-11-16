@@ -44,15 +44,22 @@ class Set01KnapSack:
             text += f"{i} Value : {self.data.V[i]} Weight : {self.data.W[i]} \n"
         return text
     
-    def uploadCsvFile(self, nameOfFile):
+    def uploadInputFile(self, nameOfFile : str, type : str = 'c'):
         # Decription : Initialize the object
 		# Input : path to the csv file relative to the Input folder - test with : "0_1_kp_REF_10_100_221016.csv"
 		# Output : ...
+        if not os.path.exists(os.path.join(os.path.dirname(__file__), '..', 'Input', nameOfFile)) : 
+            print("The file doesn't exist")
+            return None
 
 		# opening the CSV file
         with open(os.path.join(os.path.dirname(__file__), '..', 'Input', nameOfFile), mode ='r') as file:
 			# reading the CSV file
-            csvFile = csv.reader(file)
+            csvFile = []
+            if type == "t": 
+                csvFile = csv.reader(file, delimiter=" ")
+            else :
+                csvFile = csv.reader(file)
             lineRead = 0;
             # displaying the contents of the CSV file
             for lines in csvFile:
@@ -66,6 +73,7 @@ class Set01KnapSack:
         return self
 
     def uploadFile(self, nameOfFile : str, type : str) -> tuple([int, int, int, pandas.DataFrame]):
+        # NOTE : in this method, nameOfFile is a complete path, not a relative one.
         # Description : initialize the object
         # Input : path to the csv file relative to the Input folder - test with : "0_1_kp_REF_10_100_221016.csv"
         # Output : ...
@@ -97,7 +105,8 @@ class Set01KnapSack:
                     self.items_values += int(line[0])
                     self.data.loc[len(self.data)] = new_value
                 lineRead+=1
-        return self.n, self.wmax, self.items_values, self.data
+        # return self.n, self.wmax, self.items_values, self.data # ==> if we do that, we loose the object. Easier to return self, and then you can work on it, by writing myObjectReturn.data for exemple
+        return self
     
     
     # read a text file containing the value of epsilon for the fptas algorithm
