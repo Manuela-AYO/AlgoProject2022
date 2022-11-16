@@ -105,8 +105,8 @@ class Set01KnapSack:
                     self.items_values += int(line[0])
                     self.data.loc[len(self.data)] = new_value
                 lineRead+=1
-        return self.n, self.wmax, self.items_values, self.data # ==> if we do that, we loose the object. Easier to return self, and then you can work on it, by writing myObjectReturn.data for exemple
-        # return self
+        return self.n, self.wmax, self.items_values, self.data # ==> if we do that, we loose the object. Easier to return self, and then we can work on it, by writing myObjectReturn.data for exemple
+	# return self
     
     
     # read a text file containing the value of epsilon for the fptas algorithm
