@@ -44,7 +44,27 @@ class Set01KnapSack:
             text += f"{i} Value : {self.data.V[i]} Weight : {self.data.W[i]} \n"
         return text
     
-    
+    def uploadCsvFile(self, nameOfFile):
+        # Decription : Initialize the object
+		# Input : path to the csv file relative to the Input folder - test with : "0_1_kp_REF_10_100_221016.csv"
+		# Output : ...
+
+		# opening the CSV file
+        with open(os.path.join(os.path.dirname(__file__), '..', 'Input', nameOfFile), mode ='r') as file:
+			# reading the CSV file
+            csvFile = csv.reader(file)
+            lineRead = 0;
+            # displaying the contents of the CSV file
+            for lines in csvFile:
+                if lineRead==0:
+                    self.n=int(lines[0])
+                    self.wmax=int(lines[1])
+                else:
+                    new_value = [int(lines[0]), int(lines[1])]
+                    self.data.loc[len(self.data)] = new_value
+                lineRead=lineRead+1
+        return self
+
     def uploadFile(self, nameOfFile : str, type : str) -> tuple([int, int, int, pandas.DataFrame]):
         # Description : initialize the object
         # Input : path to the csv file relative to the Input folder - test with : "0_1_kp_REF_10_100_221016.csv"

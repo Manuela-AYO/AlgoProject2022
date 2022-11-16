@@ -5,13 +5,13 @@ import numpy
 from natsort import index_natsorted
 
 import sys, os
-sys.path.append(os.path.join(os.path.dirname(__file__),'..', '..', "Class"))
-import Set01KnackSack as m
+sys.path.append(os.path.join(os.path.dirname(__file__),'..', '..', "classes"))
+import set_knapsack as m
 
 
 # ----Upload Data------ #
-test = m.Set01KnackSack().uploadCsvFile("0_1_kp_REF_10_100_221016.csv")
-test.display()
+test = m.Set01KnapSack().uploadCsvFile("Landrytest.csv")
+print(test)
 
 
 def testValue(objects):
