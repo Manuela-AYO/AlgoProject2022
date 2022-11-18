@@ -8,13 +8,14 @@ import sys, os
 
 # Set directory paths for external modules
 current_dir = os.path.dirname(__file__)
-helper_dir = os.path.join(current_dir,'..', '..', 'Class')
+helper_dir = os.path.join(current_dir,'..', '..', 'classes')
 root_dir = os.path.join(current_dir,'..', '..', '..')
 sys.path.append(helper_dir)
 sys.path.append(root_dir)
+print(sys.path)
 
-#  Import external modules
-import Set01KnapSack as f
+# Import external modules
+from classes import Set01KnapSack
 from external import compute_run_time
 
 def tracing_dynamic_programming_solution(item: int, sum_of_weights: int, weights: np.array, memoization: np.array, subset_indices: list=[]) -> list:
@@ -83,15 +84,15 @@ def bottom_up_approach(maximum_weight: int, weights: np.array, values: np.array)
 
 if __name__ == '__main__':
     csv_file = "0_1_kp_REF_10_100_221016.csv"
-    knapsackInstance = f.Set01KnapSack()
-    knapsackInstance.uploadCsvFile(csv_file)
-    maximum_weight = knapsackInstance.wmax
-    weights = knapsackInstance.data.W.to_numpy()
-    values = knapsackInstance.data.V.to_numpy()
+    knapsackInstance = Set01KnapSack()
+    knapsackInstance.uploadFile(csv_file)
+    # maximum_weight = knapsackInstance.wmax
+    # weights = knapsackInstance.data.W.to_numpy()
+    # values = knapsackInstance.data.V.to_numpy()
 
-    print(maximum_weight)
-    print(weights)
-    print(values)
+    # print(maximum_weight)
+    # print(weights)
+    # print(values)
 
     # values = np.array([1, 2, 10])
     # weights = np.array([3, 4, 7])
