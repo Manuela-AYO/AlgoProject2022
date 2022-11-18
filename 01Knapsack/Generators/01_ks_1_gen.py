@@ -1,6 +1,12 @@
 """
     This module performs the creation of an instance of the knapsack problem.
     This one is set by the user who defines :
+        * the number of items 
+        
+        * the maximum capacity of the sack
+        
+        * the range of the items
+        
         * the distribution he/she wants to have for items 
             - 1 : uncorrelated data, means weights and profits are randomly created
             - 2 : weakly correlated data, means profits depend on weights + small noise
@@ -14,10 +20,6 @@
             - 10 : circle data, means profits form a circle
             - 11, 12, 13 : spanner data. These instances are constructed such that all items are multiples
                     of a quite small set of items—the so-called spanner set
-                    
-        * the possibility to define or not the capacity of the knapsack
-        
-        * the range of the items
         
     References : 
         For a better understanding of the instances, refer to the pdf below which is downloadable
@@ -44,7 +46,7 @@ HIGH_PROFIT = 1000
 H = 100
 
 # ******************* Generate instance of the knapsack problem ******************* #
-def generate_instance(nb_items : int, range_items : int, distrib : int) -> None:
+def generate_instance(nb_items : int, weight : int, range_items : int, distrib : int) -> None:
     """Generate an instance of the knapsack problem
 
     Args:
@@ -108,23 +110,20 @@ def generate_instance(nb_items : int, range_items : int, distrib : int) -> None:
     dir_path = os.path.join(os.path.dirname(__file__), "..", "Input")
     num_instance = len([entry for entry in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, entry))])
     
-    # compute the capacity of the knapsack
-    c =  total_weight * num_instance/H+1
-    
-    # generate the name of the file : 0_1_knap_nb_items_total_weight_num_instance.csv
-    file = os.path.join(os.path.dirname(__file__), "..", "Input", f"01_knap_{str(nb_items)}_{str(total_weight)}_{str(num_instance)}.csv")
+    # generate the name of the file : 0_1_knap_nb_items_max_weight_num_instance.csv
+    file = os.path.join(os.path.dirname(__file__), "..", "Input", f"01_knap_{str(nb_items)}_{str(weight)}_{str(num_instance)}.csv")
     
     # write in the input file
     with open(file, "w") as f :
         writer = csv.writer(f, delimiter=",")
-        writer.writerow([nb_items, total_weight])
+        writer.writerow([nb_items, weight])
         for item in instances:
             writer.writerow([item[0], item[1]])
     
     
 
 # control the entries of the command line
-def control_entries(nb_items : int, coef : int, weight : int = -1) -> int:
+def control_entries(nb_items : int, coef : int, weight : int) -> int:
     """Control the entries of the command line
 
     Args:
@@ -139,33 +138,31 @@ def control_entries(nb_items : int, coef : int, weight : int = -1) -> int:
     if nb_items <= 1 :
         print("\tValueError : The number of items should be strictly greater than 1\n")
         num = -1
-    if coef <= 2 : 
-        print("\tValueError : The range of the items should be strictly greater than 2\n")
+    if coef <= 1 : 
+        print("\tValueError : The range of the items should be strictly greater than 1\n")
         num = -1
-    if weight != -1:
-        if coef >= (weight-weight//2) :
-            print("\tValueError : The range of the coefficients should be at least a half of the actual weight\n")
-            num = -1
+    if coef > (weight-weight//2) :
+        print("\tValueError : The range of the coefficients should be at most a half of the actual weight\n")
+        num = -1
     return num
 
                             
 if __name__ == "__main__":
     # generate the arguments in the command line
     parser = argparse.ArgumentParser(description=
-                                     "Generate an instance of the 0-1 knapsack problem\n\t The arguments are in the order : nb_items, range, distrib, --weight")
-    parser.add_argument("nb_items", type=int, help="Number of items. Must be strictly greater than 1")
-    parser.add_argument("coef", type=int, help="Range of the coefficients for weights and values[>2]")
+                                     "Generate an instance of the 0-1 knapsack problem\n\t The arguments are in the order : nb_items, weight, range, distrib")
+    parser.add_argument("nb_items", type=int, help="Number of items. Must be strictly greater than 1[>1]")
+    parser.add_argument("weight", type=int, help="Maximum capacity of the knapsack")
+    parser.add_argument("coef", type=int, help="Range of the coefficients for weights and values[>1]")
     parser.add_argument("distrib", type=int, choices=range(1,14), 
                         help="Distribution to use to generate the weights and values")
-    parser.add_argument("--weight", type=int, help="The capacity of the knapsack", default=-1)
     args = parser.parse_args()
     
-    # control the entries 
+    # control the entries and send to the generator
     nb_items = args.nb_items
     coef = args.coef
     distrib = args.distrib
     weight = args.weight
     
     if control_entries(nb_items, coef, weight) != -1:
-        generate_instance(nb_items, coef, distrib)
-    # send the arguments to the generator
+        generate_instance(nb_items, weight, coef, distrib)
