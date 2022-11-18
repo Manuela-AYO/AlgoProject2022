@@ -109,8 +109,16 @@ def generate_instance(nb_items : int, weight : int, range_items : int, distrib :
     dir_path = os.path.join(os.path.dirname(__file__), "..", "Input")
     num_instance = len([entry for entry in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, entry))])
     
+    # this helps to identify through the type of distribution if it's a difficult instance 
+    # and mark it in the name of the file
+    # diff = difficult and norm = normal
+    if distrib >= 8:
+        temp = "diff"
+    else:
+        temp = "norm"
+        
     # generate the name of the file : 0_1_knap_nb_items_max_weight_num_instance.csv
-    file = os.path.join(os.path.dirname(__file__), "..", "Input", f"01_knap_{str(nb_items)}_{str(weight)}_{str(num_instance)}.csv")
+    file = os.path.join(os.path.dirname(__file__), "..", "Input", f"01_knap_{temp}_{str(nb_items)}_{str(weight)}_{str(num_instance)}.csv")
     
     # write in the input file
     with open(file, "w") as f :
