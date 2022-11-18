@@ -43,7 +43,6 @@ from classes import Set01KnapSack
 LOW_UNCOR = 100000
 HIGH_UNCOR = 100100
 HIGH_PROFIT = 1000
-H = 100
 
 # ******************* Generate instance of the knapsack problem ******************* #
 def generate_instance(nb_items : int, weight : int, range_items : int, distrib : int) -> None:
@@ -51,9 +50,9 @@ def generate_instance(nb_items : int, weight : int, range_items : int, distrib :
 
     Args:
         nb_items (int): Total number of items we want
+        weight (int): Maximum capacity of the sack
         range_items (int): Maximal range of the coefficients
         distrib (int): The distribution
-        span (list): info of the spanner
     """
     instances = []
     weak_coeff = range_items/10 # coefficient for weakly correlated data
