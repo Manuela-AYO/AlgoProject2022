@@ -18,7 +18,6 @@ References: ...
 
 
 import pandas
-import numpy
 import csv
 import os
 
@@ -53,12 +52,12 @@ class Set01KnapSack:
         lines = []
         
         # check if the file exists
-        if not os.path.exists(nameOfFile) : 
+        if not os.path.exists(os.path.join(os.path.dirname(__file__), '..', 'Input', nameOfFile)) : 
             print("The file doesn't exist")
             return None
         
         # opening the file
-        with open(nameOfFile, mode='r') as file:
+        with open(os.path.join(os.path.dirname(__file__), '..', 'Input', nameOfFile), mode='r') as file:
             lineRead = 0
             
             # distinguish between the type of file(t : text, c : csv file)
@@ -83,20 +82,19 @@ class Set01KnapSack:
     # read a text file containing the value of epsilon for the fptas algorithm
     def getEpsilon(self, nameOfFile : str) -> float:
         # check if the file exists
-        if not os.path.exists(nameOfFile) : 
+        if not os.path.exists(os.path.join(os.path.dirname(__file__), '..', 'Input', nameOfFile)) : 
             print("The file doesn't exist")
             return None
         
         # opening the file
-        
-        with open(nameOfFile, mode='r') as file:
+        with open(os.path.join(os.path.dirname(__file__), '..', 'Input', nameOfFile), mode='r') as file:
             line = file.read()   
         return float(line)
     
     
     # *********************** write on the results of the algorithm in the output file *********************** # 
     def writeOutput(self, output : str) -> str:
-        outputfile_path = os.path.join("01Knapsack", "Output", "results.txt")
+        outputfile_path = os.path.join(os.path.dirname(__file__),"..", "Output", "results.txt")
         
         with open(outputfile_path, "a") as f : 
             # if it's an empty file, create the header

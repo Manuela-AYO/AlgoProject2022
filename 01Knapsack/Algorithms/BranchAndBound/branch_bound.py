@@ -158,14 +158,14 @@ if __name__ == '__main__':
     knapsack = Set01KnapSack()
     
     type = input("Which type of file is it(t for text, c for csv) ? ")
-    path = input("Path to the file[e.g : file/my_file.csv] : ")
+    path = input("Path to the file[e.g : my_file.csv] : ")
 
     # normalize the path to the file
-    path = path.split("/")
-    path_file = os.path.join(*path)
+    # path = path.split("/")
+    # path_file = os.path.join(*path)
     
     # read the csv file and collect the data
-    nb_items, sack_weight, items_value, df = knapsack.uploadFile(path_file, type)
+    nb_items, sack_weight, items_value, df = knapsack.uploadFile(path, type)
     
     # create the weights, values array and the vector
     weights_tab = np.array(df["W"])
