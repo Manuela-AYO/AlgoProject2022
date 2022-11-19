@@ -14,7 +14,7 @@ if not str(Path(__file__).resolve().parent.parent) in sys.path :
 
 # Import external modules
 # A module for tracing Dynamic Programming's solution
-import helper
+from helper import tracing_dynamic_programming_solution
 # A module for retrieving 0/1 Knapsack instance
 from classes import Set01KnapSack
 # A module for timing
@@ -39,7 +39,7 @@ def bottom_up_approach(maximum_weight: int, weights: np.array, values: np.array)
     num_items = len(weights)
     tabularization = np.zeros((num_items+1, maximum_weight+1))
     maximum_value, tabularization = bottom_up_tabularization(num_items, maximum_weight, weights, values, tabularization)
-    subset_indices = helper.tracing_dynamic_programming_solution(num_items, maximum_weight, weights, tabularization)
+    subset_indices = tracing_dynamic_programming_solution(num_items, maximum_weight, weights, tabularization)
     num_items_choosen = len(subset_indices)
     occupied_weight = sum(weights[i] for i in subset_indices)
     return maximum_value, num_items_choosen, occupied_weight, tabularization

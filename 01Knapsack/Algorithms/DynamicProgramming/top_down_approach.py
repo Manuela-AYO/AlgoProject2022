@@ -14,7 +14,7 @@ if not str(Path(__file__).resolve().parent.parent) in sys.path :
 
 # Import external modules
 # A module for tracing Dynamic Programming's solution
-import helper
+from helper import tracing_dynamic_programming_solution
 # A module for retrieving 0/1 Knapsack instance
 from classes import Set01KnapSack
 # A module for timing
@@ -45,7 +45,7 @@ def top_down_memoization(item: int, sum_of_weights: int, weights: np.array, valu
 def top_down_approach(num_items: int, maximum_weight: int, weights: np.array, values: np.array) -> tuple:
     memoization = -1*np.ones((num_items+1, maximum_weight+1))
     maximum_value, memoization = top_down_memoization(num_items, maximum_weight, weights, values, memoization)
-    subset_indices = helper.tracing_dynamic_programming_solution(num_items, maximum_weight, weights, memoization)
+    subset_indices = tracing_dynamic_programming_solution(num_items, maximum_weight, weights, memoization)
     num_items_choosen = len(subset_indices)
     occupied_weight = sum(weights[i] for i in subset_indices)
     return maximum_value, num_items_choosen, occupied_weight, memoization
