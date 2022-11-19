@@ -1,0 +1,4 @@
+Algorithm	 	Total number of items	 		Max weight	 		Items value	 		Nb items chosen	 		Occupied weight	 		Total value of items	 		Running time(ms)
+______________________________________________________________________________________________________________________________________________
+
+Top-down approach, Dynamic Programming 			10		 				100	 				485		 				7		 			96	 		315.0		 			0:00:00
