@@ -35,14 +35,13 @@ def bottom_up_tabularization(num_items: int, maximum_weight: int, weights: np.ar
     return maximum_value, tabularization
 
 @compute_run_time
-def bottom_up_approach(maximum_weight: int, weights: np.array, values: np.array) -> tuple:
-    num_items = len(weights)
+def bottom_up_approach(num_items, maximum_weight: int, weights: np.array, values: np.array) -> tuple:
     tabularization = np.zeros((num_items+1, maximum_weight+1))
     maximum_value, tabularization = bottom_up_tabularization(num_items, maximum_weight, weights, values, tabularization)
-    subset_indices = tracing_dynamic_programming_solution(num_items, maximum_weight, weights, tabularization)
+    subset_indices = tracing_dynamic_programming_solution(num_items, maximum_weight, weights, tabularization, [])
     num_items_choosen = len(subset_indices)
     occupied_weight = sum(weights[i] for i in subset_indices)
-    return maximum_value, num_items_choosen, occupied_weight, tabularization
+    return maximum_value, num_items_choosen, occupied_weight
 
 if __name__ == '__main__':
     # The prompt 
@@ -65,9 +64,9 @@ if __name__ == '__main__':
     result = bottom_up_approach(num_items, maximum_weight, weights, values)
 
     # Retrieve output and benchmarking time
-    maximum_value, num_items_choosen, occupied_weight, memoization = result[0]
+    maximum_value, num_items_choosen, occupied_weight = result[0]
     benchmarking_time = result[1]
 
     # Create an output table
-    text = f"Top-down approach, Dynamic Programming \t\t\t{num_items}\t\t \t\t\t\t{maximum_weight}\t \t\t\t\t{sum_values}\t\t \t\t\t\t{num_items_choosen}\t\t \t\t\t{occupied_weight}\t \t\t{maximum_value}\t\t \t\t\t{benchmarking_time}"
+    text = f"Bottom-up approach, Dynamic Programming \t\t\t{num_items}\t\t \t\t\t\t{maximum_weight}\t \t\t\t\t{sum_values}\t\t \t\t\t\t{num_items_choosen}\t\t \t\t\t{occupied_weight}\t \t\t{maximum_value}\t\t \t\t\t{benchmarking_time}"
     knapsackInstance.writeOutput(text) 
