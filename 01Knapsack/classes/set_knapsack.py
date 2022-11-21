@@ -18,7 +18,6 @@ References: ...
 
 
 import pandas
-import numpy
 import csv
 import os
 

@@ -133,7 +133,7 @@ def mutation(offsprings):
         return mutants
     
     
-def operation(no_of_generations, population, weights, values, threshold, no_items):
+def genetic_programming(no_of_generations, population, weights, values, threshold, no_items):
     """
     combines all the functions.
 
@@ -180,10 +180,9 @@ def operation(no_of_generations, population, weights, values, threshold, no_item
         print("After mutation, there was no fit solution so the optimal solution will not solve our problem")
     max_fitness_index = np.where(final_gen_fitness == np.max(final_gen_fitness)) # (array([4], dtype=int64),)
 
-    print(max_fitness_index[0])
+    # print(max_fitness_index[0])
     # print(max_fitness_index[0][0])
     genetic_solution = (population[max_fitness_index[0][0]])
-    # print("AGGGHHHH")
     return np.array(genetic_solution)
 
 
@@ -192,38 +191,10 @@ fitness_of_pop = calc_fitness(population=init_pop, weight=WEIGHT, value=VALUE, t
 fit_parents = select_fittest(individuals_fitnesses=fitness_of_pop, population=init_pop, no_of_parents=3)
 offsprings1, offsprings = crossover(no_of_items=NO_OF_ITEMS, parents=fit_parents)
 mutants = mutation(offsprings=offsprings)
-optimal_solu = operation(no_of_generations=2,
+optimal_solu = genetic_programming(no_of_generations=2,
             population=init_pop,
             weights=WEIGHT,
             values=VALUE,
             threshold=KNAPSACK_THRESHOLD,
             no_items=NO_OF_ITEMS)
 print(optimal_solu)
-
-
-# if __name__ == '__main__':
-#     # import Set01KnapSack object 
-#     knapsack = Set01KnapSack()
-    
-#     type = input("Which type of file is it(t for text, c for csv) ? ")
-#     path = input("Path to the file[e.g : file/my_file.csv] : ")
-
-#     # normalize the path to the file
-#     path = path.split("/")
-#     # path_file = os.path.join(*path)
-    
-#     # read the csv file and collect the data
-#     nb_items, sack_weight, items_value, df = knapsack.uploadFile(path_file, type)
-    
-#     # create the weights, values array and the vector
-#     weights_tab = np.array(df["W"])
-#     values_tab = np.array(df["V"])
-    
-#     # apply the branch and bound algorithm
-#     # solution = branch_bound(weights_tab, values_tab, sack_weight)
-#     # v, nb_items_chosen, total_weight, total_value = solution[0]
-#     time_taken = solution[1]
-    
-#     # write the result in the output filec
-#     text = f"Branch and bound \t\t\t{nb_items}\t\t \t\t\t\t{sack_weight}\t \t\t\t\t{items_value}\t\t \t\t\t\t{nb_items_chosen}\t\t \t\t\t{total_weight}\t \t\t{total_value}\t\t \t\t\t{time_taken}"
-#     # knapsack.writeOutput(text) 
