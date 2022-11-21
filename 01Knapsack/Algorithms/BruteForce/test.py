@@ -10,9 +10,16 @@ import set_knapsack as m
 
 sys.path.append(os.path.join(os.path.dirname(__file__),'..', '..', "Input"))
 # ----Upload Data------ #
-# test = m.Set01KnapSack().uploadFile(os.path.join(os.path.dirname(__file__),'..', '..', "Input","Landrytest.csv"),"c")
-test = m.Set01KnapSack().uploadInputFile("Landrytest.csv")
+a = m.Set01KnapSack()
+test = a.uploadFile(os.path.join(os.path.dirname(__file__),'..', '..', "Input","Landrytest.csv"),"c")
+print("--------")
 print(test)
+print("--------")
+print(a)
+print("--------")
+
+# test = m.Set01KnapSack().uploadInputFile("Landrytest.csv")
+
 
 
 def testValue(objects):
