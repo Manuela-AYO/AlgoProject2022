@@ -20,6 +20,7 @@ References: http://www.sci.brooklyn.cuny.edu/~zhou/papers/repository/doc/tutoria
 # Import modules
 import numpy as np
 import random
+import datetime
 import sys
 from pathlib import Path
 
@@ -44,9 +45,10 @@ class Knapsack_randomized_algorithm:
     best_binary_representation = []
     current_binary_representation = []
     executions = 0
+    time_min = 0
     best_elements_number = 0
 
-    def __init__(self, n, max_weigth, weight_list, value_list, executions, selection_ratio=0.1):
+    def __init__(self, n, max_weigth, weight_list, value_list, executions, time_min=0, selection_ratio=0.1):
         '''
         Summary: Constructor, set the important variables for the algorithm execution.
         
@@ -56,7 +58,10 @@ class Knapsack_randomized_algorithm:
             weight_list (list): List containing all the weights of the elements.
             value_list (list): List containing all the values of the elements.
             executions (int): Number of iterations which the algorithm will perform.
+            time_min (int): Time in minutes to execute the algorithm if there are no elements or the argument is 0, the executions will be taken into account.
             selection_ration (float): Porcentage of the elements which are going to be taking into account for the elite group.
+
+        Complexity: O(1)
         '''
         self.n = n
         self.w = weight_list
@@ -65,6 +70,7 @@ class Knapsack_randomized_algorithm:
         self.best_solution_w = 0
         self.best_solution_v = 0
         self.executions = executions
+        self.time_min = time_min
         self.best_elements_number = 0
         self.selection_count = int(round(self.n * selection_ratio))
     
@@ -72,6 +78,8 @@ class Knapsack_randomized_algorithm:
         '''
         Summary: Function which creates a first solution, picking randomly a representation of binaries in the total amount of elements.
         This solution is not optimal and even can not be possible to solve the knapsack problem at first.
+
+        Complexity: O(n)
         '''
         ratio = random.random()
         self.current_binary_representation = np.random.binomial(n=1, p=ratio, size=[self.n])
@@ -84,6 +92,8 @@ class Knapsack_randomized_algorithm:
         Returns:
             True: When the curent solution is valid. In other words, it is lower than the bound of the maximum weight.
             False: Otherwise.
+
+        Complexity: O(n)
         '''
         acum_w = 0
         acum_v = 0
@@ -109,6 +119,8 @@ class Knapsack_randomized_algorithm:
         current solution. Then, the values of those elements is sorted and we create an small group of possible elements to add, based
         on the selection count parameter. We pick the best possible group, which are the elements of greater value. Finally, we select randomly one of the best possible options and add it into the group,
         flipping the value of the binary representation of 0 to 1 for this particular element.
+
+        Complexity: O(n*log(n))
         '''
         zero_indexes = {}
         zero_elites = []
@@ -126,6 +138,8 @@ class Knapsack_randomized_algorithm:
         current solution. Then, the values of those elements is sorted and we create an small group of possible elements to delete, based
         on the selection count parameter. We pick the best possible group, which are the elements of smaller value. Finally, we 
         select randomly one of the best possible options to delete, flipping the value of the binary representation of 1 to 0 for this particular element.
+
+        Complexity: O(n*log(n))
         '''
         one_indexes = {}
         one_elites = []
@@ -140,23 +154,42 @@ class Knapsack_randomized_algorithm:
     def knapsack_randomized_algorithm(self):
         '''
         Summary: Function which orchestrate the main algorithm. Basically, iterating for each execution a new modification in the current
-        solution, to see if this one is better than the previous solution.
+        solution, to see if this one is better than the previous solution. Also, there are two ways to execute the module.
+        If there is a time different to zero, te algorithm will run over the time indicated. However, if the value is 0, it will take
+        the number of executions.
 
         Return:
             list: The best binary list containing which elements are taken (with 1) and which are not included (with 0).
             int: The total amount of elements in the best solution.
             int: The total weight of the best solution.
             int: The total value of the best soluion.
+
+        Total Complexity: O(n*log(n))
         '''
         current_execution = 0
         self.initial_solution_generator()
-        while current_execution < self.executions:
-            current_execution += 1
-            if self.check_viability_weight():
-                self.add_random_element()
-            else:
-                self.delete_random_element()
-        self.check_viability_weight()
+        if self.time_min != 0:
+            start_time = datetime.datetime.now()
+            iteration_time = datetime.timedelta(minutes=self.time_min)
+            end_time = start_time + iteration_time
+            while True:
+                current_time = datetime.datetime.now()
+                if start_time <= current_time <= end_time:
+                    if self.check_viability_weight():
+                        self.add_random_element()
+                    else:
+                        self.delete_random_element()
+                elif current_time > end_time:
+                    self.check_viability_weight()
+                    break
+        else:
+            while current_execution < self.executions:
+                current_execution += 1
+                if self.check_viability_weight():
+                    self.add_random_element()
+                else:
+                    self.delete_random_element()
+            self.check_viability_weight()
         return self.best_binary_representation, self.best_elements_number, self.best_solution_w, self.best_solution_v
 
 # Static main model for execution
@@ -165,8 +198,9 @@ if __name__ == "__main__":
     type = input("Which type of file is it(t for text, c for csv) ? ")
     path = input("Path to the file[e.g : my_file.csv] : ")
     iterations = input("How many iterations to execute the algorithm : ")
+    time = input("Time to execute the algorithm (0 if want execution by iterations) : ")
     nb_items, sack_weight, items_value, df = knapsack_generator.uploadFile(path, type)
     weights_initial = np.array(df["W"])
     values_initial = np.array(df["V"])
-    knapsack_randomized_instance = Knapsack_randomized_algorithm(nb_items, sack_weight, weights_initial, values_initial, iterations)
+    knapsack_randomized_instance = Knapsack_randomized_algorithm(nb_items, sack_weight, weights_initial, values_initial, iterations, time)
     v, nb_items_chosen, total_weight, total_value = knapsack_randomized_instance.knapsack_randomized_algorithm()
