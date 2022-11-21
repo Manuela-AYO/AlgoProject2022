@@ -13,6 +13,17 @@ References:
 """
 import numpy as np
 
+import os
+from pathlib import Path
+import sys
+
+# external module imports
+if not str(Path(__file__).resolve().parent.parent) in sys.path :
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+ 
+from classes import Set01KnapSack
+
 KNAPSACK_THRESHOLD = 60
 NO_OF_ITEMS = 3
 VALUE = np.array([100, 280, 120])
@@ -20,11 +31,12 @@ WEIGHT = np.array([10, 40, 20])
 RATIO = VALUE / WEIGHT
 
 
-def greedy_selection(weights: np.array, ratio, threshold):
+def greedy_ratio_selection(weights: np.array, values: np.array, ratio, threshold):
     """
     chooses the final solution by selecting the highest ratio and checking if threshold is reached.
     Args:
         weights: an np array with the weights
+        values: an np array with the values
         ratio: weights/values
         threshold: the max weight that the knapsack can take
     Returns:
@@ -34,11 +46,9 @@ def greedy_selection(weights: np.array, ratio, threshold):
     """
     # make versions to sort by weight and sort by value
     solution = np.zeros(weights.shape)
-    solution_weight = 0
     temp_total = 0
 
     while temp_total <= threshold:
-        solution_weight = temp_total
         highest_ratio_index = np.where(ratio == np.max(ratio))
         most_expensive_weight = weights[highest_ratio_index]
         ratio[highest_ratio_index] = -1
@@ -47,10 +57,37 @@ def greedy_selection(weights: np.array, ratio, threshold):
 
         if temp_total <= threshold:
             solution[highest_ratio_index] = 1
-    return solution
-        
 
-print(greedy_selection(
-                    weights=WEIGHT, ratio=RATIO, 
-                    threshold=KNAPSACK_THRESHOLD))
-                    
+    no_of_things_in_knapsack = sum(solution)
+    total_value = sum(solution * values)
+    total_weight = sum(solution * weights)
+    return solution, no_of_things_in_knapsack, total_value, total_weight
+
+
+if __name__ == '__main__':
+    # import Set01KnapSack object 
+    knapsack = Set01KnapSack()
+    
+    type = input("Which type of file is it(t for text, c for csv) ? ")
+    path = input("Path to the file[e.g : file/my_file.csv] : ")
+
+    # normalize the path to the file
+    path = path.split("/")
+    path_file = os.path.join(*path)
+    
+    # read the csv file and collect the data
+    no_of_items, sack_weight, items_value, df = knapsack.uploadFile(path_file, type)
+    
+    # create the weights, values array and the vector
+    weights_tab = np.array(df["W"])
+    values_tab = np.array(df["V"])
+    
+    # apply the greedy algorithm
+    solution, no_of_selected_items, total_value, total_weight = greedy_ratio_selection(
+                    weights=WEIGHT, values=VALUE, 
+                    ratio=RATIO, threshold=KNAPSACK_THRESHOLD)
+    
+    # write the result in the output filec
+    text = f"Greedy by ratio \t\t\t{no_of_items}\t\t \t\t\t\t{sack_weight}\t \t\t\t\t{items_value}\t\t \t\t\t\t{no_of_selected_items}\t\t \t\t\t{total_weight}\t \t\t{total_value}\t\t"
+    knapsack.writeOutput(text) 
+  
