@@ -196,7 +196,6 @@ def genetic_programming(no_of_generations, population, weights, values, threshol
     no_of_selected_genes = sum(final_solu) #no of items selected to be in knapsack
     optimal_value = sum(final_solu * values)
     optimal_weight = sum(final_solu * weights)
-    print(no_of_selected_genes)
 
     return final_solu, no_of_selected_genes, optimal_value, optimal_weight
 
@@ -212,7 +211,7 @@ if __name__ == '__main__':
     path_file = os.path.join(*path)
     
     # read the csv file and collect the data
-    no_of_items, knapsack_threshold, items_value, df = knapsack.uploadFile(path_file, type)
+    no_of_items, item_weights, items_value, df = knapsack.uploadFile(path_file, type)
     
     # create the weights, values array and the vector
     weights_tab = np.array(df["W"])
@@ -230,5 +229,5 @@ if __name__ == '__main__':
                 threshold=KNAPSACK_THRESHOLD,
                 no_items=NO_OF_ITEMS)
     # write the result in the output filec
-    text = f"Genetic programming \t\t\t{no_of_items}\t\t \t\t\t\t{knapsack_threshold}\t \t\t\t\t{items_value}\t\t \t\t\t\t{no_of_items_selected}\t\t \t\t\t{total_weight}\t \t\t{total_value}\t\t"
+    text = f"Genetic programming \t\t\t{no_of_items}\t\t \t\t\t\t{item_weights}\t \t\t\t\t{items_value}\t\t \t\t\t\t{no_of_items_selected}\t\t \t\t\t{total_weight}\t \t\t{total_value}\t\t"
     knapsack.writeOutput(text) 
