@@ -1,7 +1,7 @@
 import sys, os, psutil
 import pandas as pd
-# import time
-import datetime
+import time
+import threading
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '01Knapsack'))
@@ -17,7 +17,20 @@ from Greedy import ratio_sort_greedy, value_sort_greedy, weight_sort_greedy
 from DynamicProgramming import top_down_approach, bottom_up_approach
 from FullyPolynomial import fptas
 from Randomized.randomized_algorithm import Knapsack_randomized_algorithm
-from GeneticProgramming import main as genetic_programming
+# from GeneticProgramming import main as genetic_programming
+
+class CustomTimer():
+    def __init__(self, interval):
+        self.interval = interval
+        self.finished = False
+
+    def run(self):
+        self.timer = threading.Timer(float(self.interval), self.finish)
+        self.timer.start()
+
+    def finish(self):
+        self.finished = True
+        return True
 
 def get_num_active_processes():
     num_active_processes = len(psutil.pids())
@@ -65,12 +78,7 @@ def execute_algo(weights, values, algo_name, num_items, knapsack_capacity, epsil
     # elif algo_name == 'GeneticProgramming':
                         
     ratio = round(maximum_value/occupied_weight, 2)
-    print(f'Ratio of Value and Weight: {ratio}')
-    print(f'Occupied Weights: {occupied_weight}')
-    print(f'Number of Items Choosen: {num_items_choosen}')
-    print(f'Sum of Solution Values: {maximum_value}')
-    print(f'Running Time (ms): {running_time}')
-    print() 
+
 
     return ratio, num_items_choosen, maximum_value, occupied_weight, running_time
 
@@ -82,7 +90,6 @@ def time_benchmarking(instances: list, parameters: dict, algorithms: dict, time_
     num_generations = knapsackInstance.getEpsilon(parameters['num_generations'])
  
     for index, instance in enumerate(instances):
-
         num_items, knapsack_capacity, sum_item_values, data = knapsackInstance.uploadFile(instance, 'csv')
         weights = data['W']
         values = data['V']
@@ -93,22 +100,37 @@ def time_benchmarking(instances: list, parameters: dict, algorithms: dict, time_
 
         for algo_name in algorithms:
             if time_interval:
-                start_time = datetime.datetime.now()
+                timer = CustomTimer(3)
+                timer.run()
                 ratio, num_items_choosen, maximum_value, occupied_weight, running_time = execute_algo(weights, values, algo_name, num_items, knapsack_capacity, epsilon, iterations)
+                while not timer.finished:
+                    pass
+                print(f'Ratio of Value and Weight: {ratio}')
+                print(f'Occupied Weights: {occupied_weight}')
+                print(f'Number of Items Choosen: {num_items_choosen}')
+                print(f'Sum of Solution Values: {maximum_value}')
+                print(f'Running Time (ms): {running_time}')
+                print() 
+                        
+         
+    #             while True:
+    #                 if 
+    #                 ratio, num_items_choosen, maximum_value, occupied_weight, running_time = execute_algo(weights, values, algo_name, num_items, knapsack_capacity, epsilon, iterations)
 
-            solution_row.append([algo_name, num_items, knapsack_capacity, sum_item_values , ratio, num_items_choosen, maximum_value, occupied_weight, running_time, instance])
+    #         solution_row.append([algo_name, num_items, knapsack_capacity, sum_item_values , ratio, num_items_choosen, maximum_value, occupied_weight, running_time, instance])
             
-    solution_df = pd.DataFrame(solution_row, columns=['Algorithm', 'Num Items', 'Knapsack Capacity', 'Item Values' , 'Ratio v/w', 'Nums of Choosen Items', 'Total Choosen Values', 'Total Choosen Weights', 'Running Time', 'Input'])
-    timestr = time.strftime('%Y%m%d_%H%M%S')
-    solution_df.to_csv(f'01KnapsackBenchMarkResult_{timestr}.csv', index=False)
-    return solution_df
+    # solution_df = pd.DataFrame(solution_row, columns=['Algorithm', 'Num Items', 'Knapsack Capacity', 'Item Values' , 'Ratio v/w', 'Nums of Choosen Items', 'Total Choosen Values', 'Total Choosen Weights', 'Running Time', 'Input'])
+    # timestr = time.strftime('%Y%m%d_%H%M%S')
+    # solution_df.to_csv(f'01KnapsackBenchMarkResult_{timestr}.csv', index=False)
+    # return solution_df
 
 if __name__ == '__main__':
     get_num_active_processes()
 
     instances = [
-        '0_1_kp_REF_10_100_221016.csv', 
-        '0_1_kp_REF_50_300_221120.csv'
+        '0_1_kp_REF_500_2000_221122.csv'
+        # '0_1_kp_REF_10_100_221016.csv', 
+        # '0_1_kp_REF_50_300_221120.csv'
     ]
 
     parameters = {
