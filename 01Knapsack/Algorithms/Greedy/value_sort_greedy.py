@@ -12,6 +12,17 @@ References:
             2. https://www.tutorialspoint.com/design_and_analysis_of_algorithms/design_and_analysis_of_algorithms_01_knapsack.htm
 """
 import numpy as np
+import os
+from pathlib import Path
+import sys
+
+# external module imports
+if not str(Path(__file__).resolve().parent.parent) in sys.path :
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+ 
+from classes import Set01KnapSack
+
 
 KNAPSACK_THRESHOLD = 60
 NO_OF_ITEMS = 3
@@ -49,6 +60,32 @@ def greedy_selection(weights, values, ratio, threshold):
     return solution
         
 
+if __name__ == '__main__':
+    # import Set01KnapSack object 
+    knapsack = Set01KnapSack()
+    
+    type = input("Which type of file is it(t for text, c for csv) ? ")
+    path = input("Path to the file[e.g : file/my_file.csv] : ")
+
+    # normalize the path to the file
+    path = path.split("/")
+    path_file = os.path.join(*path)
+    
+    # read the csv file and collect the data
+    no_of_items, sack_threshold, items_value, df = knapsack.uploadFile(path_file, type)
+    
+    # create the weights, values array and the vector
+    weights_tab = np.array(df["W"])
+    values_tab = np.array(df["V"])
+    
+    # apply the branch and bound algorithm
+    solution = branch_bound(weights_tab, values_tab, sack_weight)
+    v, nb_items_chosen, total_weight, total_value = solution[0]
+    time_taken = solution[1]
+    
+    # write the result in the output filec
+    text = f"Branch and bound \t\t\t{nb_items}\t\t \t\t\t\t{sack_weight}\t \t\t\t\t{items_value}\t\t \t\t\t\t{nb_items_chosen}\t\t \t\t\t{total_weight}\t \t\t{total_value}\t\t \t\t\t{time_taken}"
+    knapsack.writeOutput(text) 
 print(greedy_selection(
                     weights=WEIGHT, values=VALUE, 
                     ratio=RATIO, threshold=KNAPSACK_THRESHOLD))

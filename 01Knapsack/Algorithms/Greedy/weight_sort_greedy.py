@@ -15,12 +15,11 @@ import numpy as np
 
 KNAPSACK_THRESHOLD = 60
 NO_OF_ITEMS = 3
-# WEIGHT = np.array([18, 15, 20])
 VALUE = np.array([100, 280, 120])
 WEIGHT = np.array([10, 40, 20])
 
 
-def greedy_selection(weights, threshold):
+def greedy01_selection(weights, threshold):
     """
     chooses the final solution by selecting the lowest weights and checking if threshold is reached.
     Args:
@@ -40,9 +39,7 @@ def greedy_selection(weights, threshold):
         most_expensive_weight = weights[lowest_weight_index]
         weights[lowest_weight_index] = -1
 
-        # set the most expensive ratio to 0 after youve selected it
         temp_total += most_expensive_weight
-        # temp_price += values[highest_ratio_index]
 
         if temp_total <= threshold:
             solution[lowest_weight_index] = 1

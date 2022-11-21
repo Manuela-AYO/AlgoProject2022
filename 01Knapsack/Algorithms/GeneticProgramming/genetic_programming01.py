@@ -17,12 +17,20 @@ References:
             2. https://medium.com/koderunners/genetic-algorithm-part-2-implementation-69d77cf668bf
             3. https://medium.com/koderunners/genetic-algorithm-part-3-knapsack-problem-b59035ddd1d6
 """
-# from Class import Set01KnackSack
 import numpy as np
 import random as rd
+import os
+from pathlib import Path
+import sys
 
-# knapsack = Set01KnackSack()
-# knapsack.n = 
+# external module imports
+if not str(Path(__file__).resolve().parent.parent) in sys.path :
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+ 
+from classes import Set01KnapSack
+
+
 KNAPSACK_THRESHOLD = 25
 NO_OF_ITEMS = 10
 WEIGHT = np.random.randint(1, 15, size=NO_OF_ITEMS) # a list of weights from 1-14 10 times i.e for each item, generate a weight
@@ -30,9 +38,9 @@ VALUE = np.random.randint(10, 800, size=NO_OF_ITEMS)
 ITEM_NUMBER = np.arange(1, 11) # [ 1  2  3  4  5  6  7  8  9 10]
 
 
-def initialize_pop(item_no, no_of_solu=5):
-    # TODO 1: initialize the population
-    solutions_per_population = no_of_solu # individuals
+def initialize_pop(item_no, no_of_individuals=5):
+    # initialize the population
+    solutions_per_population = no_of_individuals 
     pop_size = (solutions_per_population, item_no.shape[0]) # (5, 10)
     initial_population = np.random.randint(2, size=pop_size)
     # [[1 1 0 0 1 1 0 0 0 0]
@@ -142,6 +150,7 @@ def genetic_programming(no_of_generations, population, weights, values, threshol
     """
     fitness_history = []
     genetic_solution = []
+   
     no_parents = int(len(population)/2)
     for i in range(no_of_generations - 1):
         fitness = calc_fitness(population=population, weight=weights, value=values, threshold=threshold)
@@ -183,18 +192,43 @@ def genetic_programming(no_of_generations, population, weights, values, threshol
     # print(max_fitness_index[0])
     # print(max_fitness_index[0][0])
     genetic_solution = (population[max_fitness_index[0][0]])
-    return np.array(genetic_solution)
+    final_solu = np.array(genetic_solution)
+    no_of_selected_genes = sum(final_solu) #no of items selected to be in knapsack
+    optimal_value = sum(final_solu * values)
+    optimal_weight = sum(final_solu * weights)
+    print(no_of_selected_genes)
+
+    return final_solu, no_of_selected_genes, optimal_value, optimal_weight
 
 
-init_pop = initialize_pop(item_no=ITEM_NUMBER, no_of_solu=5)
-fitness_of_pop = calc_fitness(population=init_pop, weight=WEIGHT, value=VALUE, threshold=KNAPSACK_THRESHOLD)
-fit_parents = select_fittest(individuals_fitnesses=fitness_of_pop, population=init_pop, no_of_parents=3)
-offsprings1, offsprings = crossover(no_of_items=NO_OF_ITEMS, parents=fit_parents)
-mutants = mutation(offsprings=offsprings)
-optimal_solu = genetic_programming(no_of_generations=2,
-            population=init_pop,
-            weights=WEIGHT,
-            values=VALUE,
-            threshold=KNAPSACK_THRESHOLD,
-            no_items=NO_OF_ITEMS)
-print(optimal_solu)
+if __name__ == '__main__':
+    knapsack = Set01KnapSack()
+
+    type = input("Which type of file is it(t for text, c for csv) ? ")
+    path = input("Path to the file[e.g : file/my_file.csv] : ")
+
+    # normalize the path to the file
+    path = path.split("/")
+    path_file = os.path.join(*path)
+    
+    # read the csv file and collect the data
+    no_of_items, knapsack_threshold, items_value, df = knapsack.uploadFile(path_file, type)
+    
+    # create the weights, values array and the vector
+    weights_tab = np.array(df["W"])
+    values_tab = np.array(df["V"])
+
+    init_pop = initialize_pop(item_no=ITEM_NUMBER, no_of_individuals=5)
+
+    # apply the genetic programming algorithm
+    optimal_solu, no_of_items_selected, \
+    total_value, total_weight = genetic_programming(
+                no_of_generations=2,
+                population=init_pop,
+                weights=WEIGHT,
+                values=VALUE,
+                threshold=KNAPSACK_THRESHOLD,
+                no_items=NO_OF_ITEMS)
+    # write the result in the output filec
+    text = f"Genetic programming \t\t\t{no_of_items}\t\t \t\t\t\t{knapsack_threshold}\t \t\t\t\t{items_value}\t\t \t\t\t\t{no_of_items_selected}\t\t \t\t\t{total_weight}\t \t\t{total_value}\t\t"
+    knapsack.writeOutput(text) 
