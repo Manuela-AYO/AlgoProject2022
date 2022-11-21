@@ -70,7 +70,7 @@ class Knapsack_randomized_algorithm:
         self.best_solution_w = 0
         self.best_solution_v = 0
         self.executions = executions
-        self.time_min = time_min
+        self.time_min = int(time_min)
         self.best_elements_number = 0
         self.selection_count = int(round(self.n * selection_ratio))
     
@@ -170,7 +170,7 @@ class Knapsack_randomized_algorithm:
         self.initial_solution_generator()
         if self.time_min != 0:
             start_time = datetime.datetime.now()
-            iteration_time = datetime.timedelta(minutes=self.time_min)
+            iteration_time = datetime.timedelta(minutes=int(self.time_min))
             end_time = start_time + iteration_time
             while True:
                 current_time = datetime.datetime.now()
