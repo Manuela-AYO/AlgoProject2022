@@ -1,5 +1,6 @@
 import sys, os, psutil
 import pandas as pd
+import numpy as np
 import time
 import threading
 
@@ -17,7 +18,8 @@ from Greedy import ratio_sort_greedy, value_sort_greedy, weight_sort_greedy
 from DynamicProgramming import top_down_approach, bottom_up_approach
 from FullyPolynomial import fptas
 from Randomized.randomized_algorithm import Knapsack_randomized_algorithm
-# from GeneticProgramming import main as genetic_programming
+from GeneticProgramming import genetic_programming01 as genetic_programming
+
 
 class CustomTimer():
     def __init__(self, interval):
@@ -38,11 +40,7 @@ def get_num_active_processes():
     with open('num_active_processes.txt', 'w') as writer:
         writer.write(str(num_active_processes))
 
-
-# def solution_quality_benchmarking(algorithms: dict, instances: list) -> pd.DataFrame():
-#     time_benchmarking(algorithms, instances)   
-
-def execute_algo(weights, values, algo_name, num_items, knapsack_capacity, epsilon, iterations):
+def execute_algo(algo_name, num_items, knapsack_capacity, weights, values, parameter_values, time_interval):
     num_items_choosen = occupied_weight = maximum_value = running_time = -1
     print(f'Running {algo_name}')
 
@@ -67,28 +65,44 @@ def execute_algo(weights, values, algo_name, num_items, knapsack_capacity, epsil
         running_time = solution[1]
 
     elif algo_name == 'FullyPolyNomial':
-        solution = algo_function(weights, values, knapsack_capacity, epsilon)
+        solution = algo_function(weights, values, knapsack_capacity, parameter_values['epsilon'])
         v, num_items_choosen, occupied_weight, maximum_value = solution[0]
         running_time = solution[1]
 
     elif algo_name == 'Randomized':
-        knapsack_randomized_instance = algo_function(num_items, knapsack_capacity, weights, values, iterations)
+        knapsack_randomized_instance = algo_function(num_items, knapsack_capacity, weights, values, parameter_values['num_iterations'], time_interval)
         v, num_items_choosen, occupied_weight, maximum_value = knapsack_randomized_instance.knapsack_randomized_algorithm()
     
-    # elif algo_name == 'GeneticProgramming':
+    elif algo_name == 'GeneticProgramming':
+        init_pop = genetic_programming.initialize_pop(item_no=np.arange(1, num_items+1) , no_of_individuals=parameter_values['num_individuals'])
+        optimal_solu, num_items_choosen, maximum_value, occupied_weight = algo_function(
+                no_of_generations=parameter_values['num_generations'],
+                population=init_pop,
+                weights=weights,
+                values=values,
+                threshold=knapsack_capacity,
+                no_items=num_items)
+
                         
     ratio = round(maximum_value/occupied_weight, 2)
-
-
     return ratio, num_items_choosen, maximum_value, occupied_weight, running_time
 
-def time_benchmarking(instances: list, parameters: dict, algorithms: dict, time_interval) -> pd.DataFrame():
+def benchmark(instances, parameters, algorithms, time_interval) -> pd.DataFrame():
     solution_row = []
     knapsackInstance = Set01KnapSack()
     epsilon = knapsackInstance.getEpsilon(parameters['epsilon'])
-    iterations = knapsackInstance.getEpsilon(parameters['iterations'])
-    num_generations = knapsackInstance.getEpsilon(parameters['num_generations'])
- 
+    num_iterations = knapsackInstance.getNumIterations(parameters['num_iterations'])
+    num_generations = knapsackInstance.getNumGenerations(parameters['num_generations'])
+    num_individuals = knapsackInstance.getNumIndividuals(parameters['num_individuals'])
+
+    parameter_values = {
+        'epsilon': epsilon,
+        'num_iterations': num_iterations,
+        'num_generations': num_generations,
+        'num_solutions': num_individuals
+    }
+
+
     for index, instance in enumerate(instances):
         num_items, knapsack_capacity, sum_item_values, data = knapsackInstance.uploadFile(instance, 'csv')
         weights = data['W']
@@ -100,26 +114,31 @@ def time_benchmarking(instances: list, parameters: dict, algorithms: dict, time_
 
         for algo_name in algorithms:
             if time_interval:
-                timer = CustomTimer(3)
-                timer.run()
-                ratio, num_items_choosen, maximum_value, occupied_weight, running_time = execute_algo(weights, values, algo_name, num_items, knapsack_capacity, epsilon, iterations)
-                while not timer.finished:
-                    pass
-                print(f'Ratio of Value and Weight: {ratio}')
-                print(f'Occupied Weights: {occupied_weight}')
-                print(f'Number of Items Choosen: {num_items_choosen}')
-                print(f'Sum of Solution Values: {maximum_value}')
-                print(f'Running Time (ms): {running_time}')
-                print() 
-                        
-         
-    #             while True:
-    #                 if 
-    #                 ratio, num_items_choosen, maximum_value, occupied_weight, running_time = execute_algo(weights, values, algo_name, num_items, knapsack_capacity, epsilon, iterations)
-
-    #         solution_row.append([algo_name, num_items, knapsack_capacity, sum_item_values , ratio, num_items_choosen, maximum_value, occupied_weight, running_time, instance])
+                # timer = CustomTimer(3)
+                # timer.run()
+                solution = execute_algo(algo_name, num_items, knapsack_capacity, weights, values, parameter_values, time_interval)
+                # while not timer.finished:
+                #     pass
+                
+            else:
+                solution = execute_algo(algo_name, num_items, knapsack_capacity, weights, values, parameter_values, time_interval)
+       
+            ratio = solution[0]
+            num_items_choosen = solution[1]
+            maximum_value = solution [2]
+            occupied_weight = solution[3]
+            running_time = solution[4]
+        
+            print(f'Ratio of Value and Weight: {ratio}')
+            print(f'Occupied Weights: {occupied_weight}')
+            print(f'Number of Items Choosen: {num_items_choosen}')
+            print(f'Sum of Solution Values: {maximum_value}')
+            print(f'Running Time (ms): {running_time}')
+            print() 
+        
+            solution_row.append([algo_name, num_items, knapsack_capacity, sum_item_values, ratio, num_items_choosen, maximum_value, occupied_weight, running_time, instance])
             
-    # solution_df = pd.DataFrame(solution_row, columns=['Algorithm', 'Num Items', 'Knapsack Capacity', 'Item Values' , 'Ratio v/w', 'Nums of Choosen Items', 'Total Choosen Values', 'Total Choosen Weights', 'Running Time', 'Input'])
+    solution_df = pd.DataFrame(solution_row, columns=['Algorithm', 'Num Items', 'Knapsack Capacity', 'Item Values' , 'Ratio v/w', 'Nums of Choosen Items', 'Total Choosen Values', 'Total Choosen Weights', 'Running Time', 'Input'])
     # timestr = time.strftime('%Y%m%d_%H%M%S')
     # solution_df.to_csv(f'01KnapsackBenchMarkResult_{timestr}.csv', index=False)
     # return solution_df
@@ -128,36 +147,32 @@ if __name__ == '__main__':
     get_num_active_processes()
 
     instances = [
-        '0_1_kp_REF_500_2000_221122.csv'
-        # '0_1_kp_REF_10_100_221016.csv', 
-        # '0_1_kp_REF_50_300_221120.csv'
+        '0_1_kp_REF_10_100_221016.csv', 
+        # '0_1_kp_REF_50_300_221120.csv
     ]
 
     parameters = {
         'epsilon': os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Input', '0_1_kp_epsilon1.txt'),
-        'iterations': os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Input', '0_1_kp_iterations.txt'),
-        'num_generations': os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Input', '0_1_kp_generations.txt'),
+        'num_iterations': os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Input', '0_1_kp_num_iterations.txt'),
+        'num_generations': os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Input', '0_1_kp_num_generations.txt'),
+        'num_individuals': os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Input', '0_1_kp_num_individuals.txt'),
     }
 
     algorithms = {
-        'BruteForce': brute_force.bruteforce,
+        # 'BruteForce': brute_force.bruteforce,
         'BranchAndBound': branch_bound.branch_bound,
-        # 'RatioSortGreedy': ratio_sort_greedy.greedy_selection,
-        # 'ValueSortGreedy': value_sort_greedy.greedy_selection,
-        # 'WeightSortGreedy': weight_sort_greedy.greedy_selection,
+        # 'RatioSortGreedy': ratio_sort_greedy.greedy_ratio_selection,
+        # 'ValueSortGreedy': value_sort_greedy.greedy_value_selection,
+        # 'WeightSortGreedy': weight_sort_greedy.greedy_weight_selection,
         'TopDownDynamicProgramming': top_down_approach.top_down_approach,
         'BottomUpDynamicProgramming': bottom_up_approach.bottom_up_approach,
         'FullyPolyNomial': fptas.fptas,
         'Randomized': Knapsack_randomized_algorithm,
-        # 'GeneticProgramming': genetic_programming.genetic_programming
+        'GeneticProgramming': genetic_programming.genetic_programming
     }
 
     time_interval = input("Time to execute the algorithm (0 for not measuring running time): ")
-
-    time_benchmarking(instances, parameters, algorithms, time_interval)
-    # solution_quality_benchmarking(instances, parameters, algorithms)
-
-
+    benchmark(instances, parameters, algorithms, time_interval)
 
 
 

@@ -93,7 +93,7 @@ class Set01KnapSack:
         return float(line)
 
 
-    def getIterations(self, nameOfFile : str) -> float:
+    def getNumIterations(self, nameOfFile : str) -> float:
         if not os.path.exists(nameOfFile) : 
             print("The file doesn't exist")
             return None
@@ -103,7 +103,17 @@ class Set01KnapSack:
         return int(line)
 
 
-    def getGenerations(self, nameOfFile : str) -> float:
+    def getNumGenerations(self, nameOfFile : str) -> float:
+        if not os.path.exists(nameOfFile) : 
+            print("The file doesn't exist")
+            return None
+
+        with open(nameOfFile, mode='r') as file:
+            line = file.read()   
+        return int(line)
+    
+
+    def getNumIndividuals(self, nameOfFile : str) -> float:
         if not os.path.exists(nameOfFile) : 
             print("The file doesn't exist")
             return None
