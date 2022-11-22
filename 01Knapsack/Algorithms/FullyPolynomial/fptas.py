@@ -219,9 +219,3 @@ if __name__ == "__main__":
     # write the result in the output filec
     # text = f"FPTAS \t\t\t{nb_items}\t\t \t\t\t\t{sack_weight}\t \t\t\t\t{items_value}\t\t \t\t\t\t{nb_items_chosen}\t\t \t\t\t{total_weight}\t \t\t{total_value}\t\t \t\t\t{time_taken}"
     # knapsack.writeOutput(text) 
-
-
-################################################# TO DO ############################################
-# - Should I remultiply the values by delta ?
-# - Write the output on the output file
-# - in the output file, may be better to additionnaly specify the name of the input file we used
