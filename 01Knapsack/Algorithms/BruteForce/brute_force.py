@@ -40,6 +40,7 @@ def testWeight(index, object):
 def bruteforce(set01 : m.Set01KnapSack):
     # tester toutes les solutions (a parmis n) quelque soit a entre 1 et n
     bestValue = 0
+    bestValueWeight = 0
     bestAnswer = []
     curentValue = 0
     curentWeight = 0
@@ -56,6 +57,7 @@ def bruteforce(set01 : m.Set01KnapSack):
             curentWeight = testWeight(curentAnswer, set01)
             if curentValue > bestValue and curentWeight <= set01.wmax:
                 bestValue = curentValue
+                bestValueWeight = curentWeight
                 bestAnswer = curentAnswer[:]
 
             end = 1
@@ -78,13 +80,14 @@ def bruteforce(set01 : m.Set01KnapSack):
     for i in bestAnswer:
         print(" Object : V = ",set01.data.V[i]," W = ",set01.data.W[i])
 
-    return bestValue, bestAnswer
+    return bestValue, bestAnswer, len(bestAnswer), bestValueWeight
 
 # ---------------------------------EXECUTE FILE------------------------------------ #
 if __name__ == '__main__':
     # ----Upload Data------ #
     myObject = m.Set01KnapSack()
-    myObject.uploadFile("Landrytest.csv","c")
+    # myObject.uploadFile("Landrytest.csv","c")
+    myObject.uploadFile("0_1_kp_REF_50_300_221120.csv", 'c')
     print("Data for tes")
     print(myObject)
     print("--------")
