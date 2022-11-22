@@ -37,8 +37,8 @@ class CustomTimer():
 def get_num_active_processes():
     num_active_processes = len(psutil.pids())
     print(f'Number of active processes: {num_active_processes}')
-    with open('num_active_processes.txt', 'w') as writer:
-        writer.write(str(num_active_processes))
+    # with open(os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Output', 'num_active_processes.txt'), 'w') as writer:
+    #     writer.write(str(num_active_processes))
 
 def execute_algo(algo_name, num_items, knapsack_capacity, weights, values, parameter_values, time_interval):
     num_items_choosen = occupied_weight = maximum_value = running_time = -1
@@ -140,7 +140,7 @@ def benchmark(instances, parameters, algorithms, time_interval) -> pd.DataFrame(
             
     solution_df = pd.DataFrame(solution_row, columns=['Algorithm', 'Num Items', 'Knapsack Capacity', 'Item Values' , 'Ratio v/w', 'Nums of Choosen Items', 'Total Choosen Values', 'Total Choosen Weights', 'Running Time', 'Input'])
     # timestr = time.strftime('%Y%m%d_%H%M%S')
-    # solution_df.to_csv(f'01KnapsackBenchMarkResult_{timestr}.csv', index=False)
+    # solution_df.to_csv(os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Output', f'01KnapsackBenchMarkResult_{timestr}.csv'), index=False)
     # return solution_df
 
 if __name__ == '__main__':
