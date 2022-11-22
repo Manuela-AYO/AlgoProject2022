@@ -43,11 +43,11 @@ class Set01KnapSack:
             text += f"{i} Value : {self.data.V[i]} Weight : {self.data.W[i]} \n"
         return text
     
-    
+
     def uploadFile(self, nameOfFile : str, type : str) -> tuple([int, int, int, pandas.DataFrame]):
         # Description : initialize the object
         # Input : path to the csv file relative to the Input folder - test with : "0_1_kp_REF_10_100_221016.csv"
-        # Output : ...
+        # Output : object with data, n and wmax
         
         lines = []
         
@@ -76,7 +76,7 @@ class Set01KnapSack:
                     self.items_values += int(line[0])
                     self.data.loc[len(self.data)] = new_value
                 lineRead+=1
-        return self.n, self.wmax, self.items_values, self.data
+        return self.n, self.wmax, self.items_values, self.data 
     
     
     # read a text file containing the value of epsilon for the fptas algorithm
