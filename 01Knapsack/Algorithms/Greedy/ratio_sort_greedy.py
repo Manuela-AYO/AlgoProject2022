@@ -84,8 +84,8 @@ if __name__ == '__main__':
     
     # apply the greedy algorithm
     solution, no_of_selected_items, total_value, total_weight = greedy_ratio_selection(
-                    weights=WEIGHT, values=VALUE, 
-                    ratio=RATIO, threshold=KNAPSACK_THRESHOLD)
+                    weights=weights_tab, values=values_tab, 
+                    ratio=(weights_tab / values_tab), threshold=sack_weight)
     
     # write the result in the output filec
     text = f"Greedy by ratio \t\t\t{no_of_items}\t\t \t\t\t\t{sack_weight}\t \t\t\t\t{items_value}\t\t \t\t\t\t{no_of_selected_items}\t\t \t\t\t{total_weight}\t \t\t{total_value}\t\t"
