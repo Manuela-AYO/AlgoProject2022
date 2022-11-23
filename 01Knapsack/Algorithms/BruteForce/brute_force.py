@@ -2,7 +2,7 @@
 Description: This file contain the bruteForce algo and a way to execute the file localy
 Author: Landry Bailly
 Date: 21/11/2022
-Update:
+Update: 23/11/2022 --> adding timing module
 Usage: import the file and use the bruteForce algo, or execute the file localy. No param, it will take default input value
 Input: For the main function, 
     -object Set01KnapSack with data already uploaded
@@ -15,6 +15,7 @@ References: ...
 import pandas
 import numpy
 from natsort import index_natsorted
+import datetime
 
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__),'..', '..', "classes"))
@@ -37,7 +38,13 @@ def testWeight(index, object):
 
 
 # ---------------------------------MAIN FUNCTION------------------------------------ #
-def bruteforce(set01 : m.Set01KnapSack):
+def bruteforce(set01 : m.Set01KnapSack, time_min=0):
+    print("-----------Preprocess--------")
+    # timing module 
+    start_time = datetime.datetime.now()
+    iteration_time = datetime.timedelta(minutes=int(time_min))
+    end_time = start_time + iteration_time
+
     # tester toutes les solutions (a parmis n) quelque soit a entre 1 et n
     bestValue = 0
     bestValueWeight = 0
@@ -45,6 +52,9 @@ def bruteforce(set01 : m.Set01KnapSack):
     curentValue = 0
     curentWeight = 0
     curentAnswer = []
+
+    print("-----------Algo Brute_Froce Running--------")
+
     for a in range(1, set01.n + 1):
         # init first answer
         curentAnswer = []
@@ -52,7 +62,7 @@ def bruteforce(set01 : m.Set01KnapSack):
             curentAnswer.append(i)
         # test all solutions
         while True:
-            # print(curentAnswer)
+            print(curentAnswer)
             curentValue = testValue(curentAnswer, set01)
             curentWeight = testWeight(curentAnswer, set01)
             if curentValue > bestValue and curentWeight <= set01.wmax:
@@ -73,10 +83,15 @@ def bruteforce(set01 : m.Set01KnapSack):
             if end==1:
                 break
 
+            if time_min != 0:
+                current_time = datetime.datetime.now()
+                if current_time > end_time:
+                    break
+
     # ------Answer------- #
     print("----BEST SOLUTION----")
-    print(bestValue)
-    print(bestAnswer)
+    print("values : ", bestValue)
+    print("weight : ", bestValueWeight)
     for i in bestAnswer:
         print(" Object : V = ",set01.data.V[i]," W = ",set01.data.W[i])
 
@@ -91,7 +106,7 @@ if __name__ == '__main__':
     print("Data for tes")
     print(myObject)
     print("--------")
-    bruteforce(myObject)
+    bruteforce(myObject, 1)
 
 
 
