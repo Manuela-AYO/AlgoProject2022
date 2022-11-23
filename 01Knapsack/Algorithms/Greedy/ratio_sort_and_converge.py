@@ -6,9 +6,12 @@ Update: 23/11/2022 --> adding timing module
 Usage: import the file and use the bruteForce algo, or execute the file localy. No param, it will take default input value
 Input: For the main function, 
     -object Set01KnapSack with data already uploaded
+    -Maximum time in min
 Output: Answer of the problem,
     -total value we can put in the bag (float)
     -table with all the index (int) of the oject we take
+    -len of this table
+    -total answer weight
 References: ...
 '''
 
