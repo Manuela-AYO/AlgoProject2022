@@ -114,10 +114,11 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
 
     
     print("----BEST SOLUTION (take index[n - 2])----")
+    # for i in bestAnswer:
+    #     print(" Object : V = ",set01.data.V[i]," W = ",set01.data.W[i])
     print("values : ", bestValue)
     print("weight : ", bestValueWeight)
-    for i in bestAnswer:
-        print(" Object : V = ",set01.data.V[i]," W = ",set01.data.W[i])
+    print("number of data :", len(bestAnswer))
 
 
     
@@ -127,8 +128,12 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
 if __name__ == '__main__':
     # ----Upload Data------ #
     myObject = m.Set01KnapSack()
+    # myObject.uploadFile("low-dimensional\f2_l_d_kp_20_878", 't') # don't work, WHY ???
     # myObject.uploadFile("Landrytest.csv", 'c')
-    myObject.uploadFile("0_1_kp_REF_50_300_221120.csv", 'c')
+    myObject.uploadFile("large_scale\knapPI_3_10000_1000_1", 't')
+    
+    # create a difficult test because algo stop at first step. 
+
     print("Data for test")
     print(myObject)
     print("--------")

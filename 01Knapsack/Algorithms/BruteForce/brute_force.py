@@ -90,10 +90,11 @@ def bruteforce(set01 : m.Set01KnapSack, time_min=0):
 
     # ------Answer------- #
     print("----BEST SOLUTION----")
-    print("values : ", bestValue)
-    print("weight : ", bestValueWeight)
     for i in bestAnswer:
         print(" Object : V = ",set01.data.V[i]," W = ",set01.data.W[i])
+    print("values : ", bestValue)
+    print("weight : ", bestValueWeight)
+    print("number of data :", len(bestAnswer))
 
     return bestValue, bestAnswer, len(bestAnswer), bestValueWeight
 
