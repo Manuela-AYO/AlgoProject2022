@@ -63,8 +63,8 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
         curent = curent.sort_values(['GlobalV','VoverW'], ascending=False)
         curent = curent.reset_index(drop=True)
     
-        # print("step n ",i)
-        # print(curent)
+        print("step n ",i)
+        print(curent)
         
         # take the first data in order to full the KnackSack
         sizeleft = set01.wmax
