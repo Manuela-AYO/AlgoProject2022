@@ -1,17 +1,18 @@
 """
-Description: 
-            1. 
-            2.
+Description: The class refers to the 0/1 knapsack problem solved with a greedy algorithim based on the highest ratio 
+of the weights and the values.
+
 Author: Gloria Isedu
 Date: 18/11/2022
-Input: ...
-Output: greediest solution
+Input: weights, values, knapsack size, 
+Output: greediest solution bu ratio
 
 References:
             1. https://www.youtube.com/watch?v=0tVeO4p0uKI
             2. https://www.tutorialspoint.com/design_and_analysis_of_algorithms/design_and_analysis_of_algorithms_01_knapsack.htm
 """
 import numpy as np
+import datetime as dt
 
 import os
 from pathlib import Path
@@ -31,7 +32,7 @@ WEIGHT = np.array([10, 40, 20])
 RATIO = VALUE / WEIGHT
 
 
-def greedy_ratio_selection(weights: np.array, values: np.array, ratio, threshold):
+def greedy_ratio_selection(weights: np.array, values: np.array, ratio, threshold, maximum_time):
     """
     chooses the final solution by selecting the highest ratio and checking if threshold is reached.
     Args:
@@ -48,6 +49,10 @@ def greedy_ratio_selection(weights: np.array, values: np.array, ratio, threshold
     solution = np.zeros(weights.shape)
     temp_total = 0
 
+    start_time = dt.datetime.now()
+    iteration_time = dt.timedelta(minutes=int(maximum_time))
+    end_time = start_time + iteration_time
+
     while temp_total <= threshold:
         highest_ratio_index = np.where(ratio == np.max(ratio))
         most_expensive_weight = weights[highest_ratio_index]
@@ -57,6 +62,10 @@ def greedy_ratio_selection(weights: np.array, values: np.array, ratio, threshold
 
         if temp_total <= threshold:
             solution[highest_ratio_index] = 1
+        
+        current_time = dt.datetime.now()
+        if (maximum_time != 0) and (current_time > end_time):
+            break
 
     no_of_things_in_knapsack = sum(solution)
     total_value = sum(solution * values)

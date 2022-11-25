@@ -15,6 +15,7 @@ import numpy as np
 import os
 from pathlib import Path
 import sys
+import datetime as dt
 
 # external module imports
 if not str(Path(__file__).resolve().parent.parent) in sys.path :
@@ -30,7 +31,7 @@ VALUE = np.array([100, 280, 120])
 WEIGHT = np.array([10, 40, 20])
 
 
-def greedy_value_selection(weights, values, threshold):
+def greedy_value_selection(weights, values, threshold, maximum_time):
     """
     chooses the final solution by selecting the highest value and checking if threshold is reached.
     Args:
@@ -47,6 +48,10 @@ def greedy_value_selection(weights, values, threshold):
     temp_total = 0
     temp_vals = values.copy()
 
+    start_time = dt.datetime.now()
+    iteration_time = dt.timedelta(minutes=int(maximum_time))
+    end_time = start_time + iteration_time
+
     while temp_total <= threshold:
         highest_value_index = np.where(temp_vals == np.max(temp_vals))
         most_expensive_weight = weights[highest_value_index]
@@ -56,12 +61,16 @@ def greedy_value_selection(weights, values, threshold):
 
         if temp_total <= threshold:
             solution[highest_value_index] = 1
+
+        current_time = dt.datetime.now()
+        if (maximum_time != 0) and (current_time > end_time):
+            break
     
     no_of_things_in_knapsack = sum(solution)
     total_value = sum(solution * values)
     total_weight = sum(solution * weights)
-    return solution, no_of_things_in_knapsack, total_value, total_weight
-        
+    return solution, total_value, total_weight, no_of_things_in_knapsack
+
 
 if __name__ == '__main__':
     # import Set01KnapSack object 
@@ -82,7 +91,7 @@ if __name__ == '__main__':
     values_tab = np.array(df["V"])
     
     # apply the greedy algorithm
-    solution, no_of_selected_items, total_value, total_weight = greedy_value_selection(
+    solution, total_value, total_weight, no_of_selected_items = greedy_value_selection(
                     weights=weights_tab, values=values_tab, 
                     threshold=sack_weight)
     
