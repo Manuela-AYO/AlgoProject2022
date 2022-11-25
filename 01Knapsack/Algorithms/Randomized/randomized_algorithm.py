@@ -109,7 +109,7 @@ class Knapsack_randomized_algorithm:
             if acum_v > self.best_solution_v:
                 self.best_solution_w = acum_w
                 self.best_solution_v = acum_v
-                self.best_binary_representation = self.current_binary_representation
+                self.best_binary_representation = self.current_binary_representation.copy()
                 self.best_elements_number = counter_elements
             return True
 
