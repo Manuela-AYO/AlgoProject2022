@@ -65,7 +65,7 @@ def bruteforce(set01 : m.Set01KnapSack, time_min=0):
             curentAnswer.append(i)
         # test all solutions
         while True:
-            print(curentAnswer)
+            # print(curentAnswer)
             curentValue = testValue(curentAnswer, set01)
             curentWeight = testWeight(curentAnswer, set01)
             if curentValue > bestValue and curentWeight <= set01.wmax:
@@ -92,12 +92,12 @@ def bruteforce(set01 : m.Set01KnapSack, time_min=0):
                     break
 
     # ------Answer------- #
-    print("----BEST SOLUTION----")
-    for i in bestAnswer:
-        print(" Object : V = ",set01.data.V[i]," W = ",set01.data.W[i])
-    print("values : ", bestValue)
-    print("weight : ", bestValueWeight)
-    print("number of data :", len(bestAnswer))
+    # print("----BEST SOLUTION----")
+    # for i in bestAnswer:
+    #     print(" Object : V = ",set01.data.V[i]," W = ",set01.data.W[i])
+    # print("values : ", bestValue)
+    # print("weight : ", bestValueWeight)
+    # print("number of data :", len(bestAnswer))
 
     return bestValue, bestAnswer, len(bestAnswer), bestValueWeight
 

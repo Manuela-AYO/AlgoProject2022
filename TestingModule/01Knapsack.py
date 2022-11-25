@@ -13,13 +13,12 @@ from classes import Set01KnapSack
 from external import compute_run_time
 
 from BruteForce import brute_force
-from BranchAndBound import branch_bound
+from BranchAndBound.branch_bound import BranchBoundKnapsack
 from Greedy import ratio_sort_greedy, value_sort_greedy, weight_sort_greedy
 from DynamicProgramming import top_down_approach, bottom_up_approach
 from FullyPolynomial import fptas
 from Randomized.randomized_algorithm import Knapsack_randomized_algorithm
 from GeneticProgramming import genetic_programming01 as genetic_programming
-
 
 class CustomTimer():
     def __init__(self, interval):
@@ -58,51 +57,53 @@ def execute_algo(algo_name, instance_values, parameter_values, time_interval, kn
     # Apply algorithm
     algo_function = algorithms[algo_name]
 
-    if algo_name == 'BruteForce':
-        maximum_value, bestAnswer = algo_function(knapsackInstance)
+    # if algo_name == 'BruteForce':
+    #     maximum_value, bestAnswer = algo_function(knapsackInstance)
 
     if algo_name == 'BranchAndBound':
-        solution = algo_function(weights, values, knapsack_capacity)
+        branch_bound_instance = algo_function(weights, values, knapsack_capacity)
+        solution = branch_bound_instance.branch_bound()
         v, num_items_choosen, occupied_weight, maximum_value = solution[0]
+        print(v)
         running_time = solution[1]
 
-    if algo_name == 'RatioSortGreedy':
-        weights = weights.to_numpy()
-        values = values.to_numpy()
-        ratio = weights/values
-        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(weights, values, ratio, knapsack_capacity)
+    # if algo_name == 'RatioSortGreedy':
+    #     weights = weights.to_numpy()
+    #     values = values.to_numpy()
+    #     ratio = weights/values
+    #     items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(weights, values, ratio, knapsack_capacity)
        
-    if algo_name == 'ValueSortGreedy':
-        weights = weights.to_numpy()
-        values = values.to_numpy()
-        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(weights, values, knapsack_capacity)
+    # if algo_name == 'ValueSortGreedy':
+    #     weights = weights.to_numpy()
+    #     values = values.to_numpy()
+    #     items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(weights, values, knapsack_capacity)
    
-    if algo_name == 'WeightSortGreedy':
-        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(weights, values, knapsack_capacity)
+    # if algo_name == 'WeightSortGreedy':
+    #     items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(weights, values, knapsack_capacity)
 
-    elif algo_name == 'TopDownDynamicProgramming' or algo_name == 'BottomUpDynamicProgramming':
-        solution = algo_function(num_items, knapsack_capacity, weights, values)
-        maximum_value, num_items_choosen, occupied_weight = solution[0]
-        running_time = solution[1]
+    # elif algo_name == 'TopDownDynamicProgramming' or algo_name == 'BottomUpDynamicProgramming':
+    #     solution = algo_function(num_items, knapsack_capacity, weights, values)
+    #     maximum_value, num_items_choosen, occupied_weight = solution[0]
+    #     running_time = solution[1]
 
-    elif algo_name == 'FullyPolyNomial':
-        solution = algo_function(weights, values, knapsack_capacity, parameter_values['epsilon'])
-        v, num_items_choosen, occupied_weight, maximum_value = solution[0]
-        running_time = solution[1]
+    # elif algo_name == 'FullyPolyNomial':
+    #     solution = algo_function(weights, values, knapsack_capacity, parameter_values['epsilon'])
+    #     v, num_items_choosen, occupied_weight, maximum_value = solution[0]
+    #     running_time = solution[1]
 
-    elif algo_name == 'Randomized':
-        knapsack_randomized_instance = algo_function(num_items, knapsack_capacity, weights, values, num_iterations, time_interval)
-        v, num_items_choosen, occupied_weight, maximum_value = knapsack_randomized_instance.knapsack_randomized_algorithm()
+    # elif algo_name == 'Randomized':
+    #     knapsack_randomized_instance = algo_function(num_items, knapsack_capacity, weights, values, num_iterations, time_interval)
+    #     v, num_items_choosen, occupied_weight, maximum_value = knapsack_randomized_instance.knapsack_randomized_algorithm()
     
-    elif algo_name == 'GeneticProgramming':
-        init_pop = genetic_programming.initialize_pop(item_no=np.arange(1, num_items+1) , no_of_individuals=num_individuals)
-        optimal_solu, num_items_choosen, maximum_value, occupied_weight = algo_function(
-                no_of_generations=num_generations,
-                population=init_pop,
-                weights=weights,
-                values=values,
-                threshold=knapsack_capacity,
-                no_items=num_items)
+    # elif algo_name == 'GeneticProgramming':
+    #     init_pop = genetic_programming.initialize_pop(item_no=np.arange(1, num_items+1) , no_of_individuals=num_individuals)
+    #     optimal_solu, num_items_choosen, maximum_value, occupied_weight = algo_function(
+    #             no_of_generations=num_generations,
+    #             population=init_pop,
+    #             weights=weights,
+    #             values=values,
+    #             threshold=knapsack_capacity,
+    #             no_items=num_items)
 
 
     return num_items_choosen, maximum_value, occupied_weight, running_time
@@ -171,7 +172,7 @@ if __name__ == '__main__':
 
     algorithms = {
         'BruteForce': brute_force.bruteforce,
-        'BranchAndBound': branch_bound.branch_bound,
+        'BranchAndBound': BranchBoundKnapsack,
         'RatioSortGreedy': ratio_sort_greedy.greedy_ratio_selection,
         'ValueSortGreedy': value_sort_greedy.greedy_value_selection,
         'WeightSortGreedy': weight_sort_greedy.greedy_weight_selection,
