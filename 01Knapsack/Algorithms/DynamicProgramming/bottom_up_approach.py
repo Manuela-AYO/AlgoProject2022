@@ -37,7 +37,7 @@ def bottom_up_tabularization(num_items: int, maximum_weight: int, weights: np.ar
                 tabularization[item][sum_of_weights] = 0
             elif weights[item-1] <= sum_of_weights:
                 value_excluding_the_new_weight = tabularization[item-1][sum_of_weights]
-                value_including_the_new_weight = values[item-1] + tabularization[item-1, sum_of_weights-weights[item-1]]
+                value_including_the_new_weight = values[item-1] + tabularization[item-1, int(sum_of_weights-weights[item-1])]
                 tabularization[item][sum_of_weights] = max(value_excluding_the_new_weight, value_including_the_new_weight)
             elif weights[item-1] > sum_of_weights: 
                 tabularization[item][sum_of_weights] = tabularization[item-1][sum_of_weights]  
