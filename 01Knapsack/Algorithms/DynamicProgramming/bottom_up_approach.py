@@ -24,6 +24,7 @@ def bottom_up_tabularization(num_items: int, maximum_weight: int, weights: np.ar
 
 
     for item in range(num_items+1): 
+        print("item calc curent",item)
         for sum_of_weights in range(maximum_weight+1): 
             current_time = datetime.datetime.now()
 
@@ -50,17 +51,20 @@ def bottom_up_approach(num_items: int, maximum_weight: int, weights: np.array, v
     delta = datetime.timedelta(minutes=given_time)
     end_time = start_time + delta
     tabularization = np.zeros((num_items+1, maximum_weight+1))
-
+    print("-----------init ok")
     # aLGO
     tabularization = bottom_up_tabularization(num_items, maximum_weight, weights, values, tabularization, given_time, end_time)
-
+    print("-----------algo ok")
     item_vector = np.zeros((num_items))
     item_vector = tracing_dynamic_programming_solution(num_items, maximum_weight, weights, tabularization, item_vector)
     num_items_choosen = sum(item_vector)
     occupied_weight = sum(weights[i] if item_vector[i]==1 else 0 for i in range(len(item_vector)))
     solution_value = sum(values[i] if item_vector[i]==1 else 0 for i in range(len(item_vector)))
+
+    print("-----------conclude ok")
     current_time = datetime.datetime.now()
     print('time running after stop',current_time - end_time)
+
     return item_vector, solution_value, occupied_weight, num_items_choosen
 
 if __name__ == '__main__':
