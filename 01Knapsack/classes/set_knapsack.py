@@ -10,7 +10,7 @@ Description: This file contain the Set01KnackSack class
 Author: Landry Bailly
 Date: 21/10/2022
 Update:
-Usage: import the file and use the class Set01KnackSack. To initilized the class, use the method uploaddata("pathOfCsvFile Inside Input Folder")
+Usage: import the file and use the class Set01KnackSack. 
 Input: ...
 Output: ...
 References: ...
@@ -82,20 +82,49 @@ class Set01KnapSack:
     # read a text file containing the value of epsilon for the fptas algorithm
     def getEpsilon(self, nameOfFile : str) -> float:
         # check if the file exists
-        if not os.path.exists(nameOfFile) : 
+        if not os.path.exists(os.path.join(os.path.dirname(__file__), '..', 'Input', nameOfFile)) : 
             print("The file doesn't exist")
             return None
         
         # opening the file
-        
-        with open(nameOfFile, mode='r') as file:
+        with open(os.path.join(os.path.dirname(__file__), '..', 'Input', nameOfFile), mode='r') as file:
             line = file.read()   
         return float(line)
+
+
+    def getNumIterations(self, nameOfFile : str) -> float:
+        if not os.path.exists(nameOfFile) : 
+            print("The file doesn't exist")
+            return None
+
+        with open(nameOfFile, mode='r') as file:
+            line = file.read()   
+        return int(line)
+
+
+    def getNumGenerations(self, nameOfFile : str) -> float:
+        if not os.path.exists(nameOfFile) : 
+            print("The file doesn't exist")
+            return None
+
+        with open(nameOfFile, mode='r') as file:
+            line = file.read()   
+        return int(line)
+    
+
+    def getNumIndividuals(self, nameOfFile : str) -> float:
+        if not os.path.exists(nameOfFile) : 
+            print("The file doesn't exist")
+            return None
+
+        with open(nameOfFile, mode='r') as file:
+            line = file.read()   
+        return int(line)
     
     
     # *********************** write on the results of the algorithm in the output file *********************** # 
     def writeOutput(self, output : str) -> str:
-        outputfile_path = os.path.join("01Knapsack", "Output", "results.txt")
+        outputfile_path = os.path.join(os.path.dirname(__file__),"..", "Output", "results.txt")
         
         with open(outputfile_path, "a") as f : 
             # if it's an empty file, create the header

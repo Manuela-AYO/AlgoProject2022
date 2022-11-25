@@ -2,19 +2,23 @@
 Description: This file contain the bruteForce algo and a way to execute the file localy
 Author: Landry Bailly
 Date: 21/11/2022
-Update:
+Update: 23/11/2022 --> adding timing module
 Usage: import the file and use the bruteForce algo, or execute the file localy. No param, it will take default input value
 Input: For the main function, 
     -object Set01KnapSack with data already uploaded
+    -Maximum time in min
 Output: Answer of the problem,
     -total value we can put in the bag (float)
     -table with all the index (int) of the oject we take
+    -len of this table
+    -total answer weight
 References: ...
 '''
 # ---------------------------------INPORT------------------------------------ #
 import pandas
 import numpy
 from natsort import index_natsorted
+import datetime
 
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__),'..', '..', "classes"))
@@ -37,13 +41,23 @@ def testWeight(index, object):
 
 
 # ---------------------------------MAIN FUNCTION------------------------------------ #
-def bruteforce(set01 : m.Set01KnapSack):
+def bruteforce(set01 : m.Set01KnapSack, time_min=0):
+    print("-----------Preprocess--------")
+    # timing module 
+    start_time = datetime.datetime.now()
+    iteration_time = datetime.timedelta(minutes=int(time_min))
+    end_time = start_time + iteration_time
+
     # tester toutes les solutions (a parmis n) quelque soit a entre 1 et n
     bestValue = 0
+    bestValueWeight = 0
     bestAnswer = []
     curentValue = 0
     curentWeight = 0
     curentAnswer = []
+
+    print("-----------Algo Brute_Froce Running--------")
+
     for a in range(1, set01.n + 1):
         # init first answer
         curentAnswer = []
@@ -56,6 +70,7 @@ def bruteforce(set01 : m.Set01KnapSack):
             curentWeight = testWeight(curentAnswer, set01)
             if curentValue > bestValue and curentWeight <= set01.wmax:
                 bestValue = curentValue
+                bestValueWeight = curentWeight
                 bestAnswer = curentAnswer[:]
 
             end = 1
@@ -71,24 +86,31 @@ def bruteforce(set01 : m.Set01KnapSack):
             if end==1:
                 break
 
-    # ------Answer------- #
-    print("----BEST SOLUTION----")
-    print(bestValue)
-    print(bestAnswer)
-    for i in bestAnswer:
-        print(" Object : V = ",set01.data.V[i]," W = ",set01.data.W[i])
+            if time_min != 0:
+                current_time = datetime.datetime.now()
+                if current_time > end_time:
+                    break
 
-    return bestValue, bestAnswer
+    # ------Answer------- #
+    # print("----BEST SOLUTION----")
+    # for i in bestAnswer:
+    #     print(" Object : V = ",set01.data.V[i]," W = ",set01.data.W[i])
+    # print("values : ", bestValue)
+    # print("weight : ", bestValueWeight)
+    # print("number of data :", len(bestAnswer))
+
+    return bestValue, bestAnswer, len(bestAnswer), bestValueWeight
 
 # ---------------------------------EXECUTE FILE------------------------------------ #
 if __name__ == '__main__':
     # ----Upload Data------ #
     myObject = m.Set01KnapSack()
-    myObject.uploadFile("Landrytest.csv","c")
+    # myObject.uploadFile("Landrytest.csv","c")
+    myObject.uploadFile("0_1_kp_REF_50_300_221120.csv", 'c')
     print("Data for tes")
     print(myObject)
     print("--------")
-    bruteforce(myObject)
+    bruteforce(myObject, 1)
 
 
 
