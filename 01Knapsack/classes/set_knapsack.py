@@ -90,6 +90,36 @@ class Set01KnapSack:
         with open(os.path.join(os.path.dirname(__file__), '..', 'Input', nameOfFile), mode='r') as file:
             line = file.read()   
         return float(line)
+
+
+    def getNumIterations(self, nameOfFile : str) -> float:
+        if not os.path.exists(nameOfFile) : 
+            print("The file doesn't exist")
+            return None
+
+        with open(nameOfFile, mode='r') as file:
+            line = file.read()   
+        return int(line)
+
+
+    def getNumGenerations(self, nameOfFile : str) -> float:
+        if not os.path.exists(nameOfFile) : 
+            print("The file doesn't exist")
+            return None
+
+        with open(nameOfFile, mode='r') as file:
+            line = file.read()   
+        return int(line)
+    
+
+    def getNumIndividuals(self, nameOfFile : str) -> float:
+        if not os.path.exists(nameOfFile) : 
+            print("The file doesn't exist")
+            return None
+
+        with open(nameOfFile, mode='r') as file:
+            line = file.read()   
+        return int(line)
     
     
     # *********************** write on the results of the algorithm in the output file *********************** # 
