@@ -16,7 +16,6 @@ Author: Christiane Manuela AYO NDAZO'O
 
 References :
     - Algorithm : https://www.geeksforgeeks.org/0-1-knapsack-using-branch-and-bound/
-    - Time a function : https://dev.to/s9k96/calculating-run-time-of-a-function-using-python-decorators-148o
 
 """
 
@@ -26,6 +25,7 @@ import pandas as pd
 import os
 from pathlib import Path
 import sys
+from datetime import datetime, timedelta
 
 # external module imports
 if not str(Path(__file__).resolve().parent.parent) in sys.path :
@@ -33,12 +33,11 @@ if not str(Path(__file__).resolve().parent.parent) in sys.path :
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
  
 from classes import Set01KnapSack
-from external import compute_run_time
 
 
 class BranchBoundKnapsack :
     
-    def __init__(self, weights_tab : np.array, values_tab : np.array, sack_weight : int) -> None:
+    def __init__(self, weights_tab : np.array, values_tab : np.array, sack_weight : int, time : int  = 0) -> None:
         """Initialisation of the knapsack object
 
         Args:
@@ -53,112 +52,97 @@ class BranchBoundKnapsack :
         self.sack_weight = sack_weight
         self.values_tab = values_tab
         self.weights_tab = weights_tab
+        self.time = int(time)
         
     # *********************** evaluation function on each node ***************************** #
-    def evaluation_function(self, i : int) -> float:
+    def evaluation_function(self, i : int, remaining_weight : int) -> tuple([int,int]):
         """_summary_
             The evaluation function computes on each node the lower bound,
             which is necessary to cut useless branches
             
             This function is actually the sum of two(2) functions :
-            - The actual loss : that simply means that : for an object in the position i, 
-                we decide either to take it(v[i]=1) or not(v[i]=0). If we don't take it the actual lost
-                just summarizes all the values of the objects we took before and add
-                the value of the object i with respect to the weight
+            - The actual loss : it's the total weight lost from the previous choices to the actual one
                 
-            - The previsional loss : after a decision(take or not an object), we have consequences. If we take 
-            an object, as it has a weight, we'll reduce the weight available(w) in the knapsack. So, the 
-            previsional loss will just return the values I lose if I put the object with respect to the weight. 
+            - The previsional gain : after a decision(take or not an object), we have consequences. If we take 
+            an object, what's the highest value we can have in the sack. And the same if we don't take it
             
-            Complexity : O(nlogn) [sort over the decreasing values]
+            Complexity : O(nlogn) [sort by decreasing values]
             
         Args:
             i (int): Index of the object we are studying
-            weights_tab (np.array): array containing the weights of all the objects
-            values_tab (np.array): array containing the values of all the objects
-            v (np.array): vector of bits(0/1) representing the objects in the knapsack. 
-                0 => object is not taken
-                1 => object is taken
-            w : maximum weight of the knapsack
+            remaining_weight (int) : remaining place in the sack
+            
+        Returns :
+            tuple(int, int) : (new weight after the decision, 1/0 if we take or not the object)
         """
+        # upperbound gain if we take the object
+        h = self.values_tab[i]
         
-        # actual lost on the node
+        # upperbound gain if we don't take the object
         g = 0
         
-        # previsional lost over the sack after our decision
-        h = 0
-        
-        # copy of the max weight
-        w_left = self.sack_weight
-        
-        # compute the actual loss
-        for l in range(0,i+1):
-            g += (1-self.vector_items[l]) * self.values_tab[l]
-            w_left -= self.vector_items[l] * self.weights_tab[l]
-            if w_left < 0:
-                g = pow(10,10)
-                break
+        # copy of the remaining weight
+        w_left = remaining_weight
+          
+        # remaining weight if we take the object  
+        w_left_with = w_left - self.weights_tab[i]
             
         if i != len(self.vector_items) - 1: 
-            # weight before the decision on i
-            w2 = w_left + i*self.weights_tab[i]
-            
             # map values_tab and weights_tab
             map = zip(self.values_tab[i+1:], self.weights_tab[i+1:])
             
             # sort the map by decreasing values 
             tab = sorted(map, key = lambda x : x[0], reverse=True)
             
-            # compute the previsional loss
-            # this loop simply gives the lower bound of the maximum value we loose
-            for item in tab : 
-                # we only take the objects which can no longer be inserted in the sack after 
-                # the insertion of item i
-                if w2 - item[1] >= 0 and item[1] > w_left:
+            # compute the upperbounds
+            for item in tab :  
+                # what do we gain if we insert the object
+                if item[1] <= w_left_with:
                     h += item[0]
-                    w2 -= item[1]
-                
-        return g+h
+                    w_left_with -= item[1]
+                # what if we don't take the object
+                if item[1] <= w_left:
+                    g += item[0]
+                    w_left -= item[1]
+        
+        if h >= g and w_left_with >= 0:
+            self.nb_items_chosen += 1
+            self.total_weight += self.weights_tab[i]
+            self.total_value += self.values_tab[i]
+            return remaining_weight-self.weights_tab[i], 1        
+        return remaining_weight, 0
 
 
     # *********************** branch and bound function *********************** # 
-    @compute_run_time   
+    # @compute_run_time   
     def branch_bound(self) -> tuple([np.array, int, int, int]):
         """_summary_
             The branch and bound function performs the branch and bound algorithm by 
             going through most promising paths to find its best solution
 
-        Args:
-            weights_tab (np.array): Array containing the weight of each item
-            values_tab (np.array): Array containing the value of each item
-            max_weight (int): Weight of the bag
-
         Returns:
             np.array: the final vector of items with 0 if an item at position i isn't selected and 1 else
-            int : number of items choses
+            int : number of items chosen
             int : weight of those items
             int : value of those items
             
-        Complexity : O(n) [number of the items]
+        Complexity : O(n²logn) [number of the items + sort for each value]
         """
+        rm_weight = self.sack_weight
         # iterate on the vector
+        
+        if self.time != 0:
+            start_time = datetime.now()
+            iteration_time = timedelta(milliseconds=int(self.time))
+            end_time = start_time + iteration_time
+            
         for i in range(len(self.vector_items)):
             # what if we don't take the object
-            self.vector_items[i] = 0
-            ev1 = self.evaluation_function(i)
-            # what if we take the object
-            self.vector_items[i] = 1
-            ev2 = self.evaluation_function(i)
-            
-            # choose of the least loss value
-            if ev1 < ev2:
-                self.vector_items[i] = 0
-            else :
-                self.vector_items[i] = 1
-                self.nb_items_chosen += 1
-                self.total_weight += self.weights_tab[i]
-                self.total_value += self.values_tab[i]
-        
+            rm_weight, self.vector_items[i] = self.evaluation_function(i, rm_weight)
+            current_time = datetime.now()
+            if self.time != 0 and current_time > end_time:
+                break
+           
         # final vector
         return self.vector_items, self.nb_items_chosen, self.total_weight, self.total_value
  
@@ -179,31 +163,13 @@ if __name__ == '__main__':
     
     # apply the branch and bound algorithm
     obj = BranchBoundKnapsack(weights_tab, values_tab, sack_weight)
-    solution = obj.branch_bound()
-    v, nb_items_chosen, total_weight, total_value = solution[0]
-    time_taken = solution[1]
     
-    # write the result in the output filec
-    # text = f"Branch and bound \t\t\t{nb_items}\t\t \t\t\t\t{sack_weight}\t \t\t\t\t{items_value}\t\t \t\t\t\t{nb_items_chosen}\t\t \t\t\t{total_weight}\t \t\t{total_value}\t\t \t\t\t{time_taken}"
-    # knapsack.writeOutput(text) 
+    v, nb_items_chosen, total_weight, total_value = obj.branch_bound()
     
-
-
-
-# ******************************** To propose to Proton : signal
-"""
-import signal
-
-def signal_handler(signum, frame):
-    print("Time Ouuuuuut!!!!")
-    raise Exception("Timed out!") 
-
-signal.signal(signal.SIGALRM, signal_handler)
-    signal.setitimer(signal.ITIMER_REAL,0.000070)
+    print(f"Nb total items = {nb_items}\n")
+    print(f"TMax weight : {sack_weight}\n")
+    print(f"Vector = {v}\n")
+    print(f"Nb items = {nb_items_chosen}\n")
+    print(f"Total weight = {total_weight}\n")
+    print(f"Total value = {total_value}\n")
     
-try:
-        solution = branch_bound(weights_tab, values_tab, sack_weight)
-        print("ok")
-    except Exception:
-        print("Timed out!")
-"""
