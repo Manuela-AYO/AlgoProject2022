@@ -46,19 +46,23 @@ def generate_instance(nb_items : int, weight : int, range_items : int, distrib :
     total_weight = 0    # sum over the weights
     temp = ""
     
+    if distrib == 1 :
+        temp += "un"    # for uncorrelated
+    elif distrib == 2 : 
+        temp += "wc"    # for weakly correlated
+    else :
+        temp += "sc"    # for strongly correlated
+        
     for i in range(nb_items):
         w = random.randint(1,range_items)
         v = 0
         # generate the value according to the distribution
         if distrib == 1 :   # uncorrelated data
             v = random.randint(1,range_items)
-            temp += "un"    # for uncorrelated
         elif distrib == 2 :  # weakly correlated data
             v = random.randint(w-weak_coeff, w+weak_coeff)
-            temp += "wc"    # for weakly correlated
         elif distrib == 3 :  # strongly correlated data
             v = w + weak_coeff
-            temp += "sc"    # for strongly correlated
         
         total_weight += w
         
