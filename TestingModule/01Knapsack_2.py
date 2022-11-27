@@ -160,7 +160,21 @@ def benchmarkFor01(CsvName,AlgoName,InstanceName,MTheoricalValue="-",MTime="-",M
 if __name__ == '__main__':
     test = Set01KnapSack()
     test.uploadFile("Landrytest.csv","c")
-    print(ratio_sort_greedy.greedy_ratio_selection(test))
+    print(weight_sort_greedy.greedy_weight_selection(test))
+
+    algorithms = {
+        'BruteForce': brute_force.bruteforce,
+        'BranchAndBound': branch_bound.branch_bound,
+        'RatioSortGreedy': ratio_sort_greedy.greedy_ratio_selection,
+        'ValueSortGreedy': value_sort_greedy.greedy_value_selection,
+        'WeightSortGreedy': weight_sort_greedy.greedy_weight_selection,
+        'RatiosortAndConvergeGreedy':ratio_sort_and_converge.ratio_sort_and_converge,
+        'TopDownDynamicProgramming': top_down_approach.top_down_approach,
+        'BottomUpDynamicProgramming': bottom_up_approach.bottom_up_approach,
+        # 'FullyPolyNomial': fptas.fptas,
+        'Randomized': Knapsack_randomized_algorithm,
+        'GeneticProgramming': genetic_programming.genetic_programming
+    }
     # get_num_active_processes()
     # 
     # instances = [
