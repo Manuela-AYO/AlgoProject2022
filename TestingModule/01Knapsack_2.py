@@ -4,11 +4,10 @@ update : Landry Bailly, 25/11/2022
 
 # ------------------- IMPORT PART ------------ #
 
-import sys, os, psutil
+import sys, os
 import pandas as pd
 import numpy as np
-import time
-import threading
+from datetime import datetime, timedelta
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '01Knapsack'))
@@ -27,25 +26,6 @@ from Randomized.randomized_algorithm import Knapsack_randomized_algorithm
 from GeneticProgramming import genetic_programming01 as genetic_programming
 
 # ------------------------ USEFUL FUNCTION ------------------- #
-
-class CustomTimer():
-    def __init__(self, interval):
-        self.interval = interval
-        self.finished = False
-
-    def run(self):
-        self.timer = threading.Timer(float(self.interval), self.finish)
-        self.timer.start()
-
-    def finish(self):
-        self.finished = True
-        return True
-
-def get_num_active_processes():
-    num_active_processes = len(psutil.pids())
-    print(f'Number of active processes: {num_active_processes}')
-    # with open(os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Output', 'num_active_processes.txt'), 'w') as writer:
-    #     writer.write(str(num_active_processes))
 
 def execute_algo(knapSackObject,AlgoName,MTime="-",MIteration="-",SpecificParam="-"):
     # num_items_choosen = maximum_value = occupied_weight = running_time = -1
@@ -70,16 +50,22 @@ def execute_algo(knapSackObject,AlgoName,MTime="-",MIteration="-",SpecificParam=
     else:
         MTimeInt = int(MTime)
 
+    # calc time
+    start_time = datetime.datetime.now()
+    end = datetime.datetime.now()
+    # call the algo
+    realTime = end - start_time
+    print("time :",realTime)
+
+
     # Apply algorithm
     algo_function = algorithms[AlgoName]
 
     if AlgoName == 'BruteForce' or AlgoName == 'RatiosortAndConvergeGreedy':
-        maximum_value, bestAnswer = algo_function(knapSackObject, MTimeInt)
+        binaryAnswer, lenght, bestWeight, maximum_value = algo_function(knapSackObject, MTimeInt)
 
     if AlgoName == 'BranchAndBound':
-        solution = algo_function(weights, values, knapsack_capacity)
-        v, num_items_choosen, occupied_weight, maximum_value = solution[0]
-        running_time = solution[1]
+        binaryAnswer, lenght, bestWeight, maximum_value = algo_function(knapSackObject, MTimeInt)
 
     if AlgoName == 'RatioSortGreedy':
         weights = weights.to_numpy()
@@ -172,22 +158,25 @@ def benchmarkFor01(CsvName,AlgoName,InstanceName,MTheoricalValue="-",MTime="-",M
     return output
 
 if __name__ == '__main__':
-    get_num_active_processes()
-
-    instances = [
-        '0_1_kp_REF_10_100_221016.csv', 
-        # '0_1_kp_REF_50_300_221120.csv
-    ]
-
-    parameters = {
-        'epsilon': os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Input', '0_1_kp_epsilon1.txt'), # don't need
-        'num_iterations': os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Input', '0_1_kp_num_iterations.txt'),
-        'num_generations': os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Input', '0_1_kp_num_generations.txt'),
-        'num_individuals': os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Input', '0_1_kp_num_individuals.txt'),
-    }
-
-    time_interval = input("Time to execute the algorithm (0 for solution benchmarking): ")
-    benchmark(instances, parameters, algorithms, time_interval)
+    test = Set01KnapSack()
+    test.uploadFile("Landrytest.csv","c")
+    print(ratio_sort_greedy.greedy_ratio_selection(test))
+    # get_num_active_processes()
+    # 
+    # instances = [
+    #     '0_1_kp_REF_10_100_221016.csv', 
+    #     # '0_1_kp_REF_50_300_221120.csv
+    # ]
+    # 
+    # parameters = {
+    #     'epsilon': os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Input', '0_1_kp_epsilon1.txt'), # don't need
+    #     'num_iterations': os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Input', '0_1_kp_num_iterations.txt'),
+    #     'num_generations': os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Input', '0_1_kp_num_generations.txt'),
+    #     'num_individuals': os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Input', '0_1_kp_num_individuals.txt'),
+    # }
+    # 
+    # time_interval = input("Time to execute the algorithm (0 for solution benchmarking): ")
+    # benchmark(instances, parameters, algorithms, time_interval)
 
 
 
