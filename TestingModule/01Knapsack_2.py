@@ -4,6 +4,7 @@ update : Landry Bailly, 25/11/2022
 
 # ------------------- IMPORT PART ------------ #
 
+from asyncio.windows_events import NULL
 import sys, os
 import pandas as pd
 import numpy as np
@@ -22,12 +23,12 @@ from BranchAndBound import branch_bound
 from Greedy import ratio_sort_greedy, value_sort_greedy, weight_sort_greedy, ratio_sort_and_converge
 from DynamicProgramming import top_down_approach, bottom_up_approach
 from FullyPolynomial import fptas
-from Randomized.randomized_algorithm import Knapsack_randomized_algorithm
+from Randomized import randomized_algorithm
 from GeneticProgramming import genetic_programming01 as genetic_programming
 
 # ------------------------ USEFUL FUNCTION ------------------- #
 
-def execute_algo(knapSackObject,AlgoName,MTime="-",MIteration="-",SpecificParam="-"):
+def execute_algo(knapSackObject :Set01KnapSack,AlgoName,MTime="-",MIteration="-",SpecificParam="-"):
     # num_items_choosen = maximum_value = occupied_weight = running_time = -1
 
     print(f'Running {AlgoName}')
@@ -39,17 +40,28 @@ def execute_algo(knapSackObject,AlgoName,MTime="-",MIteration="-",SpecificParam=
         'ValueSortGreedy': value_sort_greedy.greedy_value_selection,
         'WeightSortGreedy': weight_sort_greedy.greedy_weight_selection,
         'RatiosortAndConvergeGreedy':ratio_sort_and_converge.ratio_sort_and_converge,
-
         'TopDownDynamicProgramming': top_down_approach.top_down_approach,
         'BottomUpDynamicProgramming': bottom_up_approach.bottom_up_approach,
+        'Randomized': randomized_algorithm.randomized,
+
         'FullyPolyNomial': fptas.fptas,
-        'Randomized': Knapsack_randomized_algorithm,
         'GeneticProgramming': genetic_programming.genetic_programming
     }
+    if MIteration=="-":
+        MIterationInt = 0
+    else:
+        MIterationInt = int(MTime)
+
     if MTime=="-":
         MTimeInt = 0
     else:
         MTimeInt = int(MTime)
+
+    if SpecificParam=="-":
+        SpecificParamInt = 0
+    else:
+        SpecificParamInt = int(MTime)
+
 
     # calc time
     start_time = datetime.datetime.now()
@@ -65,20 +77,14 @@ def execute_algo(knapSackObject,AlgoName,MTime="-",MIteration="-",SpecificParam=
     if AlgoName == 'BruteForce' or AlgoName == 'RatiosortAndConvergeGreedy':
         items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject, MTimeInt)
 
-
-    elif AlgoName == 'TopDownDynamicProgramming' or algo_name == 'BottomUpDynamicProgramming':
-        solution = algo_function(num_items, knapsack_capacity, weights, values)
-        maximum_value, num_items_choosen, occupied_weight = solution[0]
-        running_time = solution[1]
+    if AlgoName == 'Randomized': # --this algo need iteration value and a specific param
+        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject,MIterationInt,MTimeInt,SpecificParamInt)
 
     elif AlgoName == 'FullyPolyNomial':
         solution = algo_function(weights, values, knapsack_capacity, parameter_values['epsilon'])
         v, num_items_choosen, occupied_weight, maximum_value = solution[0]
         running_time = solution[1]
 
-    elif AlgoName == 'Randomized':
-        knapsack_randomized_instance = algo_function(num_items, knapsack_capacity, weights, values, num_iterations, time_interval)
-        v, num_items_choosen, occupied_weight, maximum_value = knapsack_randomized_instance.knapsack_randomized_algorithm()
     
     elif AlgoName == 'GeneticProgramming':
         init_pop = genetic_programming.initialize_pop(item_no=np.arange(1, num_items+1) , no_of_individuals=num_individuals)
@@ -145,7 +151,8 @@ def benchmarkFor01(CsvName,AlgoName,InstanceName,MTheoricalValue="-",MTime="-",M
 if __name__ == '__main__':
     test = Set01KnapSack()
     test.uploadFile("Landrytest.csv","c")
-    print(top_down_approach.top_down_approach(test))
+    # print(top_down_approach.top_down_approach(test))
+    print(randomized_algorithm.randomized(test, 200))
 
     algorithms = {
         'BruteForce': brute_force.bruteforce,
@@ -154,11 +161,11 @@ if __name__ == '__main__':
         'ValueSortGreedy': value_sort_greedy.greedy_value_selection,
         'WeightSortGreedy': weight_sort_greedy.greedy_weight_selection,
         'RatiosortAndConvergeGreedy':ratio_sort_and_converge.ratio_sort_and_converge,
-
         'TopDownDynamicProgramming': top_down_approach.top_down_approach,
         'BottomUpDynamicProgramming': bottom_up_approach.bottom_up_approach,
+
         # 'FullyPolyNomial': fptas.fptas,
-        'Randomized': Knapsack_randomized_algorithm,
+        'Randomized': randomized_algorithm.randomized,
         'GeneticProgramming': genetic_programming.genetic_programming
     }
     # get_num_active_processes()

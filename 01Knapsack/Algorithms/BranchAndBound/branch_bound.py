@@ -230,7 +230,7 @@ class BranchBoundKnapsack :
                 if self.time != 0 and current_time > end_time:
                     break
               
-        return self.vector_items, self.nb_items_chosen, self.total_weight, self.total_value
+        return self.vector_items, self.nb_items_chosen, self.total_value, self.total_weight
     
     
 if __name__ == '__main__':
