@@ -44,7 +44,7 @@ def top_down_memoization(item: int, sum_of_weights: int, weights: np.array, valu
         memoization[item, sum_of_weights] = memoization[item-1, sum_of_weights]
     else:
         if memoization[item-1, sum_of_weights-weights[item-1]] == -1:
-            value, memoization, current_calculated_item = top_down_memoization(item-1, sum_of_weights-weights[item-1], weights, values, memoization, given_time, end_time)
+            value, memoization, item_calculated_at_stop_time = top_down_memoization(item-1, sum_of_weights-weights[item-1], weights, values, memoization, given_time, end_time)
             memoization[item-1, sum_of_weights-weights[item-1]] = value
         
         value_excluding_the_new_weight = memoization[item-1, sum_of_weights]

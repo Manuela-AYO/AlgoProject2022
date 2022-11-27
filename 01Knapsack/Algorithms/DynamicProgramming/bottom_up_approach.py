@@ -61,8 +61,7 @@ def bottom_up_approach(num_items: int, maximum_weight: int, weights: np.array, v
     solution_value = sum(values[i] if item_vector[i]==1 else 0 for i in range(len(item_vector)))
     print("Finish Finding Conclusion")
     print(f'Solution Value = {solution_value}')
-    print('Vector showing items taken: ')
-    print(item_vector)
+    print(f'Number of Items Choosen: {num_items_choosen}')
     # current_time = datetime.datetime.now()
     # print('Extra running time after stop', current_time - end_time)
     return item_vector, solution_value, occupied_weight, num_items_choosen
