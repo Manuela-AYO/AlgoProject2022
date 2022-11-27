@@ -43,7 +43,7 @@ class Set01KnapSack:
             text += f"{i} Value : {self.data.V[i]} Weight : {self.data.W[i]} \n"
         return text
 
-    def convertListAnswerToBinaryList(self, inputlist):
+    def convertListAnswerToBinaryList(self, inputlist): # usefull for Landry Code XD
         output = [0]*self.n
         for i in inputlist:
             output[i] = 1

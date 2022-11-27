@@ -35,6 +35,11 @@ if not str(Path(__file__).resolve().parent.parent) in sys.path :
 from classes import Set01KnapSack
 
 
+# ----FOR TESTING MODULE---- #
+def branch_bound(set01 : Set01KnapSack, time_min=0):
+    return BranchBoundKnapsack(set01.data.W,set01.data.V,set01.wmax,time_min).branch_bound()
+# -------------------------- #
+
 class Node:
     def __init__(self, index : int, value_index : int, position : int = -1, weight_carried : int = 0, 
                  cost : int = 0, upper_bound : int = 0, value_carried : int = 0, nb_items : int = 0) -> None :

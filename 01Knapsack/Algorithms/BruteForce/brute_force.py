@@ -101,7 +101,7 @@ def bruteforce(set01 : m.Set01KnapSack, time_min=0):
 
     binaryBestAnswer = set01.convertListAnswerToBinaryList(bestAnswer)
 
-    return bestValue, binaryBestAnswer, len(bestAnswer), bestValueWeight
+    return binaryBestAnswer, len(bestAnswer), bestValueWeight, bestValue
 
 # ---------------------------------EXECUTE FILE------------------------------------ #
 if __name__ == '__main__':
