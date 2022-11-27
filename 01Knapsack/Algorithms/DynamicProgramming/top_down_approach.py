@@ -26,7 +26,7 @@ from external import compute_run_time
 
 def top_down_memoization(item: int, sum_of_weights: int, weights: np.array, values: np.array, memoization: np.array, given_time: int, end_time: int) -> tuple([int, np.array]):    
     current_time = datetime.datetime.now()
-    print(item, sum_of_weights, current_time, end_time)
+    # print(item, sum_of_weights, current_time, end_time)
     if given_time != 0:    
         if current_time >= end_time:
             print("Running time is out, but it will take extra time for returning the base case of this stop")
