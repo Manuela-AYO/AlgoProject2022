@@ -19,6 +19,7 @@ Args:
 
 References: https://repozytorium.biblos.pk.edu.pl/redo/resources/30706/file/suwFiles/SchiffK_AntColony.pdf
             https://github.com/armoner24/Knapsack-by-ACO
+            https://www.mecs-press.org/ijisa/ijisa-v11-n2/IJISA-V11-N2-2.pdf
 '''
 
 # Import modules
@@ -39,7 +40,7 @@ from external import compute_run_time
 
 class Knapsack_ant_colony_algorithm:
 
-    def __init__(self, n, max_weigth, weight_list, value_list, n_iterations, n_ants, decay=0.5, time_min=0):
+    def __init__(self, n, max_weigth, weight_list, value_list, n_iterations, n_ants, decay=0.75, time_min=0):
         '''
         Summary: Constructor, set the important variables for the algorithm execution.
 
@@ -178,7 +179,7 @@ class Knapsack_ant_colony_algorithm:
                 else:
                     self.current_binary_representation[knapsack_element_index] = 0
             self.check_viability_solution()
-            self.update_pheromones(current_profit) 
+        self.update_pheromones(current_profit) 
 
 
     def knapsack_ant_colony_algorithm(self):
