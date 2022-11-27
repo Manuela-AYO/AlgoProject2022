@@ -53,8 +53,14 @@ def top_down_memoization(item: int, sum_of_weights: int, weights: np.array, valu
     
     return memoization[item, sum_of_weights], memoization, item
 
-@compute_run_time
-def top_down_approach(num_items: int, maximum_weight: int, weights: np.array, values: np.array, given_time: int) -> tuple:
+def top_down_approach(set01 : Set01KnapSack, given_time: int = 0) -> tuple:
+    # ----- update for timing module -------- #
+    weights = set01.data.W
+    values = set01.data.V
+    num_items = set01.n
+    maximum_weight = set01.wmax
+    # ---------------------------
+
     start_time = datetime.datetime.now()
     delta = datetime.timedelta(minutes=given_time)
     end_time = start_time + delta
@@ -73,7 +79,7 @@ def top_down_approach(num_items: int, maximum_weight: int, weights: np.array, va
     print("Finish Finding Conclusion")
     print(f'Solution Value = {solution_value}')
     print(f'Number of Items Choosen: {num_items_choosen}')
-    return item_vector, solution_value, occupied_weight, num_items_choosen
+    return item_vector, num_items_choosen, solution_value, occupied_weight
 
 if __name__ == '__main__':
     # The prompt 

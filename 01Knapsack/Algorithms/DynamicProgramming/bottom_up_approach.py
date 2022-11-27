@@ -42,8 +42,16 @@ def bottom_up_tabularization(num_items: int, maximum_weight: int, weights: np.ar
           
     return tabularization, num_items
 
-@compute_run_time
-def bottom_up_approach(num_items: int, maximum_weight: int, weights: np.array, values: np.array, given_time: int) -> tuple:
+
+def bottom_up_approach(set01 : Set01KnapSack, given_time: int = 0) -> tuple:
+    # ----- update for timing module -------- #
+    weights = set01.data.W
+    values = set01.data.V
+    num_items = set01.n
+    maximum_weight = set01.wmax
+    # ---------------------------
+
+
     # Initialization
     start_time = datetime.datetime.now()
     delta = datetime.timedelta(minutes=given_time)
@@ -64,7 +72,7 @@ def bottom_up_approach(num_items: int, maximum_weight: int, weights: np.array, v
     print(f'Number of Items Choosen: {num_items_choosen}')
     # current_time = datetime.datetime.now()
     # print('Extra running time after stop', current_time - end_time)
-    return item_vector, solution_value, occupied_weight, num_items_choosen
+    return item_vector, num_items_choosen, solution_value, occupied_weight
 
 if __name__ == '__main__':
     # The prompt 

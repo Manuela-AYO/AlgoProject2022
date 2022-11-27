@@ -39,6 +39,7 @@ def execute_algo(knapSackObject,AlgoName,MTime="-",MIteration="-",SpecificParam=
         'ValueSortGreedy': value_sort_greedy.greedy_value_selection,
         'WeightSortGreedy': weight_sort_greedy.greedy_weight_selection,
         'RatiosortAndConvergeGreedy':ratio_sort_and_converge.ratio_sort_and_converge,
+
         'TopDownDynamicProgramming': top_down_approach.top_down_approach,
         'BottomUpDynamicProgramming': bottom_up_approach.bottom_up_approach,
         'FullyPolyNomial': fptas.fptas,
@@ -62,24 +63,8 @@ def execute_algo(knapSackObject,AlgoName,MTime="-",MIteration="-",SpecificParam=
     algo_function = algorithms[AlgoName]
 
     if AlgoName == 'BruteForce' or AlgoName == 'RatiosortAndConvergeGreedy':
-        binaryAnswer, lenght, bestWeight, maximum_value = algo_function(knapSackObject, MTimeInt)
+        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject, MTimeInt)
 
-    if AlgoName == 'BranchAndBound':
-        binaryAnswer, lenght, bestWeight, maximum_value = algo_function(knapSackObject, MTimeInt)
-
-    if AlgoName == 'RatioSortGreedy':
-        weights = weights.to_numpy()
-        values = values.to_numpy()
-        ratio = weights/values
-        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(weights, values, ratio, knapsack_capacity)
-       
-    if AlgoName == 'ValueSortGreedy':
-        weights = weights.to_numpy()
-        values = values.to_numpy()
-        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(weights, values, knapsack_capacity)
-   
-    if AlgoName == 'WeightSortGreedy':
-        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(weights, values, knapsack_capacity)
 
     elif AlgoName == 'TopDownDynamicProgramming' or algo_name == 'BottomUpDynamicProgramming':
         solution = algo_function(num_items, knapsack_capacity, weights, values)
@@ -160,7 +145,7 @@ def benchmarkFor01(CsvName,AlgoName,InstanceName,MTheoricalValue="-",MTime="-",M
 if __name__ == '__main__':
     test = Set01KnapSack()
     test.uploadFile("Landrytest.csv","c")
-    print(weight_sort_greedy.greedy_weight_selection(test))
+    print(top_down_approach.top_down_approach(test))
 
     algorithms = {
         'BruteForce': brute_force.bruteforce,
@@ -169,6 +154,7 @@ if __name__ == '__main__':
         'ValueSortGreedy': value_sort_greedy.greedy_value_selection,
         'WeightSortGreedy': weight_sort_greedy.greedy_weight_selection,
         'RatiosortAndConvergeGreedy':ratio_sort_and_converge.ratio_sort_and_converge,
+
         'TopDownDynamicProgramming': top_down_approach.top_down_approach,
         'BottomUpDynamicProgramming': bottom_up_approach.bottom_up_approach,
         # 'FullyPolyNomial': fptas.fptas,
