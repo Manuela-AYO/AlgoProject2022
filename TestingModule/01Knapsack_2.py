@@ -20,7 +20,7 @@ from external import compute_run_time
 
 from BruteForce import brute_force
 from BranchAndBound import branch_bound
-from Greedy import ratio_sort_greedy, value_sort_greedy, weight_sort_greedy
+from Greedy import ratio_sort_greedy, value_sort_greedy, weight_sort_greedy, ratio_sort_and_converge
 from DynamicProgramming import top_down_approach, bottom_up_approach
 from FullyPolynomial import fptas
 from Randomized.randomized_algorithm import Knapsack_randomized_algorithm
@@ -58,18 +58,23 @@ def execute_algo(knapSackObject,AlgoName,MTime="-",MIteration="-",SpecificParam=
         'RatioSortGreedy': ratio_sort_greedy.greedy_ratio_selection,
         'ValueSortGreedy': value_sort_greedy.greedy_value_selection,
         'WeightSortGreedy': weight_sort_greedy.greedy_weight_selection,
+        'RatiosortAndConvergeGreedy':ratio_sort_and_converge.ratio_sort_and_converge,
         'TopDownDynamicProgramming': top_down_approach.top_down_approach,
         'BottomUpDynamicProgramming': bottom_up_approach.bottom_up_approach,
         'FullyPolyNomial': fptas.fptas,
         'Randomized': Knapsack_randomized_algorithm,
         'GeneticProgramming': genetic_programming.genetic_programming
     }
+    if MTime=="-":
+        MTimeInt = 0
+    else:
+        MTimeInt = int(MTime)
 
     # Apply algorithm
     algo_function = algorithms[AlgoName]
 
-    if AlgoName == 'BruteForce':
-        maximum_value, bestAnswer = algo_function(knapsackInstance)
+    if AlgoName == 'BruteForce' or AlgoName == 'RatiosortAndConvergeGreedy':
+        maximum_value, bestAnswer = algo_function(knapSackObject, MTimeInt)
 
     if AlgoName == 'BranchAndBound':
         solution = algo_function(weights, values, knapsack_capacity)
