@@ -127,10 +127,11 @@ class Knapsack_randomized_algorithm:
         for i in range(0, self.n):
             if self.current_binary_representation[i] == 0:
                 zero_indexes[i] = self.v[i]
-        zero_indexes_bvalue = dict(sorted(zero_indexes.items(), key=lambda item: item[1], reverse=True))
-        zero_elites = list(zero_indexes_bvalue.keys())[0:self.selection_count]
-        index_to_change = random.choice(zero_elites)
-        self.current_binary_representation[index_to_change] = 1
+        if zero_indexes:
+            zero_indexes_bvalue = dict(sorted(zero_indexes.items(), key=lambda item: item[1], reverse=True))
+            zero_elites = list(zero_indexes_bvalue.keys())[0:self.selection_count]
+            index_to_change = random.choice(zero_elites)
+            self.current_binary_representation[index_to_change] = 1
 
     def delete_random_element(self):
         '''
@@ -146,10 +147,11 @@ class Knapsack_randomized_algorithm:
         for i in range(0, self.n):
             if self.current_binary_representation[i] == 1:
                 one_indexes[i] = self.v[i]
-        one_indexes_bvalue = dict(sorted(one_indexes.items(), key=lambda item: item[1], reverse=False))
-        one_elites = list(one_indexes_bvalue.keys())[0:self.selection_count]
-        index_to_change = random.choice(one_elites)
-        self.current_binary_representation[index_to_change] = 0
+        if one_indexes:
+            one_indexes_bvalue = dict(sorted(one_indexes.items(), key=lambda item: item[1], reverse=False))
+            one_elites = list(one_indexes_bvalue.keys())[0:self.selection_count]
+            index_to_change = random.choice(one_elites)
+            self.current_binary_representation[index_to_change] = 0
 
     def knapsack_randomized_algorithm(self):
         '''
