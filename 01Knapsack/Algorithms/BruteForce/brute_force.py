@@ -92,21 +92,23 @@ def bruteforce(set01 : m.Set01KnapSack, time_min=0):
                     break
 
     # ------Answer------- #
-    # print("----BEST SOLUTION----")
-    # for i in bestAnswer:
-    #     print(" Object : V = ",set01.data.V[i]," W = ",set01.data.W[i])
-    # print("values : ", bestValue)
-    # print("weight : ", bestValueWeight)
-    # print("number of data :", len(bestAnswer))
+    print("----BEST SOLUTION----")
+    for i in bestAnswer:
+        print(" Object : V = ",set01.data.V[i]," W = ",set01.data.W[i])
+    print("values : ", bestValue)
+    print("weight : ", bestValueWeight)
+    print("number of data :", len(bestAnswer))
 
-    return bestValue, bestAnswer, len(bestAnswer), bestValueWeight
+    binaryBestAnswer = set01.convertListAnswerToBinaryList(bestAnswer)
+
+    return bestValue, binaryBestAnswer, len(bestAnswer), bestValueWeight
 
 # ---------------------------------EXECUTE FILE------------------------------------ #
 if __name__ == '__main__':
     # ----Upload Data------ #
     myObject = m.Set01KnapSack()
     # myObject.uploadFile("Landrytest.csv","c")
-    myObject.uploadFile("0_1_kp_REF_50_300_221120.csv", 'c')
+    myObject.uploadFile("Landrytest.csv", 'c')
     print("Data for tes")
     print(myObject)
     print("--------")
@@ -114,9 +116,6 @@ if __name__ == '__main__':
 
 
 
-
-
-# ------Algo------- #
 
 
 

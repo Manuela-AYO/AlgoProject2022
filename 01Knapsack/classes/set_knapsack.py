@@ -42,7 +42,12 @@ class Set01KnapSack:
         for i in range(len(self.data)):
             text += f"{i} Value : {self.data.V[i]} Weight : {self.data.W[i]} \n"
         return text
-    
+
+    def convertListAnswerToBinaryList(self, inputlist):
+        output = [0]*self.n
+        for i in inputlist:
+            output[i] = 1
+        return output
 
     def uploadFile(self, nameOfFile : str, type : str) -> tuple([int, int, int, pandas.DataFrame]):
         # Description : initialize the object

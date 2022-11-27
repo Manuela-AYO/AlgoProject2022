@@ -1,6 +1,6 @@
 """
 Author: Chadapohn Chaosrikul
-Update : Landry --> change the timing stop, it also return the curent calculate item. The the recusivity part, inside helper.py will begin to this item instead of begining at the end
+Update: Landry --> Change the timing stop, it also return the curent calculate item. The recusivity part, inside helper.py will begin to this item instead of begining at the end.
 """
 # Import Python Modules
 import numpy as np
@@ -21,10 +21,8 @@ from classes import Set01KnapSack
 # A module for timing
 from external import compute_run_time
 
-def bottom_up_tabularization(num_items: int, maximum_weight: int, weights: np.array, values: np.array, tabularization: np.array, given_time: int, end_time: int) -> tuple([int, np.array]):
-
+def bottom_up_tabularization(num_items: int, maximum_weight: int, weights: np.array, values: np.array, tabularization: np.array, given_time: int, end_time: int) -> tuple([np.array, int]):
     for item in range(num_items+1): 
-        # print("item calc curent",item)
         for sum_of_weights in range(maximum_weight+1): 
             if item == 0 or maximum_weight == 0: 
                 tabularization[item][sum_of_weights] = 0
@@ -34,40 +32,38 @@ def bottom_up_tabularization(num_items: int, maximum_weight: int, weights: np.ar
                 tabularization[item][sum_of_weights] = max(value_excluding_the_new_weight, value_including_the_new_weight)
             elif weights[item-1] > sum_of_weights: 
                 tabularization[item][sum_of_weights] = tabularization[item-1][sum_of_weights]  
-
-        # Timing stop module :
+          
+        # Timing stop module
         current_time = datetime.datetime.now()
-        if given_time != 0:    # If there is a time limit given
+        # If there is a time limit given
+        if given_time != 0:    
             if current_time >= end_time:
-                return tabularization, (item - 1)
+                return tabularization, item
           
     return tabularization, num_items
 
 @compute_run_time
 def bottom_up_approach(num_items: int, maximum_weight: int, weights: np.array, values: np.array, given_time: int) -> tuple:
-    # INIT
+    # Initialization
     start_time = datetime.datetime.now()
     delta = datetime.timedelta(minutes=given_time)
     end_time = start_time + delta
     tabularization = np.zeros((num_items+1, maximum_weight+1))
-    print("-----------init ok")
-    # aLGO
-    tabularization,num_calc_item = bottom_up_tabularization(num_items, maximum_weight, weights, values, tabularization, given_time, end_time)
-    print("-----------algo ok")
+    print("Finish Running Initialization")
+    # Algorithm
+    tabularization, item_calculated_at_stop_time = bottom_up_tabularization(num_items, maximum_weight, weights, values, tabularization, given_time, end_time)
+    print("Finish Running Algorithm")
     item_vector = np.zeros((num_items))
-    item_vector = tracing_dynamic_programming_solution(num_calc_item, maximum_weight, weights, tabularization, item_vector)
+    # Conclusion
+    item_vector = tracing_dynamic_programming_solution(item_calculated_at_stop_time, maximum_weight, weights, tabularization, item_vector)
     num_items_choosen = sum(item_vector)
     occupied_weight = sum(weights[i] if item_vector[i]==1 else 0 for i in range(len(item_vector)))
     solution_value = sum(values[i] if item_vector[i]==1 else 0 for i in range(len(item_vector)))
-
-    print("-----------conclude ok")
-    current_time = datetime.datetime.now()
-    print('time running after stop',current_time - end_time)
-
-    print(item_vector)
-    print(solution_value)
-    
-
+    print("Finish Finding Conclusion")
+    print(f'Solution Value = {solution_value}')
+    print(f'Number of Items Choosen: {num_items_choosen}')
+    # current_time = datetime.datetime.now()
+    # print('Extra running time after stop', current_time - end_time)
     return item_vector, solution_value, occupied_weight, num_items_choosen
 
 if __name__ == '__main__':
@@ -100,4 +96,5 @@ if __name__ == '__main__':
     # Create an output table
     text = f"Bottom-up approach, Dynamic Programming \t\t\t{num_items}\t\t \t\t\t\t{maximum_weight}\t \t\t\t\t{sum_values}\t\t \t\t\t\t{num_items_choosen}\t\t \t\t\t{occupied_weight}\t \t\t{solution_value}\t\t \t\t\t{benchmarking_time}"
     knapsackInstance.writeOutput(text) 
-    print("end")
+
+
