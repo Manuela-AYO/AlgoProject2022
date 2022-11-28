@@ -41,13 +41,27 @@ from external import compute_run_time
 
 
 # ----FOR TESTING MODULE---- #
-def ant_colony_algorithm(set01 : Set01KnapSack, executions, n_ants,decay :float=0.75,time_min=0):
-    return Knapsack_ant_colony_algorithm(set01.n,set01.wmax,set01.data.W,set01.data.V,int(executions),int(n_ants),decay,time_min).knapsack_ant_colony_algorithm()
+def ant_colony_algorithm(set01 : Set01KnapSack, executions, n_ants,decay=0.5, tolerance=0.001, time_min=0):
+    if n_ants == 0:
+        print("ERROR : n_ants must be superior to 0")
+        return [0]*set01.n, 0, 0, 0
+
+    if decay == 0.0:
+        decay2 = 0.5
+    else:
+        decay2 = decay
+
+    if tolerance == 0.0:
+        tolerance2 = 0.5
+    else:
+        tolerance2 = tolerance
+
+    return Knapsack_ant_colony_algorithm(set01.n,set01.wmax,set01.data.W,set01.data.V,int(executions),int(n_ants),decay2,tolerance2,time_min).knapsack_ant_colony_algorithm()
 # -------------------------- #
 
 class Knapsack_ant_colony_algorithm:
 
-    def __init__(self, n, max_weigth, weight_list, value_list, n_iterations, n_ants, decay=0.75, time_min=0):
+    def __init__(self, n, max_weigth, weight_list, value_list, n_iterations, n_ants, decay=0.5, tolerance=0.001,time_min=0):
         '''
         Summary: Constructor, set the important variables for the algorithm execution.
 
@@ -59,6 +73,7 @@ class Knapsack_ant_colony_algorithm:
             n_iterations (int): Number of iterations which the algorithm will perform.
             n_ants (int): Number of ants for each iteration execution.
             decay (float): Decay rate for the pheromone trait after each ant perform their task.
+            tolerance (float): Tolerance Ratio to accept the convergence to the solution
             time_min (int): Time in minutes to execute the algorithm if there are no elements or the argument is 0, the executions will be taken into account.
 
         Complexity: O(1)
@@ -73,11 +88,15 @@ class Knapsack_ant_colony_algorithm:
         self.best_solution_w = 0
         self.best_solution_v = 0
         self.best_elements_number = 0
+        self.temporal_n_profit = 0
         self.current_binary_representation = [0] * self.n
         self.best_binary_representation = [0] * self.n
         self.phero_t = [0] * self.n
         self.attr_move_u = [0] * self.n
         self.time_min = int(time_min)
+        self.previous_anwser = 0
+        self.tolerance = tolerance
+        self.convergence = False
 
     def initiate_configurations(self):
         '''
@@ -94,7 +113,8 @@ class Knapsack_ant_colony_algorithm:
     def check_viability_solution(self):
         '''
         Summary: Function which checks if the current solution is viable according to the maximum weight. Also, updates the best solution
-        according to the modifications along the iterations.
+        according to the modifications along the iterations. In case, we find that the current solution change little compared to the tolerance
+        we stop the execution.
         
         Complexity: O(n)
         '''
@@ -106,19 +126,22 @@ class Knapsack_ant_colony_algorithm:
                 acum_w += self.w[i]
                 acum_v += self.v[i]
                 counter_elements += 1
+        if (self.best_solution_v - acum_v)/100 < self.tolerance :
+            self.convergence = True
         if acum_v > self.best_solution_v:
                 self.best_solution_w = acum_w
                 self.best_solution_v = acum_v
                 self.best_binary_representation = self.current_binary_representation.copy()
                 self.best_elements_number = counter_elements
 
-    def probability_ant_action(self, index):
+    def probability_ant_action(self, index, current_selection):
         '''
         Summary: Function which returns the probability of doing the next move with an specific element in the knapsack.
         The value in the pheromone trait and attraction for this element is averaged by the total number of elements already
         in the current solution.
 
         Args: index (int): Index of the current element which will be introduced in the knapsack.
+              current_selection(list of int): Current seleciton of the ant in the knapsack
 
         Returns: (float): Ratio of the element among the pheromone trait and attraction move with all the elements in the current solution.
         
@@ -126,7 +149,7 @@ class Knapsack_ant_colony_algorithm:
         '''
         current_sum = 0 
         for i in range(0, self.n):
-            if self.current_binary_representation[i] == 1:
+            if current_selection[i] == 1:
                 current_sum += float(self.phero_t[i] * self.attr_move_u[i])
         return (self.phero_t[index] * self.attr_move_u[index])/current_sum
 
@@ -158,7 +181,7 @@ class Knapsack_ant_colony_algorithm:
             if self.current_binary_representation[i] == 1:
                 self.phero_t[i] += 1/(1+(self.best_solution_v-current_v)/self.best_solution_v)
             else:
-                self.phero_t[i] += self.phero_t[i] * self.decay
+                self.phero_t[i] = self.phero_t[i] * self.decay
 
     def knapsack_ant_colony_algorithm_iteration(self):
         '''
@@ -166,34 +189,38 @@ class Knapsack_ant_colony_algorithm:
         would be part of their solution given the pheromone trait and a random factor. If the element is selected succesfully, it is
         updated in the current solution. Otherwise, it is ignored. The solution made will respect the fact that the weight will not be
         passed. Finally, after each ant has iterated for all the knapsack or there is not more space left in the knapsack. The solution
-        is checked to see if it is the best yet and the pheromones are updated for the next ant.
+        is checked to see if it is the best yet and the pheromones are updated for the next ant. 
 
         Complexity: O(m*n^2) where m is the total ants and n the knapsack size.
         '''
         for ant in range(self.n_ants):
             vc = self.max_weight
             current_profit = 0
+            current_selection = self.current_binary_representation.copy()
             for knapsack_element_index in range(self.n):
-                self.current_binary_representation[knapsack_element_index] = 1
-                total_propability_action = self.probability_ant_action(knapsack_element_index)
+                current_selection[knapsack_element_index] = 1
+                total_propability_action = self.probability_ant_action(knapsack_element_index, current_selection)
                 if self.probability_ant_decision(total_propability_action):
                     vc -= self.w[knapsack_element_index]
                     if vc >= 0:
                         current_profit += self.v[knapsack_element_index]
                     else:
-                        self.current_binary_representation[knapsack_element_index] = 0
-                        break
+                        current_selection[knapsack_element_index] = 0
                 else:
-                    self.current_binary_representation[knapsack_element_index] = 0
+                    current_selection[knapsack_element_index] = 0
+            if current_profit > self.temporal_n_profit:
+                self.temporal_n_profit = current_profit
+                self.current_binary_representation = current_selection.copy()
             self.check_viability_solution()
-        self.update_pheromones(current_profit) 
+        self.update_pheromones(current_profit)
 
 
     def knapsack_ant_colony_algorithm(self):
         '''
         Summary: Main fuction of the algorithm. If the parameter of time is 0, the number of iterations will be taken into account.
         Otherwise, the algorithm will run until the time indicated. For each iteration, a new set of ants will be created and they
-        are going to find the solution for the knapsack until the time is reached or the number of iterations.
+        are going to find the solution for the knapsack until the time is reached or the number of iterations. In each iteration we
+        check if the tolerance of the solution has been fullfilled. If it is the case, we stop the execution.
 
         Total Complexity: O(m*n^2) where m is the total ants and n the knapsack size.
         '''
@@ -204,7 +231,9 @@ class Knapsack_ant_colony_algorithm:
             self.initiate_configurations()
             while True:
                 current_time = datetime.datetime.now()
-                if start_time <= current_time <= end_time:
+                if self.convergence:
+                    break
+                elif start_time <= current_time <= end_time:
                     self.knapsack_ant_colony_algorithm_iteration()
                 elif current_time > end_time:
                     break
@@ -212,6 +241,8 @@ class Knapsack_ant_colony_algorithm:
             current_iteration = 1
             self.initiate_configurations()
             while current_iteration < self.n_iterations:
+                if self.convergence:
+                    break
                 self.knapsack_ant_colony_algorithm_iteration()
                 current_iteration += 1
         return self.best_binary_representation, self.best_elements_number, self.best_solution_v, self.best_solution_w
@@ -225,8 +256,9 @@ if __name__ == "__main__":
     decay = input("Decay ratio for the pheromones (you can set this parameter to 0.5) : ")
     iterations = input("How many iterations to execute the algorithm : ")
     time = input("Time to execute the algorithm (0 if want execution by iterations) : ")
+    tolerance = input("Tolerance in the error to stop the execution : ")
     nb_items, sack_weight, items_value, df = knapsack_generator.uploadFile(path, type)
     weights_initial = np.array(df["W"])
     values_initial = np.array(df["V"])
-    kn_instance = Knapsack_ant_colony_algorithm(nb_items,sack_weight,weights_initial,values_initial,iterations,n_ants,decay,time)
+    kn_instance = Knapsack_ant_colony_algorithm(nb_items,sack_weight,weights_initial,values_initial,iterations,n_ants,decay,tolerance,time)
     v, nb_items_chosen, total_weight, total_value = kn_instance.knapsack_ant_colony_algorithm()
