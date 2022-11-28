@@ -211,15 +211,8 @@ class Fptas:
         # get the vector of items, nb_items_chosen, total_weight of the objects and total value of the objects
         v, nb_items_chosen, total_weight, total_value = self.get_knap_items()
         
-        # NEW way to calculate total value --- Landry Update --- 
-        total_value2 = 0
-        for a in range(len(self.values_tab)):
-            if v[a] == 1:
-                total_value2 += self.values_tab[a]
-
-        # return the solution
         # return v, nb_items_chosen, total_value*delta, total_weight
-        return v, nb_items_chosen, total_value2, total_weight
+        return v, nb_items_chosen, total_value, total_weight
 
 
 if __name__ == "__main__":
