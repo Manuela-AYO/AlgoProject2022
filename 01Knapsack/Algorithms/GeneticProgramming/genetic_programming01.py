@@ -186,20 +186,20 @@ def genetic_programming(weights, values, threshold, no_items, no_of_generations,
                     population[len(offsprings_1):len(mutants_2):, ] = mutants_2.shape[1]
 
         except AttributeError:
-            print("No mutants so mutants_1 has no shape as it's a numpy array")
+            # print("No mutants so mutants_1 has no shape as it's a numpy array")
             population[:,len(offsprings_1):len(offsprings_2)] = offsprings_2.shape[0]
             population[len(offsprings_1):len(offsprings_2):, ] = offsprings_2.shape[1]
 
         except TypeError:
-            print("there are no mutants, so mutants has no length")
+            # print("there are no mutants, so mutants has no length")
             population[:,len(offsprings_1):len(offsprings_2)] = offsprings_2.shape[0]
             population[len(offsprings_1):len(offsprings_2):, ] = offsprings_2.shape[1]
 
         current_time = dt.datetime.now()
-        check_time(curr_time=current_time, end_time=end_time)
         # it will not stop at the exact time it is meant to stop
         if (maximum_time != 0) and (current_time > end_time):
-                break
+            check_time(curr_time=current_time, end_time=end_time)
+            break
 
 
 
@@ -222,7 +222,7 @@ if __name__ == '__main__':
 
     type = input("Which type of file is it(t for text, c for csv) ? ")
     path = input("Path to the file[e.g : file/my_file.csv] : ")
-    population = input("How many possible solutions do you want to have in the population? ")
+    population_size = input("How many possible solutions do you want to have in the population? ")
 
     # normalize the path to the file
     path = path.split("/")
@@ -235,7 +235,7 @@ if __name__ == '__main__':
     weights_tab = np.array(df["W"])
     values_tab = np.array(df["V"])
 
-    init_pop = initialize_pop(item_no=(np.arange(1, no_of_items)), no_of_individuals=population)
+    init_pop = initialize_pop(item_no=(np.arange(1, no_of_items)), no_of_individuals=population_size)
 
     # apply the genetic programming algorithm
     optimal_solu, total_value, \
