@@ -146,21 +146,23 @@ if __name__ == '__main__':
     # generate the arguments in the command line
     parser = argparse.ArgumentParser(description=
                                      "Param for testing")
-    parser.add_argument("CsvName", type=str)
-    parser.add_argument("AlgoName", type=str)
-    parser.add_argument("TypeFile", type=str)
-    parser.add_argument("InstanceName", type=str)
-    parser.add_argument("MTheoricalValue", type=str)
-    parser.add_argument("MTime", type=str)
-    parser.add_argument("MIteration", type=str)
-    parser.add_argument("--sp1", type=str, required=False, default="-")
-    parser.add_argument("--sp2", type=str, required=False, default="-")
-    parser.add_argument("--sp3", type=str, required=False, default="-")
+    parser.add_argument("CsvName", type=str, help="csv file in output folder, for the answer")
+    parser.add_argument("AlgoName", type=str, help="Name of the algo beetween BruteForce,BranchAndBound,RatioSortGreedy,ValueSortGreedy,WeightSortGreedy,RatiosortAndConvergeGreedy,BottomUpDynamicProgramming,Randomized,FullyPolyNomial,GeneticProgramming,AntColony")
+    parser.add_argument("TypeFile", type=str, help="c for csv or t for text - type of the input file")
+    parser.add_argument("InstanceName", type=str, help="input file, in input folder")
+    parser.add_argument("MTheoricalValue", type=str, help="Max theorical value or -")
+    parser.add_argument("MTime", type=str, help="Max time or - for no time condition")
+    parser.add_argument("MIteration", type=str, help="Max iteration or -")
+    parser.add_argument("--sp1", type=str, required=False, default="-", help="depend of the algo running")
+    parser.add_argument("--sp2", type=str, required=False, default="-", help="depend of the algo running")
+    parser.add_argument("--sp3", type=str, required=False, default="-", help="depend of the algo running")
 
     args = parser.parse_args()
 
     benchmarkFor01(args.CsvName,args.AlgoName,args.TypeFile,args.InstanceName,args.MTheoricalValue,args.MTime,args.MIteration,[args.sp1,args.sp2, args.sp3])
 
+    # commande Exemple : 
+    # python .\01Knapsack_2.py csv_file_name_in_output_folder Name_of_the_algo c_or_t input_file_name_in_input_folder theorical_max_value(- for nothing) max_time(- for nothing) max_iteration(- for nothing) --sp1 specific_param_1(optionnal) --sp2 specific_param_2(optionnal) --sp3 specific_param_3(optionnal)
 
 
 
