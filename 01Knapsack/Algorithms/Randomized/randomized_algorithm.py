@@ -174,7 +174,8 @@ class Knapsack_randomized_algorithm:
         Summary: Function which orchestrate the main algorithm. Basically, iterating for each execution a new modification in the current
         solution, to see if this one is better than the previous solution. Also, there are two ways to execute the module.
         If there is a time different to zero, te algorithm will run over the time indicated. However, if the value is 0, it will take
-        the number of executions.
+        the number of executions. It is possible when the executions are finished that the random algorithm did not get a valid solution
+        There, no solution is returned.
 
         Return:
             list: The best binary list containing which elements are taken (with 1) and which are not included (with 0).
