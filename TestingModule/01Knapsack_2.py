@@ -28,7 +28,7 @@ from GeneticProgramming import genetic_programming01 as genetic_programming
 
 # ------------------------ USEFUL FUNCTION ------------------- #
 
-def execute_algo(knapSackObject :Set01KnapSack,AlgoName,MTime="-",MIteration="-",SpecificParam="-"):
+def execute_algo(knapSackObject :Set01KnapSack,AlgoName,MTime="-",MIteration="-",SpecificParam=0):
     # num_items_choosen = maximum_value = occupied_weight = running_time = -1
 
     print(f'Running {AlgoName}')
@@ -57,11 +57,6 @@ def execute_algo(knapSackObject :Set01KnapSack,AlgoName,MTime="-",MIteration="-"
     else:
         MTimeInt = int(MTime)
 
-    if SpecificParam=="-":
-        SpecificParamInt = 0
-    else:
-        SpecificParamInt = int(MTime)
-
 
     # calc time
     start_time = datetime.datetime.now()
@@ -78,18 +73,12 @@ def execute_algo(knapSackObject :Set01KnapSack,AlgoName,MTime="-",MIteration="-"
         items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject, MTimeInt)
 
     if AlgoName == 'Randomized': # --this algo need iteration value and a specific param
-        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject,MIterationInt,MTimeInt,SpecificParamInt)
+        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject,MIterationInt,MTimeInt,SpecificParam)
 
     
-    elif AlgoName == 'GeneticProgramming':
-        init_pop = genetic_programming.initialize_pop(item_no=np.arange(1, num_items+1) , no_of_individuals=num_individuals)
-        optimal_solu, num_items_choosen, maximum_value, occupied_weight = algo_function(
-                no_of_generations=num_generations,
-                population=init_pop,
-                weights=weights,
-                values=values,
-                threshold=knapsack_capacity,
-                no_items=num_items)
+    elif AlgoName == 'GeneticProgramming': # --this algo need a specific param and an init function. Should we do all this calcul in the genetic_prog file ? And we only keep here a main one that ask knapSackObject,MTimeInt,SpecificParam ?
+        init_pop = genetic_programming.initialize_pop(item_no=np.arange(1, knapSackObject.n+1) , no_of_individuals=SpecificParam)
+        optimal_solu, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject,SpecificParam,init_pop,MTimeInt)
 
 
     return num_items_choosen, maximum_value, occupied_weight, running_time
@@ -100,7 +89,7 @@ def setEpsilon():
     # epsilon = knapsackInstance.getEpsilon(parameters['epsilon'])
     print("finish")
 
-def benchmarkFor01(CsvName,AlgoName,InstanceName,MTheoricalValue="-",MTime="-",MIteration="-",SpecificParam="-"): # return string "well done, with the result", it write the result on a csv file inside OutputFolder inside 01Knapsack folder
+def benchmarkFor01(CsvName,AlgoName,InstanceName,MTheoricalValue="-",MTime="-",MIteration="-",SpecificParam=0): # return string "well done, with the result", it write the result on a csv file inside OutputFolder inside 01Knapsack folder
     # ---- OUTPUT INIT --- #
     output = ["-"]*11 # do same as a dataFrame ? Two column, one for value, the other for information
     IndexOut = {algoName:0,instanceName:1,nbItem:2,mWeight:3,mTheoricalValue:4,mTime:5,mIteration:6,realTime:7,realValue:8,realWeight:9,realNbItem:10,specificParam:11}
@@ -148,7 +137,9 @@ if __name__ == '__main__':
     test.uploadFile("Landrytest.csv","c")
     print(test)
     # print(top_down_approach.top_down_approach(test))
-    print(weight_sort_greedy.greedy_weight_selection(test))
+    init_pop = genetic_programming.initialize_pop(item_no=np.arange(1, test.n + 1) , no_of_individuals=2)
+    print(genetic_programming.genetic_programming(test,5,init_pop))
+    # print(weight_sort_greedy.greedy_weight_selection(test))
 
     algorithms = {
         'BruteForce': brute_force.bruteforce,
