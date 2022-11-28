@@ -70,7 +70,7 @@ class Knapsack_randomized_algorithm:
             value_list (list): List containing all the values of the elements.
             executions (int): Number of iterations which the algorithm will perform.
             time_min (int): Time in minutes to execute the algorithm if there are no elements or the argument is 0, the executions will be taken into account.
-            selection_ration (float): Porcentage of the elements which are going to be taking into account for the elite group.
+            selection_ration (float): Porcentage of the elements which are going to be taking into account for the elite group. This value should be greater than 0
 
         Complexity: O(1)
         '''
@@ -83,7 +83,10 @@ class Knapsack_randomized_algorithm:
         self.executions = executions
         self.time_min = int(time_min)
         self.best_elements_number = 0
-        self.selection_count = int(round(self.n * selection_ratio))
+        if selection_ratio == 0.0:
+            self.selection_count = int(round(self.n * 0.1))
+        else:
+            self.selection_count = int(round(self.n * selection_ratio))
     
     def initial_solution_generator(self):
         '''
@@ -92,8 +95,10 @@ class Knapsack_randomized_algorithm:
 
         Complexity: O(n)
         '''
-        ratio = random.random()
-        self.current_binary_representation = np.random.binomial(n=1, p=ratio, size=[self.n])
+        self.current_binary_representation = []
+        for i in range(self.n):
+            current_random_assignation = random.randint(0,2)
+            self.current_binary_representation.append(current_random_assignation)
 
     def check_viability_weight(self):
         '''
@@ -165,11 +170,6 @@ class Knapsack_randomized_algorithm:
             self.current_binary_representation[index_to_change] = 0
 
     def knapsack_randomized_algorithm(self):
-        # ----------EXEPTION---------- #
-        if self.selection_count == 0:
-            print("ERROR : the specific parameter (selection ratio) is to low compare to the number of data. Selection ratio * number of data must be superior or equal to 0")
-            return [0]*self.n, 0, 0, 0
-        # ---------------------------- #
         '''
         Summary: Function which orchestrate the main algorithm. Basically, iterating for each execution a new modification in the current
         solution, to see if this one is better than the previous solution. Also, there are two ways to execute the module.
@@ -208,7 +208,10 @@ class Knapsack_randomized_algorithm:
                 else:
                     self.delete_random_element()
             self.check_viability_weight()
-        return self.best_binary_representation, self.best_elements_number, self.best_solution_v, self.best_solution_w
+        if len(self.best_binary_representation):
+            return self.best_binary_representation, self.best_elements_number, self.best_solution_v, self.best_solution_w
+        else:
+            return [0]*self.n, 0, 0, 0
 
 # Static main model for execution
 if __name__ == "__main__":
