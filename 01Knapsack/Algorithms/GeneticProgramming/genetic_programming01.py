@@ -207,7 +207,7 @@ def genetic_programming(set01 : Set01KnapSack, no_of_generations, population, ma
             population[len(offsprings_1):len(offsprings_2):, ] = offsprings_2.shape[1]
 
         current_time = dt.datetime.now()
-        check_time(curr_time=current_time, end_time=end_time)
+        # check_time(curr_time=current_time, end_time=end_time)
         # it will not stop at the exact time it is meant to stop
         if (maximum_time != 0) and (current_time > end_time):
                 break
