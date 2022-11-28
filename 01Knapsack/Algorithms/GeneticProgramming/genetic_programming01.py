@@ -8,6 +8,7 @@ Description:
             3. We cross the fit individuals to produce more fit offspring
             4. we mutate the offspring to create genetic variation
 Author: Gloria Isedu
+update Landry : just formalized input and output
 Date: 30/10/2022
 Input: ...
 Output: optimal solution
@@ -39,6 +40,7 @@ VALUE = np.random.randint(10, 800, size=NO_OF_ITEMS)
 ITEM_NUMBER = np.arange(1, 11) # [ 1  2  3  4  5  6  7  8  9 10]
 
 
+
 def check_time(curr_time, end_time):
     print(curr_time - end_time)
 
@@ -46,7 +48,8 @@ def check_time(curr_time, end_time):
 def initialize_pop(item_no, no_of_individuals=5):
     # initialize the population
     solutions_per_population = no_of_individuals 
-    pop_size = (solutions_per_population, item_no.shape[0]) # (5, 10)
+    pop_size = (int(solutions_per_population), item_no.shape[0]) # (5, 10)
+    print(pop_size)
     initial_population = np.random.randint(2, size=pop_size)
     # [[1 1 0 0 1 1 0 0 0 0]
     #  [1 0 0 0 1 0 1 1 1 1]
@@ -146,7 +149,15 @@ def mutation(offsprings):
         return mutants
     
     
-def genetic_programming(weights, values, threshold, no_items, no_of_generations, population,  maximum_time=5):
+def genetic_programming(set01 : Set01KnapSack, no_of_generations, population, maximum_time=5):
+
+    # ----- update for timing module -------- #
+    weights = set01.data.W
+    values = set01.data.V
+    no_items = set01.n
+    threshold = set01.wmax
+    # ---------------------------
+
     """
     combines all the functions.
 
@@ -214,7 +225,7 @@ def genetic_programming(weights, values, threshold, no_items, no_of_generations,
     optimal_value = sum(final_solu * values)
     optimal_weight = sum(final_solu * weights)
 
-    return final_solu, optimal_value, optimal_weight, no_of_selected_genes
+    return final_solu, no_of_selected_genes, optimal_value, optimal_weight
 
 
 if __name__ == '__main__':
@@ -244,7 +255,7 @@ if __name__ == '__main__':
                 values=values_tab,
                 threshold=item_weights,
                 no_items=no_of_items,
-                no_of_generations=2,
+                no_of_generations=50,
                 population=init_pop,
                 maximum_time=5)
     # write the result in the output filec
