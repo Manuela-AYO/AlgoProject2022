@@ -69,7 +69,7 @@ class Knapsack_randomized_algorithm:
             weight_list (list): List containing all the weights of the elements.
             value_list (list): List containing all the values of the elements.
             executions (int): Number of iterations which the algorithm will perform.
-            time_min (int): Time in minutes to execute the algorithm if there are no elements or the argument is 0, the executions will be taken into account.
+            time_min (int): Time in milliseconds to execute the algorithm if there are no elements or the argument is 0, the executions will be taken into account.
             selection_ration (float): Porcentage of the elements which are going to be taking into account for the elite group. This value should be greater than 0
 
         Complexity: O(1)
@@ -189,7 +189,7 @@ class Knapsack_randomized_algorithm:
         self.initial_solution_generator()
         if self.time_min != 0:
             start_time = datetime.datetime.now()
-            iteration_time = datetime.timedelta(minutes=int(self.time_min))
+            iteration_time = datetime.timedelta(milliseconds=int(self.time_min))
             end_time = start_time + iteration_time
             while True:
                 current_time = datetime.datetime.now()
