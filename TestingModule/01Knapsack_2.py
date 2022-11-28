@@ -148,7 +148,7 @@ if __name__ == '__main__':
                                      "Param for testing")
     parser.add_argument("CsvName", type=str, help="csv file in output folder, for the answer")
     parser.add_argument("AlgoName", type=str, help="Name of the algo beetween BruteForce,BranchAndBound,RatioSortGreedy,ValueSortGreedy,WeightSortGreedy,RatiosortAndConvergeGreedy,BottomUpDynamicProgramming,Randomized,FullyPolyNomial,GeneticProgramming,AntColony")
-    parser.add_argument("TypeFile", type=str, help="c for csv or t for text - type of the input file")
+    parser.add_argument("TypeFile", type=str, help="c for csv or t for text, type of the input file")
     parser.add_argument("InstanceName", type=str, help="input file, in input folder")
     parser.add_argument("MTheoricalValue", type=str, help="Max theorical value or -")
     parser.add_argument("MTime", type=str, help="Max time or - for no time condition")
