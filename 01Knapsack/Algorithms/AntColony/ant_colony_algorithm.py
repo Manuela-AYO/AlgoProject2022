@@ -126,7 +126,7 @@ class Knapsack_ant_colony_algorithm:
                 acum_w += self.w[i]
                 acum_v += self.v[i]
                 counter_elements += 1
-        if self.best_solution_v != 0 and (self.best_solution_v - acum_v)/self.best_solution_v < self.tolerance :
+        if self.best_solution_v != 0 and (self.best_solution_v - acum_v)/self.best_solution_v <= self.tolerance :
             self.convergence = True
         if acum_v > self.best_solution_v:
                 self.best_solution_w = acum_w
