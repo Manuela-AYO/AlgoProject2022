@@ -96,7 +96,7 @@ def setEpsilon(): # for cross validation
     # epsilon = knapsackInstance.getEpsilon(parameters['epsilon'])
     print("finish")
 
-def benchmarkFor01(CsvName,AlgoName,InstanceName,MTheoricalValue="-",MTime="-",MIteration="-",SpecificParam=["-","-", "-"]): 
+def benchmarkFor01(CsvName,AlgoName,TypeFile,InstanceName,MTheoricalValue="-",MTime="-",MIteration="-",SpecificParam=["-","-", "-"]): 
         # this will take the instance inside Input Folder and the output inside Output folder
     # ---- OUTPUT INIT --- #
     output = ["-"]*11 # do same as a dataFrame ? Two column, one for value, the other for information
@@ -159,7 +159,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    benchmarkFor01(args.CsvName,args.AlgoName,args.InstanceName,args.MTheoricalValue,args.MTime,args.MIteration,[args.sp1,args.sp2, args.sp3])
+    benchmarkFor01(args.CsvName,args.AlgoName,args.TypeFile,args.InstanceName,args.MTheoricalValue,args.MTime,args.MIteration,[args.sp1,args.sp2, args.sp3])
 
 
 
