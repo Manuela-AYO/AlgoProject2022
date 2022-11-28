@@ -10,6 +10,9 @@
     
     References :
         - https://en.wikipedia.org/wiki/Knapsack_problem#Fully_polynomial_time_approximation_scheme
+
+
+    update Landry : just formalized input (with the function) and output (change the order)
 """
 
 
@@ -28,6 +31,12 @@ if not str(Path(__file__).resolve().parent.parent) in sys.path:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
  
 from classes import Set01KnapSack
+
+
+# ----FOR TESTING MODULE---- #
+def fptas(set01 : Set01KnapSack, time_min=0):
+    return Fptas(set01.data.W,set01.data.V,set01.wmax,time_min).fptas()
+# -------------------------- #
 
 class Fptas:
     def __init__(self, weights_tab : np.array, values_tab : np.array, sack_weight : int, time : int  = 0) -> None:
@@ -182,8 +191,8 @@ class Fptas:
         Returns:
             np.array: the final vector of items with 0 if an item at position i isn't selected and 1 else
             int : number of items chosen
-            int : weight of those items
             int : value of those items
+            int : weight of those items
         """
         if self.epsilon<0 or self.epsilon>1:
             print("ε should be in the interval [0,1]")
@@ -196,14 +205,21 @@ class Fptas:
         delta = self.epsilon*max_value/len(self.weights_tab)
         
         # scale the values
-        values_tab_scale = values_tab/delta
+        values_tab_scale = self.values_tab/delta
         self.new_values_tab = np.array(values_tab_scale, dtype=int)
         
         # get the vector of items, nb_items_chosen, total_weight of the objects and total value of the objects
         v, nb_items_chosen, total_weight, total_value = self.get_knap_items()
         
+        # NEW way to calculate total value --- Landry Update --- 
+        total_value2 = 0
+        for a in range(len(self.values_tab)):
+            if v[a] == 1:
+                total_value2 += self.values_tab[a]
+
         # return the solution
-        return v, nb_items_chosen, total_weight, total_value*delta
+        # return v, nb_items_chosen, total_value*delta, total_weight
+        return v, nb_items_chosen, total_value2, total_weight
 
 
 if __name__ == "__main__":

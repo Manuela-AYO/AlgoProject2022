@@ -2,6 +2,7 @@
 Description: The class refers to the 0/1 knapsack problem solved with a greedy algorithim based on the highest weight.
 
 Author: Gloria Isedu
+update Landry : just formalized input and output
 Date: 18/11/2022
 Input: weights, values, knapsack size, 
 Output: greediest solution bu ratio
@@ -30,7 +31,13 @@ VALUE = np.array([100, 280, 120])
 WEIGHT = np.array([10, 40, 20])
 
 
-def greedy_weight_selection(weights, values,  threshold, maximum_time):
+def greedy_weight_selection(set01 : Set01KnapSack, maximum_time = 0):
+    # ----- update for timing module -------- #
+    weights = set01.data.W.to_numpy()
+    values = set01.data.V.to_numpy()
+    threshold = set01.wmax
+    # ---------------------------
+
     """
     chooses the final solution by selecting the lowest weights and checking if threshold is reached.
     Args:
@@ -66,7 +73,7 @@ def greedy_weight_selection(weights, values,  threshold, maximum_time):
     no_of_things_in_knapsack = sum(solution)
     total_value = sum(solution * values)
     total_weight = sum(solution * weights)
-    return solution, total_value, total_weight, no_of_things_in_knapsack
+    return solution, no_of_things_in_knapsack, total_value, total_weight
   
 
 if __name__ == '__main__':

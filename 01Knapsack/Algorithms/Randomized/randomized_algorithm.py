@@ -5,6 +5,7 @@ The selection is made based in which are the best opportunities to improve the c
 the value and when deleting, which does not reduce the value significantly.
 
 Author: Felipe Cortes Jaramillo
+update Landry : just formalized input and output AND create an Exeption Error
 
 Usage: python3 01_ks_randomized_algo.py [type] [path] [iterations]
 
@@ -32,6 +33,16 @@ if not str(Path(__file__).resolve().parent.parent) in sys.path :
 # Other elements
 from classes import Set01KnapSack
 from external import compute_run_time
+
+
+
+# ----FOR TESTING MODULE---- #
+def randomized(set01 : Set01KnapSack, executions, time_min=0, selection_ratio=0.1):
+    if (selection_ratio != 0): # if = 0, then don't add it the param, and it will take the default value
+        return Knapsack_randomized_algorithm(set01.n,set01.wmax,np.array(set01.data.W),np.array(set01.data.V),int(executions),int(time_min),float(selection_ratio)).knapsack_randomized_algorithm()
+    else:
+        return Knapsack_randomized_algorithm(set01.n,set01.wmax,np.array(set01.data.W),np.array(set01.data.V),int(executions),int(time_min)).knapsack_randomized_algorithm()
+# -------------------------- #
 
 class Knapsack_randomized_algorithm:
 
@@ -127,10 +138,11 @@ class Knapsack_randomized_algorithm:
         for i in range(0, self.n):
             if self.current_binary_representation[i] == 0:
                 zero_indexes[i] = self.v[i]
-        zero_indexes_bvalue = dict(sorted(zero_indexes.items(), key=lambda item: item[1], reverse=True))
-        zero_elites = list(zero_indexes_bvalue.keys())[0:self.selection_count]
-        index_to_change = random.choice(zero_elites)
-        self.current_binary_representation[index_to_change] = 1
+        if zero_indexes:
+            zero_indexes_bvalue = dict(sorted(zero_indexes.items(), key=lambda item: item[1], reverse=True))
+            zero_elites = list(zero_indexes_bvalue.keys())[0:self.selection_count]
+            index_to_change = random.choice(zero_elites)
+            self.current_binary_representation[index_to_change] = 1
 
     def delete_random_element(self):
         '''
@@ -146,12 +158,18 @@ class Knapsack_randomized_algorithm:
         for i in range(0, self.n):
             if self.current_binary_representation[i] == 1:
                 one_indexes[i] = self.v[i]
-        one_indexes_bvalue = dict(sorted(one_indexes.items(), key=lambda item: item[1], reverse=False))
-        one_elites = list(one_indexes_bvalue.keys())[0:self.selection_count]
-        index_to_change = random.choice(one_elites)
-        self.current_binary_representation[index_to_change] = 0
+        if one_indexes:
+            one_indexes_bvalue = dict(sorted(one_indexes.items(), key=lambda item: item[1], reverse=False))
+            one_elites = list(one_indexes_bvalue.keys())[0:self.selection_count]
+            index_to_change = random.choice(one_elites)
+            self.current_binary_representation[index_to_change] = 0
 
     def knapsack_randomized_algorithm(self):
+        # ----------EXEPTION---------- #
+        if self.selection_count == 0:
+            print("ERROR : the specific parameter (selection ratio) is to low compare to the number of data. Selection ratio * number of data must be superior or equal to 0")
+            return [0]*self.n, 0, 0, 0
+        # ---------------------------- #
         '''
         Summary: Function which orchestrate the main algorithm. Basically, iterating for each execution a new modification in the current
         solution, to see if this one is better than the previous solution. Also, there are two ways to execute the module.
@@ -190,7 +208,7 @@ class Knapsack_randomized_algorithm:
                 else:
                     self.delete_random_element()
             self.check_viability_weight()
-        return self.best_binary_representation, self.best_elements_number, self.best_solution_w, self.best_solution_v
+        return self.best_binary_representation, self.best_elements_number, self.best_solution_v, self.best_solution_w
 
 # Static main model for execution
 if __name__ == "__main__":
@@ -202,5 +220,5 @@ if __name__ == "__main__":
     nb_items, sack_weight, items_value, df = knapsack_generator.uploadFile(path, type)
     weights_initial = np.array(df["W"])
     values_initial = np.array(df["V"])
-    knapsack_randomized_instance = Knapsack_randomized_algorithm(nb_items, sack_weight, weights_initial, values_initial, iterations, time)
+    knapsack_randomized_instance = Knapsack_randomized_algorithm(nb_items, sack_weight, weights_initial, values_initial, int(iterations), time)
     v, nb_items_chosen, total_weight, total_value = knapsack_randomized_instance.knapsack_randomized_algorithm()
