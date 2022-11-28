@@ -234,6 +234,7 @@ if __name__ == '__main__':
     type = input("Which type of file is it(t for text, c for csv) ? ")
     path = input("Path to the file[e.g : file/my_file.csv] : ")
     population_size = input("How many possible solutions do you want to have in the population? ")
+    time = int(input("How long should the file run (0 if you are not timing) : "))
 
     # normalize the path to the file
     path = path.split("/")
@@ -257,7 +258,7 @@ if __name__ == '__main__':
                 no_items=no_of_items,
                 no_of_generations=50,
                 population=init_pop,
-                maximum_time=5)
+                maximum_time=time)
     # write the result in the output filec
     text = f"Genetic programming \t\t\t{no_of_items}\t\t \t\t\t\t{item_weights}\t \t\t\t\t{items_value}\t\t \t\t\t\t{no_of_items_selected}\t\t \t\t\t{total_weight}\t \t\t{total_value}\t\t"
     knapsack.writeOutput(text) 
