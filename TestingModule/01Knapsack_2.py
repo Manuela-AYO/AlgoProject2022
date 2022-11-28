@@ -152,7 +152,7 @@ if __name__ == '__main__':
     test = Set01KnapSack()
     test.uploadFile("Landrytest.csv","c")
     # print(top_down_approach.top_down_approach(test))
-    print(randomized_algorithm.randomized(test, 200))
+    print(fptas.fptas(test))
 
     algorithms = {
         'BruteForce': brute_force.bruteforce,
