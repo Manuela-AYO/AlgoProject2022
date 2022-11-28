@@ -19,6 +19,7 @@ References :
     - Algorithm : https://www.geeksforgeeks.org/0-1-knapsack-using-branch-and-bound/
     - Demonstration : https://www.youtube.com/watch?v=yV1d-b_NeK8
 
+    update Landry : just formalized input (with the function) and output (change the order)
 """
 # some important modules
 import numpy as np
@@ -230,7 +231,7 @@ class BranchBoundKnapsack :
                 if self.time != 0 and current_time > end_time:
                     break
               
-        return self.vector_items, self.nb_items_chosen, self.total_weight, self.total_value
+        return self.vector_items, self.nb_items_chosen, self.total_value, self.total_weight
     
     
 if __name__ == '__main__':

@@ -1,6 +1,7 @@
 """
 Author: Chadapohn Chaosrikul
 Update: Landry --> Change the timing stop, it also return the curent calculate item. The recusivity part, inside helper.py will begin to this item instead of begining at the end.
+update Landry : just formalized input and output
 """
 # Import Python Modules
 import numpy as np

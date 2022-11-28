@@ -1,6 +1,7 @@
 """
 Author: Chadapohn Chaosrikul
 Reference: https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/
+update Landry : just formalized input and output
 """
 
 # Import Python Modules

@@ -4,9 +4,11 @@ update : Landry Bailly, 25/11/2022
 
 # ------------------- IMPORT PART ------------ #
 
+from asyncio.windows_events import NULL
 import sys, os
 import pandas as pd
 import numpy as np
+import argparse
 from datetime import datetime, timedelta
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
@@ -22,16 +24,14 @@ from BranchAndBound import branch_bound
 from Greedy import ratio_sort_greedy, value_sort_greedy, weight_sort_greedy, ratio_sort_and_converge
 from DynamicProgramming import top_down_approach, bottom_up_approach
 from FullyPolynomial import fptas
-from Randomized.randomized_algorithm import Knapsack_randomized_algorithm
+from Randomized import randomized_algorithm
 from GeneticProgramming import genetic_programming01 as genetic_programming
+from AntColony import ant_colony_algorithm
 
 # ------------------------ USEFUL FUNCTION ------------------- #
 
-def execute_algo(knapSackObject,AlgoName,MTime="-",MIteration="-",SpecificParam="-"):
-    # num_items_choosen = maximum_value = occupied_weight = running_time = -1
-
-    print(f'Running {AlgoName}')
-
+def execute_algo(knapSackObject :Set01KnapSack,AlgoName,MTime="-",MIteration="-",SpecificParam=[0,0]):
+    # ------- INIT -------- #
     algorithms = {
         'BruteForce': brute_force.bruteforce,
         'BranchAndBound': branch_bound.branch_bound,
@@ -39,144 +39,118 @@ def execute_algo(knapSackObject,AlgoName,MTime="-",MIteration="-",SpecificParam=
         'ValueSortGreedy': value_sort_greedy.greedy_value_selection,
         'WeightSortGreedy': weight_sort_greedy.greedy_weight_selection,
         'RatiosortAndConvergeGreedy':ratio_sort_and_converge.ratio_sort_and_converge,
-
         'TopDownDynamicProgramming': top_down_approach.top_down_approach,
         'BottomUpDynamicProgramming': bottom_up_approach.bottom_up_approach,
+        'Randomized': randomized_algorithm.randomized,
         'FullyPolyNomial': fptas.fptas,
-        'Randomized': Knapsack_randomized_algorithm,
-        'GeneticProgramming': genetic_programming.genetic_programming
+        'GeneticProgramming': genetic_programming.genetic_programming,
+        'AntColony':ant_colony_algorithm.ant_colony_algorithm
     }
+    if MIteration=="-":
+        MIterationInt = 0
+    else:
+        MIterationInt = int(MTime)
+
     if MTime=="-":
         MTimeInt = 0
     else:
         MTimeInt = int(MTime)
 
-    # calc time
-    start_time = datetime.datetime.now()
-    end = datetime.datetime.now()
-    # call the algo
-    realTime = end - start_time
-    print("time :",realTime)
+    # ------- Execute Algo -------- #
 
+    # calc start time
+    start_time = datetime.now()
 
     # Apply algorithm
     algo_function = algorithms[AlgoName]
 
-    if AlgoName == 'BruteForce' or AlgoName == 'RatiosortAndConvergeGreedy':
+    
+
+    if AlgoName == 'Randomized': # --this algo need iteration value and a specific param
+        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject,MIterationInt,MTimeInt,SpecificParam[0])
+    elif AlgoName == 'AntColony': # --need iteration + 2 specific param ant,decay
+        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject,MIterationInt,SpecificParam[0], SpecificParam[1],MTimeInt)
+    elif AlgoName == 'GeneticProgramming': # --this algo need a specific param and an init function. Should we do all this calcul in the genetic_prog file ? And we only keep here a main one that ask knapSackObject,MTimeInt,SpecificParam ?
+        init_pop = genetic_programming.initialize_pop(item_no=np.arange(1, knapSackObject.n+1) , no_of_individuals=SpecificParam[0])
+        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject,SpecificParam[0],init_pop,MTimeInt)
+    else:
         items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject, MTimeInt)
 
-
-    elif AlgoName == 'TopDownDynamicProgramming' or algo_name == 'BottomUpDynamicProgramming':
-        solution = algo_function(num_items, knapsack_capacity, weights, values)
-        maximum_value, num_items_choosen, occupied_weight = solution[0]
-        running_time = solution[1]
-
-    elif AlgoName == 'FullyPolyNomial':
-        solution = algo_function(weights, values, knapsack_capacity, parameter_values['epsilon'])
-        v, num_items_choosen, occupied_weight, maximum_value = solution[0]
-        running_time = solution[1]
-
-    elif AlgoName == 'Randomized':
-        knapsack_randomized_instance = algo_function(num_items, knapsack_capacity, weights, values, num_iterations, time_interval)
-        v, num_items_choosen, occupied_weight, maximum_value = knapsack_randomized_instance.knapsack_randomized_algorithm()
-    
-    elif AlgoName == 'GeneticProgramming':
-        init_pop = genetic_programming.initialize_pop(item_no=np.arange(1, num_items+1) , no_of_individuals=num_individuals)
-        optimal_solu, num_items_choosen, maximum_value, occupied_weight = algo_function(
-                no_of_generations=num_generations,
-                population=init_pop,
-                weights=weights,
-                values=values,
-                threshold=knapsack_capacity,
-                no_items=num_items)
+    # calc end time
+    end = datetime.now()
+    realTime = end - start_time
 
 
-    return num_items_choosen, maximum_value, occupied_weight, running_time
+    return items_vector, num_items_choosen, maximum_value, occupied_weight, realTime
 
 
 # ------------------------ BENCHMARK -------------------------- #
-def setEpsilon():
+def setEpsilon(): # for cross validation
     # epsilon = knapsackInstance.getEpsilon(parameters['epsilon'])
     print("finish")
 
-def benchmarkFor01(CsvName,AlgoName,InstanceName,MTheoricalValue="-",MTime="-",MIteration="-",SpecificParam="-"): # return string "well done, with the result", it write the result on a csv file inside OutputFolder inside 01Knapsack folder
+def benchmarkFor01(CsvName,AlgoName,InstanceName,MTheoricalValue="-",MTime="-",MIteration="-",SpecificParam=[0,0]): 
+        # this will take the instance inside Input Folder and the output inside Output folder
     # ---- OUTPUT INIT --- #
     output = ["-"]*11 # do same as a dataFrame ? Two column, one for value, the other for information
-    IndexOut = {algoName:0,instanceName:1,nbItem:2,mWeight:3,mTheoricalValue:4,mTime:5,mIteration:6,realTime:7,realValue:8,realWeight:9,realNbItem:10,specificParam:11}
+    IndexOut = ["algoName","instanceName","nbItem","mWeight:3","mTheoricalValue","mTime","mIteration","realTime","realValue","realWeight","realNbItem","specificParam"]
     
     # -------TESTING MODULE ------ #
     knapsackInstance = Set01KnapSack()
-    knapsackInstance.uploadData(InstanceName,'c')
+    knapsackInstance.uploadFile(InstanceName,'c')
 
-    weights = knapsackInstance.data['W']
-    values = knapsackInstance.data['V']
-    num_items = knapsackInstance.n
-    knapsack_capacity = knapsackInstance.wmax
-    print("--------Curent TEST (algo : ",AlgoName," Instance : ",InstanceName)
-    print(f'Number of Items: {num_items}')
-    print(f'Maximum Capacity: {knapsack_capacity}')
-    # print(f'Sum of Item Values: {sum_item_values}\n')
+    print("############################# Execute ALGO ",AlgoName,"#############################")
 
-    instance_values = {
-        'num_items': num_items,
-        'knapsack_capacity': knapsack_capacity,
-        'sum_item_values': sum_item_values,
-        'weights': weights,
-        'values': values
-    }
+    items_vector, num_items_choosen, maximum_value, occupied_weight, realTime = execute_algo(knapsackInstance, AlgoName, MTime, MIteration, SpecificParam)
 
-    num_items_choosen, maximum_value, occupied_weight, running_time = execute_algo(algo_name, instance_values, parameter_values, time_interval, knapsackInstance)
-    ratio = round(maximum_value/occupied_weight, 2)
-    print(f'Ratio of Value and Weight: {ratio}')
-    print(f'Occupied Weights: {occupied_weight}')
-    print(f'Number of Items Choosen: {num_items_choosen}')
-    print(f'Sum of Solution Values: {maximum_value}')
-    print(f'Running Time (ms): {running_time}')
-    print() 
+    if MTime != "-":
+        MTimeFormat = timedelta(minutes=int(MTime))
+    else:
+        MTimeFormat = MTime
+
+    output = [AlgoName, InstanceName, knapsackInstance.n, knapsackInstance.wmax, MTheoricalValue, MTimeFormat, MIteration, realTime, maximum_value, occupied_weight, num_items_choosen, SpecificParam[0], SpecificParam[1]]
     
-    output = [algo_name, num_items, knapsack_capacity, sum_item_values, ratio, num_items_choosen, maximum_value, occupied_weight, running_time, instance]
+    # ----- Print answer -------- #
+    print("############################# Answer #############################")
+    for i in range(len(knapsackInstance.data.V)):
+        if (items_vector[i] == 1):
+            print("Object : ",i," V = ",knapsackInstance.data.V[i]," W = ",knapsackInstance.data.W[i])
+    print("Max Value = ",maximum_value," / ",MTheoricalValue)
+    print("Max Weight = ",occupied_weight," / ",knapsackInstance.wmax)
+
     # ----- ADD OUTPUT TOO CSV ----- #
-    # solution_df = pd.DataFrame(solution_row, columns=['Algorithm', 'Num Items', 'Knapsack Capacity', 'Item Values' , 'Ratio v/w', 'Nums of Choosen Items', 'Total Choosen Values', 'Total Choosen Weights', 'Running Time', 'Input'])
-    # timestr = time.strftime('%Y%m%d_%H%M%S')
-    
-    output.to_csv(os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Output', CsvName), index=False) # check to add line without deleting the beginning
-    return output
+    outputCsv = ""
+    for o in output:
+        outputCsv = outputCsv + str(o) + ","
+
+    file = open(os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Output', CsvName), 'a')
+    file.write(outputCsv)  
+    file.write('\n')
+
+    return output, IndexOut
 
 if __name__ == '__main__':
-    test = Set01KnapSack()
-    test.uploadFile("Landrytest.csv","c")
-    print(top_down_approach.top_down_approach(test))
+    # test = Set01KnapSack()
+    # test.uploadFile("Landrytest.csv","c")
+    # print(test)
+    # print(ant_colony_algorithm.ant_colony_algorithm(test, 4, 3, 0.4))
+    # # print(weight_sort_greedy.greedy_weight_selection(test))
 
-    algorithms = {
-        'BruteForce': brute_force.bruteforce,
-        'BranchAndBound': branch_bound.branch_bound,
-        'RatioSortGreedy': ratio_sort_greedy.greedy_ratio_selection,
-        'ValueSortGreedy': value_sort_greedy.greedy_value_selection,
-        'WeightSortGreedy': weight_sort_greedy.greedy_weight_selection,
-        'RatiosortAndConvergeGreedy':ratio_sort_and_converge.ratio_sort_and_converge,
+    # generate the arguments in the command line
+    parser = argparse.ArgumentParser(description=
+                                     "Param for testing")
+    parser.add_argument("CsvName", type=str)
+    parser.add_argument("AlgoName", type=str)
+    parser.add_argument("InstanceName", type=str)
+    parser.add_argument("MTheoricalValue", type=str)
+    parser.add_argument("MTime", type=str)
+    parser.add_argument("MIteration", type=str)
+    parser.add_argument("SpecificParam1", type=int)
+    parser.add_argument("SpecificParam2", type=int)
 
-        'TopDownDynamicProgramming': top_down_approach.top_down_approach,
-        'BottomUpDynamicProgramming': bottom_up_approach.bottom_up_approach,
-        # 'FullyPolyNomial': fptas.fptas,
-        'Randomized': Knapsack_randomized_algorithm,
-        'GeneticProgramming': genetic_programming.genetic_programming
-    }
-    # get_num_active_processes()
-    # 
-    # instances = [
-    #     '0_1_kp_REF_10_100_221016.csv', 
-    #     # '0_1_kp_REF_50_300_221120.csv
-    # ]
-    # 
-    # parameters = {
-    #     'epsilon': os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Input', '0_1_kp_epsilon1.txt'), # don't need
-    #     'num_iterations': os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Input', '0_1_kp_num_iterations.txt'),
-    #     'num_generations': os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Input', '0_1_kp_num_generations.txt'),
-    #     'num_individuals': os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Input', '0_1_kp_num_individuals.txt'),
-    # }
-    # 
-    # time_interval = input("Time to execute the algorithm (0 for solution benchmarking): ")
-    # benchmark(instances, parameters, algorithms, time_interval)
+    args = parser.parse_args()
+
+    benchmarkFor01("test.csv","BruteForce","Landrytest.csv")
 
 
 

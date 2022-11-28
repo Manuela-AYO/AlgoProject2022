@@ -6,6 +6,7 @@ best solutons possible. In each search and iteration, the best solution is recor
 solution found during the execution is returned.
 
 Author: Felipe Cortes Jaramillo
+update Landry : just formalized input and output
 
 Usage: python3 ant_colony_algorithm.py [type] [path] [iterations] [n_ants] [decay_rate] [time_min]
 
@@ -37,6 +38,12 @@ if not str(Path(__file__).resolve().parent.parent) in sys.path :
 # Other elements
 from classes import Set01KnapSack
 from external import compute_run_time
+
+
+# ----FOR TESTING MODULE---- #
+def ant_colony_algorithm(set01 : Set01KnapSack, executions, n_ants,decay=0.75,time_min=0):
+    return Knapsack_ant_colony_algorithm(set01.n,set01.wmax,set01.data.W,set01.data.V,int(executions),int(n_ants),float(decay),int(time_min)).knapsack_ant_colony_algorithm()
+# -------------------------- #
 
 class Knapsack_ant_colony_algorithm:
 
@@ -207,7 +214,7 @@ class Knapsack_ant_colony_algorithm:
             while current_iteration < self.n_iterations:
                 self.knapsack_ant_colony_algorithm_iteration()
                 current_iteration += 1
-        return self.best_binary_representation, self.best_elements_number, self.best_solution_w, self.best_solution_v
+        return self.best_binary_representation, self.best_elements_number, self.best_solution_v, self.best_solution_w
     
 # Static main model for execution
 if __name__ == "__main__":

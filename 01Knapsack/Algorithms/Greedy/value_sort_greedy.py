@@ -3,6 +3,7 @@ Description:
             1. 
             2.
 Author: Gloria Isedu
+update Landry : just formalized input and output and correct bug
 Date: 18/11/2022
 Input: ...
 Output: greediest solution
@@ -61,7 +62,7 @@ def greedy_value_selection(set01 : Set01KnapSack, maximum_time = 0):
 
     while temp_total <= threshold:
         highest_value_index = np.where(temp_vals == np.max(temp_vals))
-        most_expensive_weight = weights[highest_value_index]
+        most_expensive_weight = weights[highest_value_index][0]
         temp_vals[highest_value_index] = -1
 
         temp_total += most_expensive_weight

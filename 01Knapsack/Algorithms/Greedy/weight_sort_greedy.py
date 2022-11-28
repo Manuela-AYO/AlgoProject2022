@@ -2,6 +2,7 @@
 Description: The class refers to the 0/1 knapsack problem solved with a greedy algorithim based on the highest weight.
 
 Author: Gloria Isedu
+update Landry : just formalized input and output
 Date: 18/11/2022
 Input: weights, values, knapsack size, 
 Output: greediest solution bu ratio
