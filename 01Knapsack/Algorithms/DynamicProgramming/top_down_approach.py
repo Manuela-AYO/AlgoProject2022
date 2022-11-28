@@ -1,5 +1,6 @@
 """
 Author: Chadapohn Chaosrikul
+update Landry : just formalized input and output
 """
 
 # Import Python Modules

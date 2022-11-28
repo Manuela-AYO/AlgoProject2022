@@ -43,8 +43,8 @@ def execute_algo(knapSackObject :Set01KnapSack,AlgoName,MTime="-",MIteration="-"
         'TopDownDynamicProgramming': top_down_approach.top_down_approach,
         'BottomUpDynamicProgramming': bottom_up_approach.bottom_up_approach,
         'Randomized': randomized_algorithm.randomized,
-
         'FullyPolyNomial': fptas.fptas,
+
         'GeneticProgramming': genetic_programming.genetic_programming
     }
     if MIteration=="-":
@@ -79,11 +79,6 @@ def execute_algo(knapSackObject :Set01KnapSack,AlgoName,MTime="-",MIteration="-"
 
     if AlgoName == 'Randomized': # --this algo need iteration value and a specific param
         items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject,MIterationInt,MTimeInt,SpecificParamInt)
-
-    elif AlgoName == 'FullyPolyNomial':
-        solution = algo_function(weights, values, knapsack_capacity, parameter_values['epsilon'])
-        v, num_items_choosen, occupied_weight, maximum_value = solution[0]
-        running_time = solution[1]
 
     
     elif AlgoName == 'GeneticProgramming':
@@ -151,8 +146,9 @@ def benchmarkFor01(CsvName,AlgoName,InstanceName,MTheoricalValue="-",MTime="-",M
 if __name__ == '__main__':
     test = Set01KnapSack()
     test.uploadFile("Landrytest.csv","c")
+    print(test)
     # print(top_down_approach.top_down_approach(test))
-    print(fptas.fptas(test))
+    print(weight_sort_greedy.greedy_weight_selection(test))
 
     algorithms = {
         'BruteForce': brute_force.bruteforce,

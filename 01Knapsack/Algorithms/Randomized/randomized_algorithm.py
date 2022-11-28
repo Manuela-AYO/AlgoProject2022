@@ -5,6 +5,7 @@ The selection is made based in which are the best opportunities to improve the c
 the value and when deleting, which does not reduce the value significantly.
 
 Author: Felipe Cortes Jaramillo
+update Landry : just formalized input and output AND create an Exeption Error
 
 Usage: python3 01_ks_randomized_algo.py [type] [path] [iterations]
 

@@ -3,6 +3,7 @@ Description: The class refers to the 0/1 knapsack problem solved with a greedy a
 of the weights and the values.
 
 Author: Gloria Isedu
+update Landry : just formalized input and output AND correct bug
 Date: 18/11/2022
 Input: weights, values, knapsack size, 
 Output: greediest solution bu ratio
