@@ -30,7 +30,7 @@ from AntColony import ant_colony_algorithm
 
 # ------------------------ USEFUL FUNCTION ------------------- #
 
-def execute_algo(knapSackObject :Set01KnapSack,AlgoName,MTime="-",MIteration="-",SpecificParam=[0,0]):
+def execute_algo(knapSackObject :Set01KnapSack,AlgoName,MTime="-",MIteration="-",SpecificParam=["-","-"]):
     # ------- INIT -------- #
     algorithms = {
         'BruteForce': brute_force.bruteforce,
@@ -49,12 +49,17 @@ def execute_algo(knapSackObject :Set01KnapSack,AlgoName,MTime="-",MIteration="-"
     if MIteration=="-":
         MIterationInt = 0
     else:
-        MIterationInt = int(MTime)
+        MIterationInt = int(MIteration)
 
     if MTime=="-":
         MTimeInt = 0
     else:
         MTimeInt = int(MTime)
+
+    SpecificParamFloat = [0.0]*len(SpecificParam)
+    for p in range(len(SpecificParam)):
+        if SpecificParam[p]!="-":
+            SpecificParamFloat[p] = float(SpecificParam[p])*1
 
     # ------- Execute Algo -------- #
 
@@ -67,12 +72,12 @@ def execute_algo(knapSackObject :Set01KnapSack,AlgoName,MTime="-",MIteration="-"
     
 
     if AlgoName == 'Randomized': # --this algo need iteration value and a specific param
-        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject,MIterationInt,MTimeInt,SpecificParam[0])
+        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject,MIterationInt,MTimeInt,int(SpecificParamFloat[0]))
     elif AlgoName == 'AntColony': # --need iteration + 2 specific param ant,decay
-        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject,MIterationInt,SpecificParam[0], SpecificParam[1],MTimeInt)
+        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject,MIterationInt,int(SpecificParamFloat[0]), SpecificParamFloat[1],MTimeInt)
     elif AlgoName == 'GeneticProgramming': # --this algo need a specific param and an init function. Should we do all this calcul in the genetic_prog file ? And we only keep here a main one that ask knapSackObject,MTimeInt,SpecificParam ?
-        init_pop = genetic_programming.initialize_pop(item_no=np.arange(1, knapSackObject.n+1) , no_of_individuals=SpecificParam[0])
-        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject,SpecificParam[0],init_pop,MTimeInt)
+        init_pop = genetic_programming.initialize_pop(item_no=np.arange(1, knapSackObject.n+1) , no_of_individuals=int(SpecificParamFloat[0]))
+        items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject,int(SpecificParamFloat[0]),init_pop,MTimeInt)
     else:
         items_vector, num_items_choosen, maximum_value, occupied_weight = algo_function(knapSackObject, MTimeInt)
 
@@ -89,7 +94,7 @@ def setEpsilon(): # for cross validation
     # epsilon = knapsackInstance.getEpsilon(parameters['epsilon'])
     print("finish")
 
-def benchmarkFor01(CsvName,AlgoName,InstanceName,MTheoricalValue="-",MTime="-",MIteration="-",SpecificParam=[0,0]): 
+def benchmarkFor01(CsvName,AlgoName,InstanceName,MTheoricalValue="-",MTime="-",MIteration="-",SpecificParam=["-","-"]): 
         # this will take the instance inside Input Folder and the output inside Output folder
     # ---- OUTPUT INIT --- #
     output = ["-"]*11 # do same as a dataFrame ? Two column, one for value, the other for information
@@ -145,12 +150,12 @@ if __name__ == '__main__':
     parser.add_argument("MTheoricalValue", type=str)
     parser.add_argument("MTime", type=str)
     parser.add_argument("MIteration", type=str)
-    parser.add_argument("SpecificParam1", type=int)
-    parser.add_argument("SpecificParam2", type=int)
+    parser.add_argument("SpecificParam1", type=str)
+    parser.add_argument("SpecificParam2", type=str)
 
     args = parser.parse_args()
 
-    benchmarkFor01("test.csv","BruteForce","Landrytest.csv")
+    benchmarkFor01(args.CsvName,args.AlgoName,args.InstanceName,args.MTheoricalValue,args.MTime,args.MIteration,[args.SpecificParam1,args.SpecificParam2])
 
 
 
