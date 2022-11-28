@@ -69,7 +69,9 @@ def bottom_up_approach(set01 : Set01KnapSack, given_time: int = 0) -> tuple:
     solution_value = sum(values[i] if item_vector[i]==1 else 0 for i in range(len(item_vector)))
     print("Finish Finding Conclusion")
     print(f'Solution Value = {solution_value}')
-    print(f'Number of Items Choosen: {num_items_choosen}')
+    print(f'Number of Items Choosen = {num_items_choosen}')
+    print(f'Occupied Weight = {occupied_weight}')
+    print(f'Knapsack Capacity = {maximum_weight}')
     # current_time = datetime.datetime.now()
     # print('Extra running time after stop', current_time - end_time)
     return item_vector, num_items_choosen, solution_value, occupied_weight
@@ -95,14 +97,10 @@ if __name__ == '__main__':
     values = data['V'].to_numpy()
 
     # Apply the bottom-up approach
-    result = bottom_up_approach(num_items, maximum_weight, weights, values, given_time)
-
-    # Retrieve output and benchmarking time
-    item_vector, solution_value, occupied_weight, num_items_choosen = result[0]
-    benchmarking_time = result[1]
+    item_vector, num_items_choosen, solution_value, occupied_weight = bottom_up_approach(knapsackInstance, given_time)
 
     # Create an output table
-    text = f"Bottom-up approach, Dynamic Programming \t\t\t{num_items}\t\t \t\t\t\t{maximum_weight}\t \t\t\t\t{sum_values}\t\t \t\t\t\t{num_items_choosen}\t\t \t\t\t{occupied_weight}\t \t\t{solution_value}\t\t \t\t\t{benchmarking_time}"
+    text = f"Bottom-up approach, Dynamic Programming \t\t\t{num_items}\t\t \t\t\t\t{maximum_weight}\t \t\t\t\t{sum_values}\t\t \t\t\t\t{num_items_choosen}\t\t \t\t\t{occupied_weight}\t \t\t{solution_value}\t\t"
     knapsackInstance.writeOutput(text) 
 
 
