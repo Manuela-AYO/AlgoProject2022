@@ -255,7 +255,7 @@ if __name__ == '__main__':
                 values=values_tab,
                 threshold=item_weights,
                 no_items=no_of_items,
-                no_of_generations=2,
+                no_of_generations=50,
                 population=init_pop,
                 maximum_time=5)
     # write the result in the output filec

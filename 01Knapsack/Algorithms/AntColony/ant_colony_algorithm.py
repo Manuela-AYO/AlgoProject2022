@@ -41,7 +41,7 @@ from external import compute_run_time
 
 
 # ----FOR TESTING MODULE---- #
-def ant_colony_algorithm(set01 : Set01KnapSack, executions, n_ants,decay=0.5, tolerance=0.001, time_min=0):
+def ant_colony_algorithm(set01 : Set01KnapSack, executions, n_ants,decay=0.5, tolerance=0.01, time_min=0):
     if n_ants == 0:
         print("ERROR : n_ants must be superior to 0")
         return [0]*set01.n, 0, 0, 0
@@ -52,7 +52,7 @@ def ant_colony_algorithm(set01 : Set01KnapSack, executions, n_ants,decay=0.5, to
         decay2 = decay
 
     if tolerance == 0.0:
-        tolerance2 = 0.5
+        tolerance2 = 0.01
     else:
         tolerance2 = tolerance
 
@@ -61,7 +61,7 @@ def ant_colony_algorithm(set01 : Set01KnapSack, executions, n_ants,decay=0.5, to
 
 class Knapsack_ant_colony_algorithm:
 
-    def __init__(self, n, max_weigth, weight_list, value_list, n_iterations, n_ants, decay=0.5, tolerance=0.001,time_min=0):
+    def __init__(self, n, max_weigth, weight_list, value_list, n_iterations, n_ants, decay=0.5, tolerance=0.01,time_min=0):
         '''
         Summary: Constructor, set the important variables for the algorithm execution.
 
@@ -126,7 +126,7 @@ class Knapsack_ant_colony_algorithm:
                 acum_w += self.w[i]
                 acum_v += self.v[i]
                 counter_elements += 1
-        if (self.best_solution_v - acum_v)/100 < self.tolerance :
+        if self.best_solution_v != 0 and (self.best_solution_v - acum_v)/self.best_solution_v <= self.tolerance :
             self.convergence = True
         if acum_v > self.best_solution_v:
                 self.best_solution_w = acum_w
