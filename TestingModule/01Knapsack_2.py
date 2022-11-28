@@ -95,7 +95,7 @@ def setEpsilon(): # for cross validation
     # epsilon = knapsackInstance.getEpsilon(parameters['epsilon'])
     print("finish")
 
-def benchmarkFor01(CsvName,AlgoName,InstanceName,MTheoricalValue="-",MTime="-",MIteration="-",SpecificParam=["-","-"]): 
+def benchmarkFor01(CsvName,AlgoName,TypeFile,InstanceName,MTheoricalValue="-",MTime="-",MIteration="-",SpecificParam=["-","-"]): 
         # this will take the instance inside Input Folder and the output inside Output folder
     # ---- OUTPUT INIT --- #
     output = ["-"]*11 # do same as a dataFrame ? Two column, one for value, the other for information
@@ -103,7 +103,7 @@ def benchmarkFor01(CsvName,AlgoName,InstanceName,MTheoricalValue="-",MTime="-",M
     
     # -------TESTING MODULE ------ #
     knapsackInstance = Set01KnapSack()
-    knapsackInstance.uploadFile(InstanceName,'c')
+    knapsackInstance.uploadFile(InstanceName,TypeFile)
 
     print("############################# Execute ALGO ",AlgoName,"#############################")
 
@@ -147,6 +147,7 @@ if __name__ == '__main__':
                                      "Param for testing")
     parser.add_argument("CsvName", type=str)
     parser.add_argument("AlgoName", type=str)
+    parser.add_argument("TypeFile", type=str)
     parser.add_argument("InstanceName", type=str)
     parser.add_argument("MTheoricalValue", type=str)
     parser.add_argument("MTime", type=str)
@@ -156,7 +157,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    benchmarkFor01(args.CsvName,args.AlgoName,args.InstanceName,args.MTheoricalValue,args.MTime,args.MIteration,[args.SpecificParam1,args.SpecificParam2])
+    benchmarkFor01(args.CsvName,args.AlgoName,args.TypeFile,args.InstanceName,args.MTheoricalValue,args.MTime,args.MIteration,[args.SpecificParam1,args.SpecificParam2])
 
 
 
