@@ -4,20 +4,21 @@ update : Landry Bailly, 25/11/2022
 
 # ------------------- IMPORT PART ------------ #
 
-from asyncio.windows_events import NULL
+# from asyncio.windows_events import NULL
 import sys, os
 import pandas as pd
 import numpy as np
 import argparse
 from datetime import datetime, timedelta
 
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '01Knapsack'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Algorithms'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '01Knapsack', 'Algorithms', 'DynamicProgramming'))
 
+
 from classes import Set01KnapSack
-from external import compute_run_time
 
 from BruteForce import brute_force
 from BranchAndBound import branch_bound
