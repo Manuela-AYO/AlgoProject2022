@@ -41,8 +41,8 @@ from external import compute_run_time
 
 
 # ----FOR TESTING MODULE---- #
-def ant_colony_algorithm(set01 : Set01KnapSack, executions, n_ants,decay :float=0.75,time_min=0):
-    return Knapsack_ant_colony_algorithm(set01.n,set01.wmax,set01.data.W,set01.data.V,int(executions),int(n_ants),decay,time_min).knapsack_ant_colony_algorithm()
+def ant_colony_algorithm(set01 : Set01KnapSack, executions, n_ants,decay=0.75, tolerance=0.001, time_min=0):
+    return Knapsack_ant_colony_algorithm(set01.n,set01.wmax,set01.data.W,set01.data.V,int(executions),int(n_ants),decay,tolerance,time_min).knapsack_ant_colony_algorithm()
 # -------------------------- #
 
 class Knapsack_ant_colony_algorithm:
