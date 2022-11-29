@@ -82,6 +82,7 @@ if __name__ == '__main__':
     
     type = input("Which type of file is it(t for text, c for csv) ? ")
     path = input("Path to the file[e.g : file/my_file.csv] : ")
+    time = int(input("How long should the file run (0 if you are not timing) : "))
 
     # normalize the path to the file
     path = path.split("/")
@@ -98,8 +99,8 @@ if __name__ == '__main__':
     solution, total_value, total_weight, no_of_selected_items = greedy_weight_selection(
                     weights=weights_tab, values=values_tab, 
                     threshold=sack_weight,
-                    maximum_time=5)
+                    maximum_time=time)
     
-    # write the result in the output filec
+    # write the result in the output file
     text = f"Greedy by weight \t\t\t{no_of_items}\t\t \t\t\t\t{sack_weight}\t \t\t\t\t{items_value}\t\t \t\t\t\t{no_of_selected_items}\t\t \t\t\t{total_weight}\t \t\t{total_value}\t\t"
     knapsack.writeOutput(text) 

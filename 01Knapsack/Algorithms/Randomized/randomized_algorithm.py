@@ -69,8 +69,8 @@ class Knapsack_randomized_algorithm:
             weight_list (list): List containing all the weights of the elements.
             value_list (list): List containing all the values of the elements.
             executions (int): Number of iterations which the algorithm will perform.
-            time_min (int): Time in minutes to execute the algorithm if there are no elements or the argument is 0, the executions will be taken into account.
-            selection_ration (float): Porcentage of the elements which are going to be taking into account for the elite group.
+            time_min (int): Time in milliseconds to execute the algorithm if there are no elements or the argument is 0, the executions will be taken into account.
+            selection_ration (float): Porcentage of the elements which are going to be taking into account for the elite group. This value should be greater than 0
 
         Complexity: O(1)
         '''
@@ -83,7 +83,10 @@ class Knapsack_randomized_algorithm:
         self.executions = executions
         self.time_min = int(time_min)
         self.best_elements_number = 0
-        self.selection_count = int(round(self.n * selection_ratio))
+        if selection_ratio == 0.0:
+            self.selection_count = int(round(self.n * 0.1))
+        else:
+            self.selection_count = int(round(self.n * selection_ratio))
     
     def initial_solution_generator(self):
         '''
@@ -92,8 +95,10 @@ class Knapsack_randomized_algorithm:
 
         Complexity: O(n)
         '''
-        ratio = random.random()
-        self.current_binary_representation = np.random.binomial(n=1, p=ratio, size=[self.n])
+        self.current_binary_representation = []
+        for i in range(self.n):
+            current_random_assignation = random.randint(0,2)
+            self.current_binary_representation.append(current_random_assignation)
 
     def check_viability_weight(self):
         '''
@@ -165,16 +170,12 @@ class Knapsack_randomized_algorithm:
             self.current_binary_representation[index_to_change] = 0
 
     def knapsack_randomized_algorithm(self):
-        # ----------EXEPTION---------- #
-        if self.selection_count == 0:
-            print("ERROR : the specific parameter (selection ratio) is to low compare to the number of data. Selection ratio * number of data must be superior or equal to 0")
-            return [0]*self.n, 0, 0, 0
-        # ---------------------------- #
         '''
         Summary: Function which orchestrate the main algorithm. Basically, iterating for each execution a new modification in the current
         solution, to see if this one is better than the previous solution. Also, there are two ways to execute the module.
         If there is a time different to zero, te algorithm will run over the time indicated. However, if the value is 0, it will take
-        the number of executions.
+        the number of executions. It is possible when the executions are finished that the random algorithm did not get a valid solution
+        There, no solution is returned.
 
         Return:
             list: The best binary list containing which elements are taken (with 1) and which are not included (with 0).
@@ -188,7 +189,7 @@ class Knapsack_randomized_algorithm:
         self.initial_solution_generator()
         if self.time_min != 0:
             start_time = datetime.datetime.now()
-            iteration_time = datetime.timedelta(minutes=int(self.time_min))
+            iteration_time = datetime.timedelta(milliseconds=int(self.time_min))
             end_time = start_time + iteration_time
             while True:
                 current_time = datetime.datetime.now()
@@ -208,7 +209,10 @@ class Knapsack_randomized_algorithm:
                 else:
                     self.delete_random_element()
             self.check_viability_weight()
-        return self.best_binary_representation, self.best_elements_number, self.best_solution_v, self.best_solution_w
+        if len(self.best_binary_representation):
+            return self.best_binary_representation, self.best_elements_number, self.best_solution_v, self.best_solution_w
+        else:
+            return [0]*self.n, 0, 0, 0
 
 # Static main model for execution
 if __name__ == "__main__":
