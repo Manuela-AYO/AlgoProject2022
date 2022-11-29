@@ -1,0 +1,130 @@
+#low-dimensional/f2_l-d_kp_20_878
+python ./01Knapsack.py running_time.csv BruteForce t low-dimensional/f2_l-d_kp_20_878 1024
+python ./01Knapsack.py running_time.csv BranchAndBound t low-dimensional/f2_l-d_kp_20_878 1024
+python ./01Knapsack.py running_time.csv RatioSortGreedy t low-dimensional/f2_l-d_kp_20_878 1024
+python ./01Knapsack.py running_time.csv ValueSortGreedy t low-dimensional/f2_l-d_kp_20_878 1024
+python ./01Knapsack.py running_time.csv WeightSortGreedy t low-dimensional/f2_l-d_kp_20_878 1024
+python ./01Knapsack.py running_time.csv RatiosortAndConvergeGreedy t low-dimensional/f2_l-d_kp_20_878 1024
+python ./01Knapsack.py running_time.csv TopDownDynamicProgramming t low-dimensional/f2_l-d_kp_20_878 1024
+python ./01Knapsack.py running_time.csv BottomUpDynamicProgramming t low-dimensional/f2_l-d_kp_20_878 1024
+python ./01Knapsack.py running_time.csv FullyPolyNomial t low-dimensional/f2_l-d_kp_20_878 1024
+python ./01Knapsack.py running_time.csv GeneticProgramming t low-dimensional/f2_l-d_kp_20_878 1024 - - 50
+python ./01Knapsack.py running_time.csv AntColony t low-dimensional/f2_l-d_kp_20_878 1024
+python ./01Knapsack.py running_time.csv Randomized t low-dimensional/f2_l-d_kp_20_878 1024
+#low-dimensional/f3_l-d_kp_4_20
+python ./01Knapsack.py running_time.csv BruteForce t low-dimensional/f3_l-d_kp_4_20 35
+python ./01Knapsack.py running_time.csv BranchAndBound t low-dimensional/f3_l-d_kp_4_20 35
+python ./01Knapsack.py running_time.csv RatioSortGreedy t low-dimensional/f3_l-d_kp_4_20 35
+python ./01Knapsack.py running_time.csv ValueSortGreedy t low-dimensional/f3_l-d_kp_4_20 35
+python ./01Knapsack.py running_time.csv WeightSortGreedy t low-dimensional/f3_l-d_kp_4_20 35
+python ./01Knapsack.py running_time.csv RatiosortAndConvergeGreedy t low-dimensional/f3_l-d_kp_4_20 35
+python ./01Knapsack.py running_time.csv TopDownDynamicProgramming t low-dimensional/f3_l-d_kp_4_20 35
+python ./01Knapsack.py running_time.csv BottomUpDynamicProgramming t low-dimensional/f3_l-d_kp_4_20 35
+python ./01Knapsack.py running_time.csv FullyPolyNomial t low-dimensional/f3_l-d_kp_4_20 35
+python ./01Knapsack.py running_time.csv GeneticProgramming t low-dimensional/f3_l-d_kp_4_20 35 - - 50
+python ./01Knapsack.py running_time.csv AntColony t low-dimensional/f3_l-d_kp_4_20 35
+python ./01Knapsack.py running_time.csv Randomized t low-dimensional/f3_l-d_kp_4_20 35
+#low-dimensional/f4_l-d_kp_4_11
+python ./01Knapsack.py running_time.csv BruteForce t low-dimensional/f4_l-d_kp_4_11 23
+python ./01Knapsack.py running_time.csv BranchAndBound t low-dimensional/f4_l-d_kp_4_11 23
+python ./01Knapsack.py running_time.csv RatioSortGreedy t low-dimensional/f4_l-d_kp_4_11 23
+python ./01Knapsack.py running_time.csv ValueSortGreedy t low-dimensional/f4_l-d_kp_4_11 23
+python ./01Knapsack.py running_time.csv WeightSortGreedy t low-dimensional/f4_l-d_kp_4_11 23
+python ./01Knapsack.py running_time.csv RatiosortAndConvergeGreedy t low-dimensional/f4_l-d_kp_4_11 23
+python ./01Knapsack.py running_time.csv TopDownDynamicProgramming t low-dimensional/f4_l-d_kp_4_11 23
+python ./01Knapsack.py running_time.csv BottomUpDynamicProgramming t low-dimensional/f4_l-d_kp_4_11 23
+python ./01Knapsack.py running_time.csv FullyPolyNomial t low-dimensional/f4_l-d_kp_4_11 23
+python ./01Knapsack.py running_time.csv GeneticProgramming t low-dimensional/f4_l-d_kp_4_11 23 - - 50
+python ./01Knapsack.py running_time.csv AntColony t low-dimensional/f4_l-d_kp_4_11 23
+python ./01Knapsack.py running_time.csv Randomized t low-dimensional/f4_l-d_kp_4_11 23
+#low-dimensional/f5_l-d_kp_15_375
+python ./01Knapsack.py running_time.csv BruteForce t low-dimensional/f5_l-d_kp_15_375 481
+python ./01Knapsack.py running_time.csv BranchAndBound t low-dimensional/f5_l-d_kp_15_375 481 
+python ./01Knapsack.py running_time.csv RatioSortGreedy t low-dimensional/f5_l-d_kp_15_375 481 
+python ./01Knapsack.py running_time.csv ValueSortGreedy t low-dimensional/f5_l-d_kp_15_375 481
+python ./01Knapsack.py running_time.csv WeightSortGreedy t low-dimensional/f5_l-d_kp_15_375 481
+python ./01Knapsack.py running_time.csv RatiosortAndConvergeGreedy t low-dimensional/f5_l-d_kp_15_375 481
+python ./01Knapsack.py running_time.csv TopDownDynamicProgramming t low-dimensional/f5_l-d_kp_15_375 481
+python ./01Knapsack.py running_time.csv BottomUpDynamicProgramming t low-dimensional/f5_l-d_kp_15_375 481
+python ./01Knapsack.py running_time.csv FullyPolyNomial t low-dimensional/f5_l-d_kp_15_375 481
+python ./01Knapsack.py running_time.csv GeneticProgramming t low-dimensional/f5_l-d_kp_15_375 481 - - 50
+python ./01Knapsack.py running_time.csv AntColony t low-dimensional/f5_l-d_kp_15_375 481 
+python ./01Knapsack.py running_time.csv Randomized t low-dimensional/f5_l-d_kp_15_375 481
+#low-dimensional/f6_l-d_kp_10_60
+python ./01Knapsack.py running_time.csv BruteForce t low-dimensional/f6_l-d_kp_10_60 52
+python ./01Knapsack.py running_time.csv BranchAndBound t low-dimensional/f6_l-d_kp_10_60 52
+python ./01Knapsack.py running_time.csv RatioSortGreedy t low-dimensional/f6_l-d_kp_10_60 52
+python ./01Knapsack.py running_time.csv ValueSortGreedy t low-dimensional/f6_l-d_kp_10_60 52
+python ./01Knapsack.py running_time.csv WeightSortGreedy t low-dimensional/f6_l-d_kp_10_60 52
+python ./01Knapsack.py running_time.csv RatiosortAndConvergeGreedy t low-dimensional/f6_l-d_kp_10_60 52
+python ./01Knapsack.py running_time.csv TopDownDynamicProgramming t low-dimensional/f6_l-d_kp_10_60 52
+python ./01Knapsack.py running_time.csv BottomUpDynamicProgramming t low-dimensional/f6_l-d_kp_10_60 52
+python ./01Knapsack.py running_time.csv FullyPolyNomial t low-dimensional/f6_l-d_kp_10_60 52
+python ./01Knapsack.py running_time.csv GeneticProgramming t low-dimensional/f6_l-d_kp_10_60 52 - - 50
+python ./01Knapsack.py running_time.csv AntColony t low-dimensional/f6_l-d_kp_10_60 52
+python ./01Knapsack.py running_time.csv Randomized t low-dimensional/f6_l-d_kp_10_60 52
+#low-dimensional/f7_l-d_kp_7_50
+python ./01Knapsack.py running_time.csv BruteForce t low-dimensional/f7_l-d_kp_7_50
+python ./01Knapsack.py running_time.csv BranchAndBound t low-dimensional/f7_l-d_kp_7_50
+python ./01Knapsack.py running_time.csv RatioSortGreedy t low-dimensional/f7_l-d_kp_7_50
+python ./01Knapsack.py running_time.csv ValueSortGreedy t low-dimensional/f7_l-d_kp_7_50
+python ./01Knapsack.py running_time.csv WeightSortGreedy t low-dimensional/f7_l-d_kp_7_50
+python ./01Knapsack.py running_time.csv RatiosortAndConvergeGreedy t low-dimensional/f7_l-d_kp_7_50
+python ./01Knapsack.py running_time.csv TopDownDynamicProgramming t low-dimensional/f7_l-d_kp_7_50
+python ./01Knapsack.py running_time.csv BottomUpDynamicProgramming t low-dimensional/f7_l-d_kp_7_50
+python ./01Knapsack.py running_time.csv FullyPolyNomial t low-dimensional/f7_l-d_kp_7_50
+python ./01Knapsack.py running_time.csv GeneticProgramming t low-dimensional/f7_l-d_kp_7_50
+python ./01Knapsack.py running_time.csv AntColony t low-dimensional/f7_l-d_kp_7_50
+python ./01Knapsack.py running_time.csv Randomized t low-dimensional/f7_l-d_kp_7_50
+#low-dimensional/f8_l-d_kp_23_10000
+python ./01Knapsack.py running_time.csv BruteForce t low-dimensional/f8_l-d_kp_23_10000
+python ./01Knapsack.py running_time.csv BranchAndBound t low-dimensional/f8_l-d_kp_23_10000
+python ./01Knapsack.py running_time.csv RatioSortGreedy t low-dimensional/f8_l-d_kp_23_10000
+python ./01Knapsack.py running_time.csv ValueSortGreedy t low-dimensional/f8_l-d_kp_23_10000
+python ./01Knapsack.py running_time.csv WeightSortGreedy t low-dimensional/f8_l-d_kp_23_10000
+python ./01Knapsack.py running_time.csv RatiosortAndConvergeGreedy t low-dimensional/f8_l-d_kp_23_10000
+python ./01Knapsack.py running_time.csv TopDownDynamicProgramming t low-dimensional/f8_l-d_kp_23_10000
+python ./01Knapsack.py running_time.csv BottomUpDynamicProgramming t low-dimensional/f8_l-d_kp_23_10000
+python ./01Knapsack.py running_time.csv FullyPolyNomial t low-dimensional/f8_l-d_kp_23_10000
+python ./01Knapsack.py running_time.csv GeneticProgramming t low-dimensional/f8_l-d_kp_23_10000
+python ./01Knapsack.py running_time.csv AntColony t low-dimensional/f8_l-d_kp_23_10000
+python ./01Knapsack.py running_time.csv Randomized t low-dimensional/f8_l-d_kp_23_10000
+#low-dimensional/f9_l-d_kp_5_80
+python ./01Knapsack.py running_time.csv BruteForce t low-dimensional/f9_l-d_kp_5_80
+python ./01Knapsack.py running_time.csv BranchAndBound t low-dimensional/f9_l-d_kp_5_80
+python ./01Knapsack.py running_time.csv RatioSortGreedy t low-dimensional/f9_l-d_kp_5_80
+python ./01Knapsack.py running_time.csv ValueSortGreedy t low-dimensional/f9_l-d_kp_5_80
+python ./01Knapsack.py running_time.csv WeightSortGreedy t low-dimensional/f9_l-d_kp_5_80
+python ./01Knapsack.py running_time.csv RatiosortAndConvergeGreedy t low-dimensional/f9_l-d_kp_5_80
+python ./01Knapsack.py running_time.csv TopDownDynamicProgramming t low-dimensional/f9_l-d_kp_5_80
+python ./01Knapsack.py running_time.csv BottomUpDynamicProgramming t low-dimensional/f9_l-d_kp_5_80
+python ./01Knapsack.py running_time.csv FullyPolyNomial t low-dimensional/f9_l-d_kp_5_80
+python ./01Knapsack.py running_time.csv GeneticProgramming t low-dimensional/f9_l-d_kp_5_80
+python ./01Knapsack.py running_time.csv AntColony t low-dimensional/f9_l-d_kp_5_80
+python ./01Knapsack.py running_time.csv Randomized t low-dimensional/f9_l-d_kp_5_80
+#low-dimensional/f10_l-d_kp_20_879
+python ./01Knapsack.py running_time.csv BruteForce t low-dimensional/f10_l-d_kp_20_879
+python ./01Knapsack.py running_time.csv BranchAndBound t low-dimensional/f10_l-d_kp_20_879
+python ./01Knapsack.py running_time.csv RatioSortGreedy t low-dimensional/f10_l-d_kp_20_879
+python ./01Knapsack.py running_time.csv ValueSortGreedy t low-dimensional/f10_l-d_kp_20_879
+python ./01Knapsack.py running_time.csv WeightSortGreedy t low-dimensional/f10_l-d_kp_20_879
+python ./01Knapsack.py running_time.csv RatiosortAndConvergeGreedy t low-dimensional/f10_l-d_kp_20_879
+python ./01Knapsack.py running_time.csv TopDownDynamicProgramming t low-dimensional/f10_l-d_kp_20_879
+python ./01Knapsack.py running_time.csv BottomUpDynamicProgramming t low-dimensional/f10_l-d_kp_20_879
+python ./01Knapsack.py running_time.csv FullyPolyNomial t low-dimensional/f10_l-d_kp_20_879
+python ./01Knapsack.py running_time.csv GeneticProgramming t low-dimensional/f10_l-d_kp_20_879
+python ./01Knapsack.py running_time.csv AntColony t low-dimensional/f10_l-d_kp_20_879
+python ./01Knapsack.py running_time.csv Randomized t low-dimensional/f10_l-d_kp_20_879
+#
+python ./01Knapsack.py running_time.csv BruteForce t low-dimensional/
+python ./01Knapsack.py running_time.csv BranchAndBound t low-dimensional/
+python ./01Knapsack.py running_time.csv RatioSortGreedy t low-dimensional/
+python ./01Knapsack.py running_time.csv ValueSortGreedy t low-dimensional/
+python ./01Knapsack.py running_time.csv WeightSortGreedy t low-dimensional/
+python ./01Knapsack.py running_time.csv RatiosortAndConvergeGreedy t low-dimensional/
+python ./01Knapsack.py running_time.csv TopDownDynamicProgramming t low-dimensional/
+python ./01Knapsack.py running_time.csv BottomUpDynamicProgramming t low-dimensional/
+python ./01Knapsack.py running_time.csv FullyPolyNomial t low-dimensional/
+python ./01Knapsack.py running_time.csv GeneticProgramming t low-dimensional/
+python ./01Knapsack.py running_time.csv AntColony t low-dimensional/
+python ./01Knapsack.py running_time.csv Randomized t low-dimensional/
