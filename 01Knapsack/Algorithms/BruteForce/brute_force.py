@@ -45,7 +45,7 @@ def bruteforce(set01 : m.Set01KnapSack, time_min=0):
     print("-----------Preprocess--------")
     # timing module 
     start_time = datetime.datetime.now()
-    iteration_time = datetime.timedelta(minutes=int(time_min))
+    iteration_time = datetime.timedelta(milliseconds=int(time_min))
     end_time = start_time + iteration_time
 
     # tester toutes les solutions (a parmis n) quelque soit a entre 1 et n

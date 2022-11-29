@@ -104,7 +104,7 @@ def control_entries(nb_items : int, coef : int, weight : int) -> int:
     if coef <= 1 : 
         print("\tValueError : The range of the items should be strictly greater than 1\n")
         num = -1
-    if coef > (weight-weight//2) :
+    if coef > (weight-weight//4) :
         print("\tValueError : The range of the coefficients should be at most a half of the actual weight\n")
         num = -1
     return num

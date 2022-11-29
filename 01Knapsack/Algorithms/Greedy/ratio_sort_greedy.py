@@ -58,7 +58,7 @@ def greedy_ratio_selection(set01 : Set01KnapSack, maximum_time = 0):
     temp_total = 0
 
     start_time = dt.datetime.now()
-    iteration_time = dt.timedelta(minutes=int(maximum_time))
+    iteration_time = dt.timedelta(milliseconds=int(maximum_time))
     end_time = start_time + iteration_time
 
     while temp_total <= threshold:

@@ -55,7 +55,7 @@ def bottom_up_approach(set01 : Set01KnapSack, given_time: int = 0) -> tuple:
 
     # Initialization
     start_time = datetime.datetime.now()
-    delta = datetime.timedelta(minutes=given_time)
+    delta = datetime.timedelta(milliseconds=given_time)
     end_time = start_time + delta
     tabularization = np.zeros((num_items+1, maximum_weight+1))
     print("Finish Running Initialization")

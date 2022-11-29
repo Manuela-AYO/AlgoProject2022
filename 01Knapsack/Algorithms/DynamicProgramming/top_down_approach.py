@@ -57,7 +57,7 @@ def top_down_approach(set01 : Set01KnapSack, given_time: int = 0) -> tuple:
     # ---------------------------
 
     start_time = datetime.datetime.now()
-    delta = datetime.timedelta(minutes=given_time)
+    delta = datetime.timedelta(milliseconds=given_time)
     end_time = start_time + delta
     memoization = -1*np.ones((num_items+1, maximum_weight+1))
     print("Finish Running Initialization")

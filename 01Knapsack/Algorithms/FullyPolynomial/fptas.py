@@ -212,7 +212,7 @@ class Fptas:
         v, nb_items_chosen, total_weight, total_value = self.get_knap_items()
         
         # return v, nb_items_chosen, total_value*delta, total_weight
-        return v, nb_items_chosen, total_value, total_weight
+        return v, nb_items_chosen, total_value*delta, total_weight
 
 
 if __name__ == "__main__":

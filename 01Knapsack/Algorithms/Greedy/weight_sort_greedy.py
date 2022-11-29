@@ -53,7 +53,7 @@ def greedy_weight_selection(set01 : Set01KnapSack, maximum_time = 0):
     temp_weight = weights.copy()
 
     start_time = dt.datetime.now()
-    iteration_time = dt.timedelta(minutes=int(maximum_time))
+    iteration_time = dt.timedelta(milliseconds=int(maximum_time))
     end_time = start_time + iteration_time
 
     while temp_total <= threshold:
