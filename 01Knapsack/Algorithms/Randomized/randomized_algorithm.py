@@ -21,6 +21,7 @@ References: http://www.sci.brooklyn.cuny.edu/~zhou/papers/repository/doc/tutoria
 # Import modules
 import numpy as np
 import random
+import math
 import datetime
 import sys
 from pathlib import Path
@@ -84,9 +85,9 @@ class Knapsack_randomized_algorithm:
         self.time_min = int(time_min)
         self.best_elements_number = 0
         if selection_ratio == 0.0:
-            self.selection_count = int(round(self.n * 0.1))
+            self.selection_count = int(math.ceil(self.n * 0.1))
         else:
-            self.selection_count = int(round(self.n * selection_ratio))
+            self.selection_count = int(math.ceil(self.n * selection_ratio))
     
     def initial_solution_generator(self):
         '''
