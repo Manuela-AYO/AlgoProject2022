@@ -4,8 +4,8 @@
     the dynamic programming. 
         In fact, we assume that the knapsack problem could be solved in an exponential time because
     the values are too large. 
-        So, we reduce the values by a scaling factor such that error on the original value is less
-    than ε. 
+        So, we reduce the values by a scaling factor such that the solution found by the algorithm is at 
+    least (1-ε) the optimal solution. 
         The resulting solution will be an approximation over ε the optimal solution.
     
     References :
