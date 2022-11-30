@@ -11,6 +11,11 @@
     References :
         - https://en.wikipedia.org/wiki/Knapsack_problem#Fully_polynomial_time_approximation_scheme
 
+<<<<<<< HEAD
+=======
+
+    update Landry : just formalized input (with the function) and output (change the order)
+>>>>>>> refs/remotes/origin/manuela
 """
 
 
@@ -191,8 +196,11 @@ class Fptas:
             int : number of items chosen
             int : value of those items
             int : weight of those items
+<<<<<<< HEAD
             
         Total complexity : O(nPε^-1) => scale of the values
+=======
+>>>>>>> refs/remotes/origin/manuela
         """
         if self.epsilon<0 or self.epsilon>1:
             print("ε should be in the interval [0,1]")
@@ -212,7 +220,11 @@ class Fptas:
         v, nb_items_chosen, total_weight, total_value = self.get_knap_items()
         
         # return v, nb_items_chosen, total_value*delta, total_weight
+<<<<<<< HEAD
         return v, nb_items_chosen, total_value*delta, total_weight
+=======
+        return v, nb_items_chosen, total_value, total_weight
+>>>>>>> refs/remotes/origin/manuela
 
 
 if __name__ == "__main__":
