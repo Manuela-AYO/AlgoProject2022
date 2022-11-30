@@ -165,7 +165,7 @@ def genetic_programming(set01 : Set01KnapSack, no_of_generations, population, ma
         the best genetic solution
     """
     start_time = dt.datetime.now()
-    iteration_time = dt.timedelta(minutes=int(maximum_time))
+    iteration_time = dt.timedelta(milliseconds=int(maximum_time))
     end_time = start_time + iteration_time
 
     fitness_history = []
