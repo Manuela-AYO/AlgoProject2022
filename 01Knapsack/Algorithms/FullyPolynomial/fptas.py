@@ -10,6 +10,7 @@
     
     References :
         - https://en.wikipedia.org/wiki/Knapsack_problem#Fully_polynomial_time_approximation_scheme
+
 """
 
 
@@ -28,6 +29,12 @@ if not str(Path(__file__).resolve().parent.parent) in sys.path:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
  
 from classes import Set01KnapSack
+
+
+# ----FOR TESTING MODULE---- #
+def fptas(set01 : Set01KnapSack, time_min=0):
+    return Fptas(set01.data.W,set01.data.V,set01.wmax,time_min).fptas()
+# -------------------------- #
 
 class Fptas:
     def __init__(self, weights_tab : np.array, values_tab : np.array, sack_weight : int, time : int  = 0) -> None:
@@ -182,8 +189,10 @@ class Fptas:
         Returns:
             np.array: the final vector of items with 0 if an item at position i isn't selected and 1 else
             int : number of items chosen
-            int : weight of those items
             int : value of those items
+            int : weight of those items
+            
+        Total complexity : O(nPε^-1) => scale of the values
         """
         if self.epsilon<0 or self.epsilon>1:
             print("ε should be in the interval [0,1]")
@@ -196,14 +205,14 @@ class Fptas:
         delta = self.epsilon*max_value/len(self.weights_tab)
         
         # scale the values
-        values_tab_scale = values_tab/delta
+        values_tab_scale = self.values_tab/delta
         self.new_values_tab = np.array(values_tab_scale, dtype=int)
         
         # get the vector of items, nb_items_chosen, total_weight of the objects and total value of the objects
         v, nb_items_chosen, total_weight, total_value = self.get_knap_items()
         
-        # return the solution
-        return v, nb_items_chosen, total_weight, total_value*delta
+        # return v, nb_items_chosen, total_value*delta, total_weight
+        return v, nb_items_chosen, total_value*delta, total_weight
 
 
 if __name__ == "__main__":
@@ -223,28 +232,15 @@ if __name__ == "__main__":
     # read the csv file and collect the data
     nb_items, sack_weight, items_value, df = knapsack.uploadFile(path_file, type)
     
-    # path = input("Path to the ε file[e.g : file/my_file.csv] : ")
-    
-    # normalize the path to the ε file
-    # path = path.split("/")
-    # path_file = os.path.join(*path)
-    
-    # get the value of ε
-    # epsilon = knapsack.getEpsilon(path_file)
-    
     # create the weights, values array and the vector of values
     weights_tab = np.array(df["W"])
     values_tab = np.array(df["V"])
     epsilon = 0.001
     
     obj = Fptas(weights_tab, values_tab, sack_weight, 10)
-    # apply the branch and bound algorithm
-    # solution = fptas(weights_tab, values_tab, sack_weight, epsilon)
-    # v, nb_items_chosen, total_weight, total_value = fptas(weights_tab, values_tab, sack_weight, epsilon) # solution[0]
     start = datetime.now()
     v, nb_items_chosen, total_weight, total_value = obj.fptas()
     time_taken = datetime.now() - start
-    # time_taken = solution[1]
     print(f"Nb total items = {len(weights_tab)}\n")
     print(f"TMax weight : {sack_weight}\n")
     print(f"Vector = {v}\n")
