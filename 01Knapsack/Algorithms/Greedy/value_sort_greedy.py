@@ -3,6 +3,7 @@ Description:
             1. 
             2.
 Author: Gloria Isedu
+update Landry : just formalized input and output and correct bug
 Date: 18/11/2022
 Input: ...
 Output: greediest solution
@@ -31,7 +32,14 @@ VALUE = np.array([100, 280, 120])
 WEIGHT = np.array([10, 40, 20])
 
 
-def greedy_value_selection(weights, values, threshold, maximum_time):
+def greedy_value_selection(set01 : Set01KnapSack, maximum_time = 0):
+    # ----- update for timing module -------- #
+    weights = set01.data.W.to_numpy()
+    values = set01.data.V.to_numpy()
+    threshold = set01.wmax
+    # ---------------------------
+
+
     """
     chooses the final solution by selecting the highest value and checking if threshold is reached.
     Args:
@@ -54,7 +62,7 @@ def greedy_value_selection(weights, values, threshold, maximum_time):
 
     while temp_total <= threshold:
         highest_value_index = np.where(temp_vals == np.max(temp_vals))
-        most_expensive_weight = weights[highest_value_index]
+        most_expensive_weight = weights[highest_value_index][0]
         temp_vals[highest_value_index] = -1
 
         temp_total += most_expensive_weight
@@ -69,7 +77,7 @@ def greedy_value_selection(weights, values, threshold, maximum_time):
     no_of_things_in_knapsack = sum(solution)
     total_value = sum(solution * values)
     total_weight = sum(solution * weights)
-    return solution, total_value, total_weight, no_of_things_in_knapsack
+    return solution, no_of_things_in_knapsack, total_value, total_weight
 
 
 if __name__ == '__main__':

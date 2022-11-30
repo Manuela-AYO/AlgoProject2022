@@ -3,6 +3,7 @@ Description: The class refers to the 0/1 knapsack problem solved with a greedy a
 of the weights and the values.
 
 Author: Gloria Isedu
+update Landry : just formalized input and output AND correct bug
 Date: 18/11/2022
 Input: weights, values, knapsack size, 
 Output: greediest solution bu ratio
@@ -32,7 +33,14 @@ WEIGHT = np.array([10, 40, 20])
 RATIO = VALUE / WEIGHT
 
 
-def greedy_ratio_selection(weights: np.array, values: np.array, ratio, threshold, maximum_time):
+def greedy_ratio_selection(set01 : Set01KnapSack, maximum_time = 0):
+    # ----- update for timing module -------- #
+    weights = set01.data.W.to_numpy()
+    values = set01.data.V.to_numpy()
+    ratio = weights/values
+    threshold = set01.wmax
+    # ---------------------------
+
     """
     chooses the final solution by selecting the highest ratio and checking if threshold is reached.
     Args:
@@ -55,7 +63,7 @@ def greedy_ratio_selection(weights: np.array, values: np.array, ratio, threshold
 
     while temp_total <= threshold:
         highest_ratio_index = np.where(ratio == np.max(ratio))
-        most_expensive_weight = weights[highest_ratio_index]
+        most_expensive_weight = weights[highest_ratio_index][0]
         ratio[highest_ratio_index] = -1
 
         temp_total += most_expensive_weight

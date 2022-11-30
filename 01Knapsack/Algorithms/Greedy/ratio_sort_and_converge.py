@@ -123,9 +123,10 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
     print("weight : ", bestValueWeight)
     print("number of data :", len(bestAnswer))
 
+    binaryBestAnswer = set01.convertListAnswerToBinaryList(bestAnswer)
 
     
-    return bestValue, bestAnswer, len(bestAnswer), bestValueWeight
+    return binaryBestAnswer, len(bestAnswer), bestValue, bestValueWeight
 
 # ---------------------------------EXECUTE FILE------------------------------------ #
 if __name__ == '__main__':

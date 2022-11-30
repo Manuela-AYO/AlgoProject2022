@@ -19,6 +19,7 @@ References :
     - Algorithm : https://www.geeksforgeeks.org/0-1-knapsack-using-branch-and-bound/
     - Demonstration : https://www.youtube.com/watch?v=yV1d-b_NeK8
 
+    update Landry : just formalized input (with the function) and output (change the order)
 """
 # some important modules
 import numpy as np
@@ -34,6 +35,11 @@ if not str(Path(__file__).resolve().parent.parent) in sys.path :
  
 from classes import Set01KnapSack
 
+
+# ----FOR TESTING MODULE---- #
+def branch_bound(set01 : Set01KnapSack, time_min=0):
+    return BranchBoundKnapsack(set01.data.W,set01.data.V,set01.wmax,time_min).branch_bound()
+# -------------------------- #
 
 class Node:
     def __init__(self, index : int, value_index : int, position : int = -1, weight_carried : int = 0, 
@@ -225,7 +231,7 @@ class BranchBoundKnapsack :
                 if self.time != 0 and current_time > end_time:
                     break
               
-        return self.vector_items, self.nb_items_chosen, self.total_weight, self.total_value
+        return self.vector_items, self.nb_items_chosen, self.total_value, self.total_weight
     
     
 if __name__ == '__main__':
