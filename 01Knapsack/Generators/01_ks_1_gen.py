@@ -67,7 +67,7 @@ def generate_instance(nb_items : int, weight : int, range_items : int, distrib :
         total_weight += w
         
         # append weight and values in instances list
-        instances.append([v,w])
+        instances.append([int(v),w])
      
     # get the number of files in the directory "Input"   
     dir_path = os.path.join(os.path.dirname(__file__), "..", "Input")
