@@ -1,0 +1,61 @@
+import sys, os
+from pathlib import Path
+import datetime
+
+# increase number of possible recursivity call for 10,000 input data.
+sys.setrecursionlimit(10000 + 1) 
+
+#  Set directory paths for external modules
+if not str(Path(__file__).resolve().parent.parent) in sys.path :
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+from classes import Set01KnapSack
+input_type = input("Please input the extension of the file [type 'c' for .csv and 't' for .txt]: ")
+input_path = input('Please input the path of the test file [for instance, dir/test.csv]: ')
+# This is the memoization approach of
+# 0 / 1 Knapsack in Python in simple
+# we can say recursion + memoization = DP
+
+path = input_path.split('/')
+path = os.path.join(*path)
+
+# Retrieve 0/1 Knapsack instance from a file
+knapsackInstance = Set01KnapSack()
+num_items, maximum_weight, sum_values, data = knapsackInstance.uploadFile(path, input_type)
+ 
+weights = data['W'].to_numpy()
+values = data['V'].to_numpy()
+
+# driver code
+val = values
+wt = weights
+W = maximum_weight
+n = len(val)
+ 
+# We initialize the matrix with -1 at first.
+t = [[-1 for i in range(W + 1)] for j in range(n + 1)]
+ 
+ 
+def knapsack(wt, val, W, n):
+ 
+    # base conditions
+    if n == 0 or W == 0:
+        return 0
+    if t[n][W] != -1:
+        return t[n][W]
+ 
+    # choice diagram code
+    if wt[n-1] <= W:
+        t[n][W] = max(
+            val[n-1] + knapsack(
+                wt, val, W-wt[n-1], n-1),
+            knapsack(wt, val, W, n-1))
+        return t[n][W]
+    elif wt[n-1] > W:
+        t[n][W] = knapsack(wt, val, W, n-1)
+        return t[n][W]
+ 
+ 
+print(knapsack(wt, val, W, n))
+ 
+# This code is contributed by Prosun Kumar Sarkar
