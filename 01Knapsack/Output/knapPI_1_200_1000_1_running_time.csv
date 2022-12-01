@@ -3,7 +3,6 @@ RatioSortGreedy,large_scale/knapPI_1_200_1000_1,200,1008,11238,-,-,0:00:00.00032
 ValueSortGreedy,large_scale/knapPI_1_200_1000_1,200,1008,11238,-,-,0:00:00.000380,1991.0,566.0,2.0,-,-,
 WeightSortGreedy,large_scale/knapPI_1_200_1000_1,200,1008,11238,-,-,0:00:00.000400,10744.0,1003.0,17.0,-,-,
 RatiosortAndConvergeGreedy,large_scale/knapPI_1_200_1000_1,200,1008,11238,-,-,0:00:00.204176,11227.0,981,16,-,-,
-TopDownDynamicProgramming,large_scale/knapPI_1_200_1000_1,200,1008,11238,-,-,0:00:00.667682,11332,1472,17.0,-,-,
 BottomUpDynamicProgramming,large_scale/knapPI_1_200_1000_1,200,1008,11238,-,-,0:00:00.917615,11238,987,16.0,-,-,
 FullyPolyNomial,large_scale/knapPI_1_200_1000_1,200,1008,11238,-,-,0:00:00.732365,11237.96466,987,16,-,-,
 GeneticProgramming,large_scale/knapPI_1_200_1000_1,200,1008,11238,-,-,0:00:00.280153,52728,57082,107,50,-,
