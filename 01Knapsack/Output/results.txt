@@ -61,3 +61,5 @@ Greedy by value 			20		 				878	 				1085		 				919.0		 			1053.0	 		18.0
 Greedy by value 			20		 				878	 				1085		 				913.0		 			1045.0	 		17.0		
 
 Greedy by value 			20		 				878	 				1085		 				919.0		 			1053.0	 		18.0		
+
+Greedy by value 			20		 				878	 				1085		 				865.0		 			1016.0	 		16.0		

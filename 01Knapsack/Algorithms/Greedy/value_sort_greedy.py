@@ -61,10 +61,10 @@ def greedy_value_selection(set01 : Set01KnapSack, maximum_time = 0):
     # while the temporary sum of the weights we have in the knapsack is
     #  lower than the knapsack size    
     while temp_total <= threshold:
-        # get the highest value's index
-        highest_value_index = np.where(temp_vals == np.max(temp_vals)).argmin()
-        
-        # use the index to get the corresponding weight
+        # select the index where the value is highest
+        # highest_value_index = np.where(temp_vals == np.max(temp_vals))[0]
+        highest_value_index = np.argmax(temp_vals)
+
         most_expensive_weight = weights[highest_value_index]
         
         # set the value just added to -1 so it is not 
