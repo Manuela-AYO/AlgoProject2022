@@ -67,7 +67,7 @@ def generate_instance(nb_items : int, weight : int, range_items : int, distrib :
         total_weight += w
         
         # append weight and values in instances list
-        instances.append([v,w])
+        instances.append([int(v),w])
      
     # get the number of files in the directory "Input"   
     dir_path = os.path.join(os.path.dirname(__file__), "..", "Input")
@@ -104,7 +104,7 @@ def control_entries(nb_items : int, coef : int, weight : int) -> int:
     if coef <= 1 : 
         print("\tValueError : The range of the items should be strictly greater than 1\n")
         num = -1
-    if coef > (weight-weight//2) :
+    if coef > (weight-weight//4) :
         print("\tValueError : The range of the coefficients should be at most a half of the actual weight\n")
         num = -1
     return num

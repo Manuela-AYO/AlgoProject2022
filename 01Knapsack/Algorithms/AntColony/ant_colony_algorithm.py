@@ -74,7 +74,7 @@ class Knapsack_ant_colony_algorithm:
             n_ants (int): Number of ants for each iteration execution.
             decay (float): Decay rate for the pheromone trait after each ant perform their task.
             tolerance (float): Tolerance Ratio to accept the convergence to the solution
-            time_min (int): Time in minutes to execute the algorithm if there are no elements or the argument is 0, the executions will be taken into account.
+            time_min (int): Time in milliseconds to execute the algorithm if there are no elements or the argument is 0, the executions will be taken into account.
 
         Complexity: O(1)
         '''
@@ -226,7 +226,7 @@ class Knapsack_ant_colony_algorithm:
         '''
         if self.time_min != 0:
             start_time = datetime.datetime.now()
-            iteration_time = datetime.timedelta(minutes=int(self.time_min))
+            iteration_time = datetime.timedelta(milliseconds=int(self.time_min))
             end_time = start_time + iteration_time
             self.initiate_configurations()
             while True:

@@ -1,7 +1,7 @@
 """
 Author: Chadapohn Chaosrikul
 Reference: https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/
-update Landry : just formalized input and output
+Updated by Landry: Formalized input and output
 """
 
 # Import Python Modules
@@ -26,26 +26,28 @@ from classes import Set01KnapSack
 
 def top_down_memoization(i: int, j: int, weights: np.array, values: np.array, table: np.array, given_time: int, end_time: int) -> tuple([int, np.array]):    
     current_time = datetime.datetime.now()
-    # print(item, sum_of_weights, current_time, end_time)
     if given_time != 0:    
         if current_time >= end_time:
             print("Running time is out, but it will take extra time for returning the base case of this stop")
             return table[i, j], table, i
         
     if i == 0 or j == 0:
-        return 0, table, i
+        table[i, j] = 0
+        return table[i, j], table, i
     
     if table[i][j] != -1:
         return table[i, j], table, i
 
-    if weights[i-1] > j:
-        excluding_new_value, table, item = top_down_memoization(i-1, j, weights, values, table, given_time, end_time)
-        table[i, j] = excluding_new_value
+    if weights[i-1] <= j:
+        value, table, item_calculated_at_stop_time = top_down_memoization(i-1, j-weights[i-1], weights, values, table, given_time, end_time)
+        value_including_the_new_weight = values[i-1] + value
+        value_excluding_the_new_weight, table, item_calculated_at_stop_time = top_down_memoization(i-1, j, weights, values, table, given_time, end_time)
+        table[i, j] = max(value_including_the_new_weight, value_excluding_the_new_weight)
         return table[i, j], table, i
-    else:
-        remaining_value, table, item = top_down_memoization(i-1, j-weights[i-1], weights, values, table, given_time, end_time)
-        excluding_new_value, table, item = top_down_memoization(i-1, j, weights, values, table, given_time, end_time)
-        table[i][j] = max(values[i-1] + remaining_value, excluding_new_value)
+    
+    elif weights[i-1] > j:
+        value, table, item_calculated_at_stop_time = top_down_memoization(i-1, j, weights, values, table, given_time, end_time)
+        table[i, j] = value
         return table[i, j], table, i
 
 def top_down_approach(set01 : Set01KnapSack, given_time: int = 0) -> tuple:
@@ -57,12 +59,13 @@ def top_down_approach(set01 : Set01KnapSack, given_time: int = 0) -> tuple:
     # ---------------------------
 
     start_time = datetime.datetime.now()
-    delta = datetime.timedelta(minutes=given_time)
+    delta = datetime.timedelta(milliseconds=given_time)
     end_time = start_time + delta
     memoization = -1*np.ones((num_items+1, maximum_weight+1))
     print("Finish Running Initialization")
 
     maximum_value, memoization, item_calculated_at_stop_time = top_down_memoization(num_items, maximum_weight, weights, values, memoization, given_time, end_time)
+    print(f"Maximum Value = {maximum_value}")
     print(f"Item calculated at stop time: {item_calculated_at_stop_time}")
     print("Finish Running Algorithm")
 
@@ -70,15 +73,14 @@ def top_down_approach(set01 : Set01KnapSack, given_time: int = 0) -> tuple:
     item_vector = tracing_dynamic_programming_solution(item_calculated_at_stop_time, maximum_weight, weights, memoization, item_vector)
     num_items_choosen = sum(item_vector)
     occupied_weight = sum(weights[i] if item_vector[i]==1 else 0 for i in range(len(item_vector)))
-    solution_value = sum(values[i] if item_vector[i]==1 else 0 for i in range(len(item_vector)))
     print("Finish Finding Conclusion")
-    print(f'Solution Value = {solution_value}')
+    print(f'Solution Value = {maximum_value}')
     print(f'Number of Items Choosen = {num_items_choosen}')
     print(f'Occupied Weight = {occupied_weight}')
     print(f'Knapsack Capacity = {maximum_weight}')
-    # print(item_vector)
     # print(memoization)
-    return item_vector, num_items_choosen, solution_value, occupied_weight
+    # print(item_vector)
+    return item_vector, num_items_choosen, maximum_value, occupied_weight
 
 if __name__ == '__main__':
     # The prompt 
@@ -101,7 +103,6 @@ if __name__ == '__main__':
     values = data['V'].to_numpy()
 
     # Apply the top-down approach
-    # item_vector, solution_value, occupied_weight, num_items_choosen = 
     item_vector, num_items_choosen, solution_value, occupied_weight = top_down_approach(knapsackInstance, given_time)
 
     # Create an output table
