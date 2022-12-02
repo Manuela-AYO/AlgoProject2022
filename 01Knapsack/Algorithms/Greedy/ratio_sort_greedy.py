@@ -1,12 +1,12 @@
 """
-Description: The class refers to the 0/1 knapsack problem solved with a greedy algorithim based on the highest ratio 
+Description: This script implements 0/1 knapsack problem solved with a greedy algorithim based on the highest ratio 
 of the weights and the values.
 
 Author: Gloria Isedu
 update Landry : just formalized input and output AND correct bug
 Date: 18/11/2022
-Input: weights, values, knapsack size, 
-Output: greediest solution bu ratio
+Input: weights, values, knapsack size
+Output: greediest solution by ratio
 
 References:
             1. https://www.youtube.com/watch?v=0tVeO4p0uKI
@@ -102,8 +102,7 @@ if __name__ == '__main__':
     
     # apply the greedy algorithm
     solution, no_of_selected_items, total_value, total_weight = greedy_ratio_selection(
-                    weights=weights_tab, values=values_tab, 
-                    ratio=(weights_tab / values_tab), threshold=sack_weight, maximum_time=time)
+                    knapsack, maximum_time=time)
     
     # write the result in the output filec
     text = f"Greedy by ratio \t\t\t{no_of_items}\t\t \t\t\t\t{sack_weight}\t \t\t\t\t{items_value}\t\t \t\t\t\t{no_of_selected_items}\t\t \t\t\t{total_weight}\t \t\t{total_value}\t\t"
