@@ -1,5 +1,6 @@
 """
 Description: This script implements 0/1 knapsack problem solved with a greedy algorithim based on the lowest weight.
+             The algorithm implemented here runs in O(n) time.
 
 Author: Gloria Isedu
 update Landry : just formalized input and output
@@ -56,14 +57,24 @@ def greedy_weight_selection(set01 : Set01KnapSack, maximum_time = 0):
     iteration_time = dt.timedelta(milliseconds=int(maximum_time))
     end_time = start_time + iteration_time
 
+    # while the temporary sum of the weights we have in the knapsack is
+    #  lower than the knapsack size  
     while temp_total <= threshold:
+        # get the lowest weight's index
         lowest_weight_index = np.where(temp_weight > 0, temp_weight, np.inf).argmin()
-        most_expensive_weight = weights[lowest_weight_index]
+        
+        # use the index to get the corresponding weight
+        cheapest_weight = weights[lowest_weight_index]
+        
+        # set the value just added to -1 so it is not 
+        # selected in next iteration
         temp_weight[lowest_weight_index] = -1
 
-        temp_total += most_expensive_weight
+        temp_total += cheapest_weight
 
         if temp_total <= threshold:
+            # if the total is still less than threshold after adding new weight,
+            #  add it to the solution
             solution[lowest_weight_index] = 1
 
         current_time = dt.datetime.now()

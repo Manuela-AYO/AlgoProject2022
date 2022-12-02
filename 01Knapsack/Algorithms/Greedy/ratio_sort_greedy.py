@@ -1,6 +1,6 @@
 """
 Description: This script implements 0/1 knapsack problem solved with a greedy algorithim based on the highest ratio 
-of the weights and the values.
+of the weights and the values. The algorithm implemented here runs in O(n) time
 
 Author: Gloria Isedu
 update Landry : just formalized input and output AND correct bug
@@ -61,14 +61,24 @@ def greedy_ratio_selection(set01 : Set01KnapSack, maximum_time = 0):
     iteration_time = dt.timedelta(milliseconds=int(maximum_time))
     end_time = start_time + iteration_time
 
+    # while the temporary sum of the weights we have in the knapsack is
+    #  lower than the knapsack size 
     while temp_total <= threshold:
+        # get the highest ratio's index
         highest_ratio_index = np.where(ratio == np.max(ratio)).argmin()
+        
+        # use the index to get the corresponding weight
         most_expensive_weight = weights[highest_ratio_index]
+        
+        # set the value just added to -1 so it is not 
+        # selected in next iteration
         ratio[highest_ratio_index] = -1
 
         temp_total += most_expensive_weight
 
         if temp_total <= threshold:
+            # if the total is still less than threshold after adding new weight,
+            #  add it to the solution
             solution[highest_ratio_index] = 1
         
         current_time = dt.datetime.now()
