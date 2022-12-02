@@ -82,7 +82,7 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
         totalWeight.append(set01.wmax - sizeleft)
 
         if (i > 0 and totalValue[i] <= totalValue[i-1]):
-            break;
+            break
 
         if time_min != 0:
             current_time = datetime.datetime.now()
