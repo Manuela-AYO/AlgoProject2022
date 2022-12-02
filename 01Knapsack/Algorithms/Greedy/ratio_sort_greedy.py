@@ -62,8 +62,8 @@ def greedy_ratio_selection(set01 : Set01KnapSack, maximum_time = 0):
     end_time = start_time + iteration_time
 
     while temp_total <= threshold:
-        highest_ratio_index = np.where(ratio == np.max(ratio))
-        most_expensive_weight = weights[highest_ratio_index][0]
+        highest_ratio_index = np.where(ratio == np.max(ratio)).argmin()
+        most_expensive_weight = weights[highest_ratio_index]
         ratio[highest_ratio_index] = -1
 
         temp_total += most_expensive_weight
