@@ -63,7 +63,8 @@ def greedy_value_selection(weights, values, threshold, maximum_time = 0):
     print(sorted_weights.sort())
     
     while temp_total <= threshold:
-        highest_value_index = np.where(temp_vals == np.max(temp_vals)).argmin()
+        # highest_value_index = np.where(temp_vals == np.max(temp_vals))[0]
+        highest_value_index = np.argmax(temp_vals)
         most_expensive_weight = weights[highest_value_index]
         temp_vals[highest_value_index] = -1
 
