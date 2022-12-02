@@ -24,7 +24,11 @@ from helper import tracing_dynamic_programming_solution
 # A module for retrieving 0/1 Knapsack instance
 from classes import Set01KnapSack
 
-def top_down_memoization(i: int, j: int, weights: np.array, values: np.array, table: np.array, given_time: int, end_time: int) -> tuple([int, np.array]):    
+def top_down_memoization(i_: int, j_: int, weights: np.array, values: np.array, table: np.array, given_time: int, end_time: int) -> tuple([int, np.array]):    
+    # ----- resolve type bug ---- #
+    i = int(i_)
+    j = int(j_)
+    # --------------------------- #
     current_time = datetime.datetime.now()
     if given_time != 0:    
         if current_time >= end_time:
