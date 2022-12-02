@@ -100,7 +100,7 @@ def benchmarkFor01(CsvName,AlgoName,TypeFile,InstanceName,MTheoricalValue="-",MT
         # this will take the instance inside Input Folder and the output inside Output folder
     # ---- OUTPUT INIT --- #
     output = ["-"]*11 # do same as a dataFrame ? Two column, one for value, the other for information
-    IndexOut = ["algoName","instanceName","nbItem","mWeight:3","mTheoricalValue","mTime","mIteration","realTime","realValue","realWeight","realNbItem","specificParam"]
+    IndexOut = ["algoName","instanceName","nbItem","mWeight","mTheoricalValue","mTime","mIteration","realTime","realValue","realWeight","realNbItem","specificParam"]
     
     # -------TESTING MODULE ------ #
     knapsackInstance = Set01KnapSack()

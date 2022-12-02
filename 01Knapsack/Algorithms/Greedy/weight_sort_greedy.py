@@ -1,11 +1,11 @@
 """
-Description: The class refers to the 0/1 knapsack problem solved with a greedy algorithim based on the highest weight.
+Description: This script implements 0/1 knapsack problem solved with a greedy algorithim based on the lowest weight.
 
 Author: Gloria Isedu
 update Landry : just formalized input and output
 Date: 18/11/2022
-Input: weights, values, knapsack size, 
-Output: greediest solution bu ratio
+Input: weights, values, knapsack size
+Output: greediest solution by weight
 
 References:
             1. https://www.youtube.com/watch?v=0tVeO4p0uKI
@@ -97,8 +97,7 @@ if __name__ == '__main__':
     
     # apply the greedy algorithm
     solution, total_value, total_weight, no_of_selected_items = greedy_weight_selection(
-                    weights=weights_tab, values=values_tab, 
-                    threshold=sack_weight,
+                    knapsack,
                     maximum_time=time)
     
     # write the result in the output file
