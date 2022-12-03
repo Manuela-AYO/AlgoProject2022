@@ -60,7 +60,12 @@ class Fptas:
         
         
     # ******************************** Compute the max value in the row i, column thres_weight *********************** #
-    def compute_max_value(self, values : np.array, i : int, thres_weight : int, end_time : int = 0):
+    def compute_max_value(self, values : np.array, i_ : int, thres_weight_ : int, end_time : int = 0):
+        # -------- fixe type error -------- #
+        i = int(i_)
+        thres_weight = int(thres_weight_)
+        # --------------------------------- #
+
         """_summary_
             This function recursively compute the necessary values in the array values. 
             Each cell(values[i,thres_weight]) in the values array represents the maximum 
@@ -97,18 +102,18 @@ class Fptas:
             else:
                 # if the object can enter in the sack, do we take it or not ?
                 
-                if values[i-1, thres_weight-self.weights_tab[i-1]][0] == -1:
+                if values[i-1, int(thres_weight-self.weights_tab[i-1])][0] == -1:
                     self.compute_max_value(values, i-1, thres_weight-self.weights_tab[i-1], end_time)
                 
                 # if we got a better value without taking the object, we don't take it and we're on the 
                 # same case as "weights_tab[i-1] > thres_weight"
-                if values[i-1, thres_weight][0] > values[i-1, thres_weight-self.weights_tab[i-1]][0] + self.new_values_tab[i-1] :
+                if values[i-1, thres_weight][0] > values[i-1, int(thres_weight-self.weights_tab[i-1])][0] + self.new_values_tab[i-1] :
                     values[i, thres_weight][0] = values[i-1, thres_weight][0]
                     values[i,thres_weight][1] = "up"
                 
                 # otherwise, we take the object and the remaining objects are going to be evaluated with the remaining weight   
                 else :
-                    values[i, thres_weight][0] = values[i-1, thres_weight-self.weights_tab[i-1]][0] + self.new_values_tab[i-1]
+                    values[i, thres_weight][0] = values[i-1, int(thres_weight-self.weights_tab[i-1])][0] + self.new_values_tab[i-1]
                     values[i,thres_weight][1] = "left"   
                     
 
@@ -158,12 +163,12 @@ class Fptas:
         self.compute_max_value(opt_values, nb_items, max_weight, end_time)
         
         nb_items_chosen = 0
-        opt_val = opt_values[nb_items, max_weight][0]
+        opt_val = opt_values[nb_items, int(max_weight)][0]
         opt_weight = 0
         
         # construct the vector of sol
         while nb_items != 0 :
-            if opt_values[nb_items, max_weight][1] == "left":
+            if opt_values[nb_items, int(max_weight)][1] == "left":
                 vector_items[nb_items-1] = 1
                 opt_weight += self.weights_tab[nb_items-1]
                 max_weight -= self.weights_tab[nb_items-1]

@@ -40,13 +40,8 @@ VALUE = np.random.randint(10, 800, size=NO_OF_ITEMS)
 ITEM_NUMBER = np.arange(1, 11) # [ 1  2  3  4  5  6  7  8  9 10]
 
 
-
-def check_time(curr_time, end_time):
-    print(curr_time - end_time)
-
-
 def initialize_pop(item_no, no_of_individuals=5):
-    # initialize the population
+    # initialize the population. A constant operation.
     solutions_per_population = no_of_individuals 
     pop_size = (int(solutions_per_population), item_no.shape[0]) # (5, 10)
     print(pop_size)
@@ -61,7 +56,7 @@ def initialize_pop(item_no, no_of_individuals=5):
 
 def calc_fitness(population, weight: np.array, value: np.array, threshold):
     """
-    Calculates the fitness of each individual in the population
+    Calculates the fitness of each individual in the population, This operation is O(n)
     """
     individuals_fitnesses = []
     for individual in population:
@@ -77,7 +72,8 @@ def calc_fitness(population, weight: np.array, value: np.array, threshold):
 
 def select_fittest(individuals_fitnesses, population, no_of_parents=3):
     """
-    Select the fittest individuals from population (by tournament selection)
+    Select the fittest individuals from population (by tournament selection).
+    This opertaion is O(n).
     """
     parents = []
     for parent in range(no_of_parents):
@@ -92,7 +88,8 @@ def select_fittest(individuals_fitnesses, population, no_of_parents=3):
 
 def crossover(no_of_items, parents):
     """
-    crossing of the fit individuals. For every 2 individuals(now parents)(AKA possible knapsack solutions), one offspring is created
+    crossing of the fit individuals. For every 2 individuals(now parents)(AKA possible knapsack solutions), 
+    one offspring is created. The opertion is O(n)
     """
 
     # create a middle point that will be the crossover point
@@ -133,6 +130,7 @@ def crossover(no_of_items, parents):
 def mutation(offsprings):
     """
     mutates the fit individuals so that there is variation in the population.
+    The operation is O(n)
     """
     mutation_rate = 0.4
     for i in range(len(offsprings)):
@@ -209,7 +207,6 @@ def genetic_programming(set01 : Set01KnapSack, no_of_generations, population, ma
         current_time = dt.datetime.now()
         # it will not stop at the exact time it is meant to stop
         if (maximum_time != 0) and (current_time > end_time):
-            check_time(curr_time=current_time, end_time=end_time)
             break
 
 

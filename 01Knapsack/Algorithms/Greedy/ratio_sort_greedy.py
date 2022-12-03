@@ -1,12 +1,12 @@
 """
-Description: The class refers to the 0/1 knapsack problem solved with a greedy algorithim based on the highest ratio 
-of the weights and the values.
+Description: This script implements 0/1 knapsack problem solved with a greedy algorithim based on the highest ratio 
+of the weights and the values. The algorithm implemented here runs in O(n) time
 
 Author: Gloria Isedu
 update Landry : just formalized input and output AND correct bug
 Date: 18/11/2022
-Input: weights, values, knapsack size, 
-Output: greediest solution bu ratio
+Input: weights, values, knapsack size
+Output: greediest solution by ratio
 
 References:
             1. https://www.youtube.com/watch?v=0tVeO4p0uKI
@@ -61,14 +61,24 @@ def greedy_ratio_selection(set01 : Set01KnapSack, maximum_time = 0):
     iteration_time = dt.timedelta(milliseconds=int(maximum_time))
     end_time = start_time + iteration_time
 
+    # while the temporary sum of the weights we have in the knapsack is
+    #  lower than the knapsack size 
     while temp_total <= threshold:
-        highest_ratio_index = np.where(ratio == np.max(ratio))
-        most_expensive_weight = weights[highest_ratio_index][0]
+        # get the highest ratio's index
+        highest_ratio_index = np.where(ratio == np.max(ratio))[0]
+        
+        # use the index to get the corresponding weight
+        most_expensive_weight = weights[highest_ratio_index]
+        
+        # set the value just added to -1 so it is not 
+        # selected in next iteration
         ratio[highest_ratio_index] = -1
 
         temp_total += most_expensive_weight
 
         if temp_total <= threshold:
+            # if the total is still less than threshold after adding new weight,
+            #  add it to the solution
             solution[highest_ratio_index] = 1
         
         current_time = dt.datetime.now()
@@ -102,8 +112,7 @@ if __name__ == '__main__':
     
     # apply the greedy algorithm
     solution, no_of_selected_items, total_value, total_weight = greedy_ratio_selection(
-                    weights=weights_tab, values=values_tab, 
-                    ratio=(weights_tab / values_tab), threshold=sack_weight, maximum_time=time)
+                    knapsack, maximum_time=time)
     
     # write the result in the output filec
     text = f"Greedy by ratio \t\t\t{no_of_items}\t\t \t\t\t\t{sack_weight}\t \t\t\t\t{items_value}\t\t \t\t\t\t{no_of_selected_items}\t\t \t\t\t{total_weight}\t \t\t{total_value}\t\t"
