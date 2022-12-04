@@ -63,7 +63,7 @@ def bruteforce(set01 : m.Set01KnapSack, time_min=0):
         curentAnswer = []
         for i in range(a):
             curentAnswer.append(i)
-        # test all solutions
+        # test all combination of a in set01.n
         while True:
             # print(curentAnswer)
             curentValue = testValue(curentAnswer, set01)
