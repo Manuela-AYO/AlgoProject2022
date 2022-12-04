@@ -134,7 +134,7 @@ if __name__ == '__main__':
     myObject = m.Set01KnapSack()
     # myObject.uploadFile("low-dimensional\f2_l_d_kp_20_878", 't') # don't work, WHY ???
     # myObject.uploadFile("Landrytest.csv", 'c')
-    myObject.uploadFile("large_scale\knapPI_3_10000_1000_1", 't')
+    myObject.uploadFile("large_scale\knapPI_3_2000_1000_1", 't')
     
     # create a difficult test because algo stop at first step. 
 

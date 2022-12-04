@@ -67,12 +67,12 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
     for answer in range(len(curent)):
 
         # --- algo de base --- #
-        for i in range(len(curent)**2): # it is the security, to avoid too much loop. Because it would mean the algo is useless. 
+        for i in range(2 + len(curent)**2): # it is the security, to avoid too much loop. Because it would mean the algo is useless. 
             # sort data by VoverW
             curent = curent.sort_values(['GlobalV','VoverW'], ascending=False)
             curent = curent.reset_index(drop=True)
         
-            # print("step n ",i)
+            print("step n ",i)
             # print(curent)
             
             # take the first data in order to full the KnackSack
@@ -80,23 +80,29 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
             answer = []
             answerOriginIndex.append([])
             totalValue.append(0.0)
+
+            lowestRation = 0
             for d in range(len(curent)):
                 if (curent.W[d] <= sizeleft):
+                    if lowestRation==0 or curent.VoverW[d] < lowestRation:
+                        lowestRation = curent.VoverW[d]
                     answer.append(d)
                     answerOriginIndex[i].append(curent.originalIndex[d])
                     totalValue[i] = totalValue[i] + curent.V[d]
                     sizeleft = sizeleft - curent.W[d]
-        
+
+
             # print("curent value is ",totalValue[i], "step ",i)
             totalWeight.append(set01.wmax - sizeleft)
 
             if (i > 0 and totalValue[i] <= totalValue[i-1]):
+                nb = len(curent)
+                curent = curent[curent.VoverW >= lowestRation] # to win time !
+                nb2 = len(curent)
+                if (nb2 - nb) > 0:
+                    print("delete ", nb2 - nb)
                 break
 
-            if time_min != 0:
-                current_time = datetime.datetime.now()
-                if current_time > end_time:
-                    break
 
             for d in answer:
                 curent.GlobalV[d] = totalValue[i] / globalSizeleft
@@ -121,6 +127,8 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
             newGobalItem = bestAnswer[0]
         else:
             break
+
+
         if globalAnswer[newGobalItem] == 1:
             print("ERROR : two item chosen twice !!")
         globalAnswer[newGobalItem] = 1
@@ -129,7 +137,12 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
         globalWeight += set01.data.W[newGobalItem]
 
         curent = curent[curent.originalIndex != newGobalItem]
+        curent = curent.reset_index(drop=True)
+        
         globalSizeleft -= set01.data.W[newGobalItem]
+
+        print(globalSizeleft)
+
         if globalSizeleft <= 0:
             break
         answerOriginIndex = []
@@ -137,6 +150,11 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
         totalWeight = []
         for c in range(len(curent)):
             curent.GlobalV[c] = curent.VoverW[c]
+
+        if time_min != 0:
+                current_time = datetime.datetime.now()
+                if current_time > end_time:
+                    break
         # print("//////")
     # ------Fin------- #        
     print("----BEST SOLUTION----")
@@ -156,7 +174,7 @@ if __name__ == '__main__':
     myObject = m.Set01KnapSack()
     # myObject.uploadFile("low-dimensional\f2_l_d_kp_20_878", 't') # don't work, WHY ???
     # myObject.uploadFile("Landrytest.csv", 'c')
-    myObject.uploadFile("large_scale\knapPI_3_10000_1000_1", 't')
+    myObject.uploadFile("large_scale\knapPI_3_2000_1000_1", 't')
     
     # create a difficult test because algo stop at first step. 
 
