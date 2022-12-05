@@ -46,6 +46,8 @@ class Set01KnapSack:
     def convertListAnswerToBinaryList(self, inputlist): # usefull for Landry Code XD
         output = [0]*self.n
         for i in inputlist:
+            if (output[i] == 1):
+                print("ERROR : same value use twice")
             output[i] = 1
         return output
 
