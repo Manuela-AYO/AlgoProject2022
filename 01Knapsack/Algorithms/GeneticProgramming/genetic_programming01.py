@@ -1,5 +1,5 @@
 """
-Description: 
+Description: This script solves the 0/1 knapsack problem with the genetic programming algorithm.
             1. With genetic programming, we first initialize the population
                 the population consists of individuals, here an individual is a possible solution
                 A chromosome is the string that contains info about the solution/individual
@@ -7,10 +7,11 @@ Description:
             2.Then we select the most 'fit' individuals
             3. We cross the fit individuals to produce more fit offspring
             4. we mutate the offspring to create genetic variation
+            This implementation runs in O(n^2) time
 Author: Gloria Isedu
 update Landry : just formalized input and output
 Date: 30/10/2022
-Input: ...
+Input: weights, values, knapsack size
 Output: optimal solution
 
 References:
@@ -129,7 +130,7 @@ def crossover(no_of_items, parents):
 
 def mutation(offsprings):
     """
-    mutates the fit individuals so that there is variation in the population.
+    mutates the offspring so that there is variation in the population.
     The operation is O(n)
     """
     mutation_rate = 0.4
@@ -157,7 +158,7 @@ def genetic_programming(set01 : Set01KnapSack, no_of_generations, population, ma
     # ---------------------------
 
     """
-    combines all the functions.
+    Combines all the functions. Runs in O(n^2) time
 
     Returns:
         the best genetic solution
