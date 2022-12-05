@@ -63,8 +63,8 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
         curent = curent.sort_values(['GlobalV','VoverW'], ascending=False)
         curent = curent.reset_index(drop=True)
     
-        # print("step n ",i)
-        # print(curent)
+        print("step n ",i)
+        print(curent)
         
         # take the first data in order to full the KnackSack
         sizeleft = set01.wmax
@@ -134,7 +134,9 @@ if __name__ == '__main__':
     myObject = m.Set01KnapSack()
     # myObject.uploadFile("low-dimensional\f2_l_d_kp_20_878", 't') # don't work, WHY ???
     # myObject.uploadFile("Landrytest.csv", 'c')
-    myObject.uploadFile("large_scale\knapPI_3_2000_1000_1", 't')
+    
+    # myObject.uploadFile("large_scale\knapPI_3_2000_1000_1", 't')
+    myObject.uploadFile("artificial/01_knap_un_75_150_21.csv", 'c')
     
     # create a difficult test because algo stop at first step. 
 
