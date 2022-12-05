@@ -41,6 +41,8 @@ def tracing_dynamic_programming_solution(item: int, sum_of_weights: int, weights
 
     """
 
+    # print(item, memoization[item, int(sum_of_weights)],memoization[item-1, int(sum_of_weights)])
+
     # The base case when reaching item 0
     if item == 0:
         return item_vector
@@ -63,6 +65,8 @@ def tracing_dynamic_programming_solution(item: int, sum_of_weights: int, weights
         tracing_dynamic_programming_solution(item-1, sum_of_weights, weights, memoization, item_vector)
         
         return item_vector
+
+    
 
 
  
