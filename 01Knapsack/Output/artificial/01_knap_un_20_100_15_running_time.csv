@@ -1,4 +1,4 @@
-BranchAndBound,artificial/01_knap_un_20_100_15.csv,20,100,-,-,-,0:00:00.000348,236,100,6,-,-,
+BranchAndBound,artificial/01_knap_un_20_100_15.csv,20,100,-,-,-,0:00:00.000348,239,100,6,-,-,
 RatioSortGreedy,artificial/01_knap_un_20_100_15.csv,20,100,-,-,-,0:00:00.000398,7.0,88.0,2.0,-,-,
 ValueSortGreedy,artificial/01_knap_un_20_100_15.csv,20,100,-,-,-,0:00:00.000404,183.0,82.0,4.0,-,-,
 WeightSortGreedy,artificial/01_knap_un_20_100_15.csv,20,100,-,-,-,0:00:00.000388,228.0,81.0,6.0,-,-,

@@ -31,7 +31,7 @@ FullyPolyNomial,artificial/01_knap_sc_75_150_19.csv,75,150,294,16:40:00,-,0:00:0
 GeneticProgramming,artificial/01_knap_sc_75_150_19.csv,75,150,294,16:40:00,-,0:00:00.027931,1872,1576,37,10,-,
 AntColony,artificial/01_knap_sc_75_150_19.csv,75,150,294,16:40:00,50,0:00:00.081664,209,145,8,200,0.75,
 Randomized,artificial/01_knap_sc_75_150_19.csv,75,150,294,16:40:00,100,0:00:01.000233,161,145,2,0.2,-,
-BranchAndBound,artificial/01_knap_sc_75_150_19.csv,75,150,294,6 days,-,0:00:00.000560,294,150,18,-,-,
+	BranchAndBound,artificial/01_knap_sc_75_150_19.csv,75,150,294,6 days,-,0:00:00.000560,294,150,18,-,-,
 RatioSortGreedy,artificial/01_knap_sc_75_150_19.csv,75,150,294,6 days,-,0:00:00.000334,170.0,154.0,2.0,-,-,
 ValueSortGreedy,artificial/01_knap_sc_75_150_19.csv,75,150,294,6 days,-,0:00:00.000344,170.0,154.0,2.0,-,-,
 WeightSortGreedy,artificial/01_knap_sc_75_150_19.csv,75,150,294,6 days,-,0:00:00.000358,287.0,143.0,18.0,-,-,

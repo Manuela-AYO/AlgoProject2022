@@ -1,4 +1,3 @@
-BranchAndBound,artificial/01_knap_sc_20_100_12.csv,0,0,340,0:10:00,-,0:00:00.000967,0,0,0,-,-,
 ValueSortGreedy,artificial/01_knap_sc_100_200_12.csv,100,200,340,0:10:00,-,0:00:00.000374,531.0,482.0,7.0,-,-,
 BranchAndBound,artificial/01_knap_sc_100_200_12.csv,100,200,340,0:10:00,-,0:00:00.000406,340,200,20,-,-,
 RatioSortGreedy,artificial/01_knap_sc_100_200_12.csv,100,200,340,0:10:00,-,0:00:00.000337,531.0,482.0,7.0,-,-,

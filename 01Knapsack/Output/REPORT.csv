@@ -20,3 +20,4 @@ GeneticProgramming,low-dimensional/f1_l-d_kp_10_269,10,269,295,-,-,0:00:01.95814
 AntColony,low-dimensional/f1_l-d_kp_10_269,10,269,295,-,50,0:00:00.011998,280.0,233.0,4,50,0.5,
 Randomized,low-dimensional/f1_l-d_kp_10_269,10,269,295,-,50,0:00:00.001999,250.0,263.0,4,0.1,-,
 FullyPolyNomial,low-dimensional/f1_l-d_kp_10_269,10,269,295,-,-,0:00:00.018002,294.97350000000006,269.0,6,-,-,
+ValueSortGreedy,low-dimensional/f1_l-d_kp_10_269,10,269,295,-,-,0:00:00,288.0,268.0,4.0,-,-,
