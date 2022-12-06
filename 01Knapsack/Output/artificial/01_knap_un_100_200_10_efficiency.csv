@@ -36,7 +36,7 @@ ValueSortGreedy,artificial/01_knap_un_100_200_10.csv,100,200,789,6 days,-,0:00:0
 WeightSortGreedy,artificial/01_knap_un_100_200_10.csv,100,200,789,6 days,-,0:00:00.000310,611.0,185.0,21.0,-,-,
 RatiosortAndConvergeGreedy,artificial/01_knap_un_100_200_10.csv,100,200,789,6 days,-,0:00:00.076137,783.0,199,18,-,-,
 TopDownDynamicProgramming,artificial/01_knap_un_100_200_10.csv,100,200,789,6 days,-,0:00:00.116415,789,200,16.0,-,-,
-BottomUpDynamicProgramming,artificial/01_knap_un_100_200_10.csv,100,200,789,6 days, 22:40:00,-,0:00:00.109306,789,200,16.0,-,-,
+BottomUpDynamicProgramming,artificial/01_knap_un_100_200_10.csv,100,200,789,6 days,-,0:00:00.109306,789,200,16.0,-,-,
 FullyPolyNomial,artificial/01_knap_un_100_200_10.csv,100,200,789,6 days,-,0:00:00.131439,788.9943000000001,200,16,-,-,
 GeneticProgramming,artificial/01_knap_un_100_200_10.csv,100,200,789,6 days,-,0:00:00.014590,1518,1653,44,10,-,
 AntColony,artificial/01_knap_un_100_200_10.csv,100,200,789,6 days,50,0:00:00.087922,395,155,8,200,0.75,
