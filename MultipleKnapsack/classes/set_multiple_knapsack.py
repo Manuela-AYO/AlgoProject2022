@@ -46,6 +46,16 @@ class SetMultipleKnapSack:
             text += f"{i} Value : {self.data.V[i]} Weight : {self.data.W[i]} \n"
         return text
 
+    def convertListAnswerToBinaryList(self, inputlist): # usefull for Landry Code XD
+        output = [0]*self.n
+        for i in inputlist:
+            if (output[i] == 1):
+                print("ERROR : same value use twice")
+            output[i] = 1
+        return output
+
+
+
     def uploadFile(self, nameOfFile : str, type : str) -> tuple([int, int, int, pandas.DataFrame]):
         # Description : initialize the object
         # Input : path to the csv file relative to the Input folder - test with : "0_1_kp_REF_10_100_221016.csv"
