@@ -37,7 +37,7 @@ def greedy_ratio_selection(set01 : Set01KnapSack, maximum_time = 0):
     # ----- update for timing module -------- #
     weights = set01.data.W.to_numpy()
     values = set01.data.V.to_numpy()
-    ratio = weights/values
+    ratio = values/weights
     threshold = set01.wmax
     # ---------------------------
 

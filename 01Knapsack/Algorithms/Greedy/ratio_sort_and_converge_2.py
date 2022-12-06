@@ -50,6 +50,8 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
         curent.VoverW[i] = curent.V[i] / curent.W[i]
         curent.GlobalV[i] = curent.VoverW[i]
 
+    curent = curent[curent.VoverW > 0] # a ratio equal to 0 will create issues for the algo
+
     # ------Algo------- #
 
     globalAnswer = [0]*len(set01.data.V)
@@ -95,12 +97,12 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
             # print("curent value is ",totalValue[i], "step ",i)
             totalWeight.append(set01.wmax - sizeleft)
 
-            if (i > 0 and totalValue[i] <= totalValue[i-1]):
-                nb = len(curent)
-                curent = curent[curent.VoverW >= lowestRation] # to win time !
-                nb2 = len(curent)
-                if (nb2 - nb) > 0:
-                    print("delete ", nb2 - nb)
+            if (i > 0 and totalValue[i] <= totalValue[i-1]): 
+                # nb = len(curent) # this few line of codes reduce the time complexity and the quality of the algo
+                # curent = curent[curent.VoverW >= lowestRation] # to win time !
+                # nb2 = len(curent)
+                # if (nb - nb2) > 0:
+                #     print("delete ", nb - nb2)
                 break
 
 
@@ -174,7 +176,9 @@ if __name__ == '__main__':
     myObject = m.Set01KnapSack()
     # myObject.uploadFile("low-dimensional\f2_l_d_kp_20_878", 't') # don't work, WHY ???
     # myObject.uploadFile("Landrytest.csv", 'c')
-    myObject.uploadFile("large_scale\knapPI_3_2000_1000_1", 't')
+    # myObject.uploadFile("large_scale\knapPI_3_2000_1000_1", 't')
+    # myObject.uploadFile("large_scale/knapPI_1_200_1000_1", 't')
+    myObject.uploadFile("artificial/01_knap_un_75_150_21.csv", 'c')
     
     # create a difficult test because algo stop at first step. 
 

@@ -1,8 +1,8 @@
 '''
 Description: This file contain an invented algo based on the ratio_sort_greedy method and a way to execute the file localy
 Author: Landry Bailly
-Date: 21/11/2022
-Update: 23/11/2022 --> adding timing module
+Date: 06/12/2022
+Update:
 Usage: import the file and use the bruteForce algo, or execute the file localy. No param, it will take default input value
 Input: For the main function, 
     -object Set01KnapSack with data already uploaded
@@ -15,7 +15,7 @@ Output: Answer of the problem,
 References: ...
 '''
 
-# ---------------------------------IMPORT------------------------------------ #
+# ---------------------------------INPORT------------------------------------ #
 
 import pandas
 pandas.options.mode.chained_assignment = None
@@ -25,14 +25,14 @@ import datetime
 
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__),'..', '..', "classes"))
-import set_knapsack as m
+import set_multiple_knapsack as m
 
 
 # ---------------------------------USEFUL FUNCTION------------------------------------ #
 
 # ---------------------------------MAIN FUNCTION------------------------------------ #
 
-def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
+def ratio_sort_and_converge(set01 : m.SetMultipleKnapSack, time_min=0):
     print("-----------Preprocess--------")
     # ------ time module ---------- #
     start_time = datetime.datetime.now()
@@ -68,10 +68,29 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
         
         # take the first data in order to full the KnackSack
         sizeleft = set01.wmax
-        answer = []
+        answer = [] # do double table for bag then item
+        for b in range(len(setM.wmax)):
+            answer.append([])
         answerOriginIndex.append([])
         totalValue.append(0.0)
+
+        precision = 5
+
+        # more difficult than just taking the first one, in wich bag do we put it ?
+        # test even one answer for every bag it is number of bag ^ number of object in answer --> it is not polynomial
+        # i have to find a faster way. 
+
         for d in range(len(curent)):
+            # first try to fill one bag
+            for b in range(len(sizeleft)):
+                if curent.W[d] <= sizeleft[b]:
+                    if sizeleft[b] == curent.W[d]:
+                        print("put object here")
+                    for a in range(len(answer[b])):
+                        if sizeleft[b] + answer[b][a] == curent.W[d]:
+                            print("put object here and try to move the current one in an other bag, but how ????")
+
+
             if (curent.W[d] <= sizeleft):
                 answer.append(d)
                 answerOriginIndex[i].append(curent.originalIndex[d])
@@ -131,19 +150,19 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
 # ---------------------------------EXECUTE FILE------------------------------------ #
 if __name__ == '__main__':
     # ----Upload Data------ #
-    myObject = m.Set01KnapSack()
+    myObject = m.SetMultipleKnapSack()
     # myObject.uploadFile("low-dimensional\f2_l_d_kp_20_878", 't') # don't work, WHY ???
-    # myObject.uploadFile("Landrytest.csv", 'c')
+    myObject.uploadFile("instance_p01.txt", 't')
     
     # myObject.uploadFile("large_scale\knapPI_3_2000_1000_1", 't')
-    myObject.uploadFile("artificial/01_knap_un_75_150_21.csv", 'c')
+    # myObject.uploadFile("artificial/01_knap_un_75_150_21.csv", 'c')
     
     # create a difficult test because algo stop at first step. 
 
     print("Data for test")
     print(myObject)
     print("--------")
-    ratio_sort_and_converge(myObject)
+    # ratio_sort_and_converge(myObject)
 
 
 
