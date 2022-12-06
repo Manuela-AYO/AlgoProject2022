@@ -1,0 +1,2 @@
+python ./01Knapsack.py LandryTest.csv RatiosortAndConvergeGreedy t large_scale/knapPI_2_1000_1000_1 - - -
+python ./01Knapsack.py LandryTest.csv RatiosortAndConvergeGreedy2 t large_scale/knapPI_2_1000_1000_1 - - -

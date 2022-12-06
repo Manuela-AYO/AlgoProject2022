@@ -24,7 +24,7 @@ from classes import Set01KnapSack
 
 from BruteForce import brute_force
 from BranchAndBound import branch_bound
-from Greedy import ratio_sort_greedy, value_sort_greedy, weight_sort_greedy, ratio_sort_and_converge
+from Greedy import ratio_sort_greedy, value_sort_greedy, weight_sort_greedy, ratio_sort_and_converge, ratio_sort_and_converge_2
 from DynamicProgramming import top_down_approach, bottom_up_approach
 from FullyPolynomial import fptas
 from Randomized import randomized_algorithm
@@ -42,6 +42,7 @@ def execute_algo(knapSackObject,AlgoName,MTime="-",MIteration="-",SpecificParam=
         'ValueSortGreedy': value_sort_greedy.greedy_value_selection,
         'WeightSortGreedy': weight_sort_greedy.greedy_weight_selection,
         'RatiosortAndConvergeGreedy':ratio_sort_and_converge.ratio_sort_and_converge,
+        'RatiosortAndConvergeGreedy2':ratio_sort_and_converge_2.ratio_sort_and_converge,
         'TopDownDynamicProgramming': top_down_approach.top_down_approach,
         'BottomUpDynamicProgramming': bottom_up_approach.bottom_up_approach,
         'Randomized': randomized_algorithm.randomized,

@@ -22,7 +22,7 @@ import datetime
 
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__),'..', '..', "classes"))
-import set_knapsack as m
+import set_multiple_knapsack as m
 
 # ---------------------------------USEFUL FUNCTION------------------------------------ #
 
@@ -32,16 +32,22 @@ def testValue(index, object):
         value = value + object.data.V[i]
     return value
 
-def testWeight(index, object):
-    value = 0
-    for i in index:
-        value = value + object.data.W[i]
+def testWeight(index, bag, object):
+    value = [0]*len(object.wmax)
+    for i in range(len(index)):
+        value[bag[i]] = value[bag[i]] + object.data.W[index[i]]
     return value
 
+def maxWeight(a, c):
+    answer = True
+    for i in range(len(a)):
+        if a[i] > c[i]:
+            answer = False
+    return answer
 
 
 # ---------------------------------MAIN FUNCTION------------------------------------ #
-def bruteforce(set01 : m.Set01KnapSack, time_min=0):
+def bruteforce(setM : m.SetMultipleKnapSack, time_min=0):
     print("-----------Preprocess--------")
     # timing module 
     start_time = datetime.datetime.now()
@@ -50,33 +56,45 @@ def bruteforce(set01 : m.Set01KnapSack, time_min=0):
 
     # tester toutes les solutions (a parmis n) quelque soit a entre 1 et n
     bestValue = 0
-    bestValueWeight = 0
+    bestValueWeight = []
     bestAnswer = []
     curentValue = 0
-    curentWeight = 0
+    curentWeight = []
     curentAnswer = []
 
     print("-----------Algo Brute_Froce Running--------")
 
-    for a in range(1, set01.n + 1):
+    for a in range(1, setM.n + 1):
         # init first answer
         curentAnswer = []
         for i in range(a):
             curentAnswer.append(i)
         # test all combination of a in set01.n
         while True:
-            # print(curentAnswer)
-            curentValue = testValue(curentAnswer, set01)
-            curentWeight = testWeight(curentAnswer, set01)
-            if curentValue > bestValue and curentWeight <= set01.wmax:
-                bestValue = curentValue
-                bestValueWeight = curentWeight
-                bestAnswer = curentAnswer[:]
+            print("A : ",curentAnswer)
+
+            # choose each bag from 0 to number of bag - 1 !
+            bag = [0]*len(curentAnswer)
+            for s1 in range(setM.nsack**len(bag)):
+                print(bag)
+                curentValue = testValue(curentAnswer, setM)
+                curentWeight = testWeight(curentAnswer, bag, setM)
+                if curentValue > bestValue and maxWeight(curentWeight,setM.wmax):
+                    bestValue = curentValue
+                    bestValueWeight = curentWeight
+                    bestAnswer = curentAnswer[:]
+                
+                for s in range(len(bag)):
+                    if bag[s] + 1 >= setM.nsack:
+                        bag[s] = 0
+                    else:
+                        bag[s] = bag[s]+1
+                        break
 
             end = 1
             for i in range(a):
                 index = a - i - 1
-                if (curentAnswer[index] < set01.n - i - 1):
+                if (curentAnswer[index] < setM.n - i - 1):
                     end = 0
                     curentAnswer[index] = curentAnswer[index] + 1
                     for j in range(a - i, a):
@@ -94,7 +112,7 @@ def bruteforce(set01 : m.Set01KnapSack, time_min=0):
     # ------Answer------- #
     print("----BEST SOLUTION----")
     for i in bestAnswer:
-        print(" Object : V = ",set01.data.V[i]," W = ",set01.data.W[i])
+        print(" Object : V = ",setM.data.V[i]," W = ",setM.data.W[i])
     print("values : ", bestValue)
     print("weight : ", bestValueWeight)
     print("number of data :", len(bestAnswer))
@@ -106,13 +124,13 @@ def bruteforce(set01 : m.Set01KnapSack, time_min=0):
 # ---------------------------------EXECUTE FILE------------------------------------ #
 if __name__ == '__main__':
     # ----Upload Data------ #
-    myObject = m.Set01KnapSack()
+    myObject = m.SetMultipleKnapSack()
     # myObject.uploadFile("Landrytest.csv","c")
-    myObject.uploadFile("Landrytest.csv", 'c')
+    myObject.uploadFile("instance_p01.txt", 't')
     print("Data for tes")
     print(myObject)
     print("--------")
-    bruteforce(myObject, 1)
+    bruteforce(myObject, 0)
 
 
 

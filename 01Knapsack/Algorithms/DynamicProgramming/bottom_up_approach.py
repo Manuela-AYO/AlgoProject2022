@@ -171,6 +171,10 @@ def bottom_up_approach(set01 : Set01KnapSack, given_time: int = 0) -> tuple([np.
     print(f'Number of Items Choosen = {num_items_choosen}')
     print(f'Occupied Weight = {occupied_weight}')
     print(f'Knapsack Capacity = {maximum_weight}')
+    
+    np.set_printoptions(threshold=10000)
+    # print(item_vector)
+    # print(tabularization)
 
     return item_vector, num_items_choosen, solution_value, occupied_weight
 
