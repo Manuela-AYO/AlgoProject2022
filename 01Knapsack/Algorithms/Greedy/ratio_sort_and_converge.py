@@ -15,7 +15,7 @@ Output: Answer of the problem,
 References: ...
 '''
 
-# ---------------------------------INPORT------------------------------------ #
+# ---------------------------------IMPORT------------------------------------ #
 
 import pandas
 pandas.options.mode.chained_assignment = None

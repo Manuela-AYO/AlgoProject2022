@@ -25,11 +25,6 @@ if not str(Path(__file__).resolve().parent.parent) in sys.path :
 from classes import Set01KnapSack
 
 
-KNAPSACK_THRESHOLD = 60
-NO_OF_ITEMS = 3
-VALUE = np.array([100, 280, 280, 120])
-WEIGHT = np.array([10, 40, 30, 20])
-
 def greedy_value_selection(set01 : Set01KnapSack, maximum_time = 0):
     # ----- update for timing module -------- #
     weights = set01.data.W.to_numpy()
