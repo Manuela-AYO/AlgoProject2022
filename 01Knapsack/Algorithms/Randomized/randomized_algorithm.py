@@ -7,12 +7,13 @@ the value and when deleting, which does not reduce the value significantly.
 Author: Felipe Cortes Jaramillo
 update Landry : just formalized input and output AND create an Exeption Error
 
-Usage: python3 01_ks_randomized_algo.py [type] [path] [iterations]
+Usage: python3 randomized_algorithm.py [type] [path] [iterations] [time]
 
 Args:
     type (string): File type between csv or txt.
     path (string): Name of the file containing the knapsack 0/1 problem
     iterations (int): Number of iterations which the algorithm will perform
+    time (int): Time in milliseconds to execute the program.
 
 References: http://www.sci.brooklyn.cuny.edu/~zhou/papers/repository/doc/tutorial/node6.html
 
