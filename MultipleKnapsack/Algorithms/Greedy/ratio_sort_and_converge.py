@@ -100,7 +100,9 @@ def ratio_sort_and_converge(set01 : m.SetMultipleKnapSack, time_min=0):
                         break
     
         # print("curent value is ",totalValue[i], "step ",i)
-        totalWeight.append(set01.wmax - sizeleft)
+        totalWeight.append([])
+        for w in range(len(set01.wmax)):
+            totalWeight[i].append(set01.wmax[w] - sizeleft[w])
 
         if (i > 0 and totalValue[i] <= totalValue[i-1]):
             break
