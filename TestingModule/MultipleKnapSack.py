@@ -100,6 +100,8 @@ def benchmarkFor01(CsvName,AlgoName,TypeFile,InstanceName,MTheoricalValue="-",MT
     knapsackInstance = set_multiple_knapsack.SetMultipleKnapSack()
     knapsackInstance.uploadFile(InstanceName,TypeFile)
 
+    print(knapsackInstance)
+
     print("############################# Execute ALGO ",AlgoName,"#############################")
 
     items_vector, num_items_choosen, maximum_value, occupied_weight, realTime = execute_algo(knapsackInstance, AlgoName, MTime, MIteration, SpecificParam)
