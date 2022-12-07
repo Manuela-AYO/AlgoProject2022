@@ -74,28 +74,30 @@ def ratio_sort_and_converge(set01 : m.SetMultipleKnapSack, time_min=0):
         answerOriginIndex.append([])
         totalValue.append(0.0)
 
-        precision = 5
-
         # more difficult than just taking the first one, in wich bag do we put it ?
         # test even one answer for every bag it is number of bag ^ number of object in answer --> it is not polynomial
         # i have to find a faster way. 
 
         for d in range(len(curent)):
             # first try to fill one bag
+            caseit = False
             for b in range(len(sizeleft)):
-                if curent.W[d] <= sizeleft[b]:
-                    if sizeleft[b] == curent.W[d]:
-                        print("put object here")
-                    for a in range(len(answer[b])):
-                        if sizeleft[b] + answer[b][a] == curent.W[d]:
-                            print("put object here and try to move the current one in an other bag, but how ????")
-
-
-            if (curent.W[d] <= sizeleft):
-                answer.append(d)
-                answerOriginIndex[i].append(curent.originalIndex[d])
-                totalValue[i] = totalValue[i] + curent.V[d]
-                sizeleft = sizeleft - curent.W[d]
+                if sizeleft[b] == curent.W[d]:
+                    answer[b].append(d)
+                    sizeleft[b] = sizeleft[b] - curent.W[d]
+                    answerOriginIndex[i].append(curent.originalIndex[d])
+                    totalValue[i] = totalValue[i] + curent.V[d]
+                    caseit = True
+                    break
+            if caseit == False :
+                for b in range(len(sizeleft)):
+                    if sizeleft[b] <= curent.W[d]:
+                        answer[b].append(d)
+                        sizeleft[b] = sizeleft[b] - curent.W[d]
+                        answerOriginIndex[i].append(curent.originalIndex[d])
+                        totalValue[i] = totalValue[i] + curent.V[d]
+                        caseit = True
+                        break
     
         # print("curent value is ",totalValue[i], "step ",i)
         totalWeight.append(set01.wmax - sizeleft)
