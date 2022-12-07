@@ -1,8 +1,8 @@
 '''
 Description: This file contain the bruteForce algo and a way to execute the file localy
 Author: Landry Bailly
-Date: 21/11/2022
-Update: 23/11/2022 --> adding timing module
+Date: 07/12/2022
+Update: 
 Usage: import the file and use the bruteForce algo, or execute the file localy. No param, it will take default input value
 Input: For the main function, 
     -object Set01KnapSack with data already uploaded
@@ -117,7 +117,7 @@ def bruteforce(setM : m.SetMultipleKnapSack, time_min=0):
     print("weight : ", bestValueWeight)
     print("number of data :", len(bestAnswer))
 
-    binaryBestAnswer = set01.convertListAnswerToBinaryList(bestAnswer)
+    binaryBestAnswer = setM.convertListAnswerToBinaryList(bestAnswer)
 
     return binaryBestAnswer, len(bestAnswer), bestValue, bestValueWeight
 
