@@ -63,3 +63,7 @@ Greedy by value 			20		 				878	 				1085		 				913.0		 			1045.0	 		17.0
 Greedy by value 			20		 				878	 				1085		 				919.0		 			1053.0	 		18.0		
 
 Greedy by value 			20		 				878	 				1085		 				865.0		 			1016.0	 		16.0		
+
+Bottom-up approach, Dynamic Programming 			75		 				150	 				3013		 				14.0		 			146	 		773		
+
+Bottom-up approach, Dynamic Programming 			100		 				200	 				3290		 				16.0		 			200	 		789		

@@ -1,5 +1,5 @@
 """
-Description: 
+Description: This script solves the 0/1 knapsack problem with the genetic programming algorithm.
             1. With genetic programming, we first initialize the population
                 the population consists of individuals, here an individual is a possible solution
                 A chromosome is the string that contains info about the solution/individual
@@ -7,10 +7,11 @@ Description:
             2.Then we select the most 'fit' individuals
             3. We cross the fit individuals to produce more fit offspring
             4. we mutate the offspring to create genetic variation
+            This implementation runs in O(n^2) time
 Author: Gloria Isedu
 update Landry : just formalized input and output
 Date: 30/10/2022
-Input: ...
+Input: weights, values, knapsack size
 Output: optimal solution
 
 References:
@@ -33,18 +34,10 @@ if not str(Path(__file__).resolve().parent.parent) in sys.path :
 from classes import Set01KnapSack
 
 
-KNAPSACK_THRESHOLD = 25
-NO_OF_ITEMS = 10
-WEIGHT = np.random.randint(1, 15, size=NO_OF_ITEMS) # a list of weights from 1-14 10 times i.e for each item, generate a weight
-VALUE = np.random.randint(10, 800, size=NO_OF_ITEMS)
-ITEM_NUMBER = np.arange(1, 11) # [ 1  2  3  4  5  6  7  8  9 10]
-
-
 def initialize_pop(item_no, no_of_individuals=5):
     # initialize the population. A constant operation.
     solutions_per_population = no_of_individuals 
     pop_size = (int(solutions_per_population), item_no.shape[0]) # (5, 10)
-    print(pop_size)
     initial_population = np.random.randint(2, size=pop_size)
     # [[1 1 0 0 1 1 0 0 0 0]
     #  [1 0 0 0 1 0 1 1 1 1]
@@ -129,7 +122,7 @@ def crossover(no_of_items, parents):
 
 def mutation(offsprings):
     """
-    mutates the fit individuals so that there is variation in the population.
+    mutates the offspring so that there is variation in the population.
     The operation is O(n)
     """
     mutation_rate = 0.4
@@ -146,7 +139,7 @@ def mutation(offsprings):
             mutants[i][random_index] = 0
         return mutants
     
-    
+
 def genetic_programming(set01 : Set01KnapSack, no_of_generations, population, maximum_time=5):
 
     # ----- update for timing module -------- #
@@ -157,7 +150,7 @@ def genetic_programming(set01 : Set01KnapSack, no_of_generations, population, ma
     # ---------------------------
 
     """
-    combines all the functions.
+    Combines all the functions. Runs in O(n^2) time
 
     Returns:
         the best genetic solution
@@ -222,7 +215,10 @@ def genetic_programming(set01 : Set01KnapSack, no_of_generations, population, ma
     optimal_value = sum(final_solu * values)
     optimal_weight = sum(final_solu * weights)
 
-    return final_solu, no_of_selected_genes, optimal_value, optimal_weight
+    if optimal_weight > threshold:
+        final_solu = np.zeros(final_solu.shape)
+
+    print(final_solu, no_of_selected_genes, optimal_value, optimal_weight)
 
 
 if __name__ == '__main__':
