@@ -1,5 +1,5 @@
 """
-Description: This module is about the branch and bound algorithm of the knapsack problem.
+Description: This module is about the branch and bound algorithm of the 0/1 knapsack problem.
     Knapsack problem is a maximization problem. We want to maximize values in our sack 
     with respect to the capacity of the sack. 
     With this branch and bound algorithm, I'm going to turn it into a minimization problem.

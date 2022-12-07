@@ -1,7 +1,0 @@
-Faire 3 greedy, 
-
-Fractionnel, trier par V ou W et trier par V/W (ça fait 4, un de trop ?s)
-
-Fractionnel, c'est quoi ? --> voir fiche ex
-
-Trier par W, utile ?
