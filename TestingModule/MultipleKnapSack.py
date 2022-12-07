@@ -124,7 +124,7 @@ def benchmarkFor01(CsvName,AlgoName,TypeFile,InstanceName,MTheoricalValue="-",MT
     for o in output:
         outputCsv = outputCsv + str(o) + ","
 
-    file = open(os.path.join(os.path.dirname(__file__), '..', 'MultipleKnapsack, 'Output', CsvName), 'a')
+    file = open(os.path.join(os.path.dirname(__file__), '..', 'MultipleKnapsack', 'Output', CsvName), 'a')
     file.write(outputCsv)  
     file.write('\n')
 
