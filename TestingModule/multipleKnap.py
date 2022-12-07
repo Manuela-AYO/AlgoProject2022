@@ -23,6 +23,7 @@ from Greedy import ratio_sort_and_converge
 from DynamicProgramming import bottom_up
 from Randomized import randomized_multiple_knapsack_algorithm
 
+
 # ------------------------ USEFUL FUNCTION ------------------- #
 
 def execute_algo(knapSackObject,AlgoName,MTime="-",MIteration="-",SpecificParam=["-","-", "-"]):
@@ -105,7 +106,7 @@ def benchmarkFor01(CsvName,AlgoName,TypeFile,InstanceName,MTheoricalValue="-",MT
     # ----- ADD OUTPUT TOO CSV ----- #
     outputCsv = ""
     for o in output:
-        outputCsv = outputCsv + str(o) + ","
+        outputCsv = outputCsv + str(o) + ";"
 
     file = open(os.path.join(os.path.dirname(__file__), '..', 'MultipleKnapsack', 'Output', CsvName), 'a')
     file.write(outputCsv)  
