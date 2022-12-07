@@ -36,7 +36,7 @@ def execute_algo(knapSackObject,AlgoName,MTime="-",MIteration="-",SpecificParam=
         'BruteForce': brute_force.bruteforce,
         'RatiosortAndConvergeGreedy':ratio_sort_and_converge.ratio_sort_and_converge,
         #'RatiosortAndConvergeGreedy2':ratio_sort_and_converge_2.ratio_sort_and_converge,
-        #'BottomUpDynamicProgramming': bottom_up.bottom_up_approach,
+        'BottomUpDynamicProgramming': bottom_up.bottom_up_approach,
         #'Randomized': randomized_multiple_knapsack_algorithm.randomized,
 
     }
