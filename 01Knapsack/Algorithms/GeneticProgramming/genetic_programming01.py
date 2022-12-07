@@ -218,7 +218,7 @@ def genetic_programming(set01 : Set01KnapSack, no_of_generations, population, ma
     if optimal_weight > threshold:
         final_solu = np.zeros(final_solu.shape)
 
-    print(final_solu, no_of_selected_genes, optimal_value, optimal_weight)
+    return final_solu, no_of_selected_genes, optimal_value, optimal_weight
 
 
 if __name__ == '__main__':

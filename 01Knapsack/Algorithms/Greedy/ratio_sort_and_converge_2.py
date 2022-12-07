@@ -33,7 +33,6 @@ import set_knapsack as m
 # ---------------------------------MAIN FUNCTION------------------------------------ #
 
 def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
-    print("-----------Preprocess--------")
     # ------ time module ---------- #
     start_time = datetime.datetime.now()
     iteration_time = datetime.timedelta(milliseconds=int(time_min))
@@ -110,13 +109,6 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
                 curent.GlobalV[d] = totalValue[i] / globalSizeleft
 
         # ---- prend la meilleur et refait ---- #
-        # print("-----------Answers--------")
-        # print("indexs :")
-        # print(answerOriginIndex)
-        # print("values :")
-        # print(totalValue)
-        # print("Weight :")
-        # print(totalWeight)
         if (len(totalValue) > 1):
             if (totalValue[len(totalValue) - 2] >= totalValue[len(totalValue) - 1]):
                 bestAnswer = answerOriginIndex[len(answerOriginIndex) - 2]
@@ -157,16 +149,6 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
                 current_time = datetime.datetime.now()
                 if current_time > end_time:
                     break
-        # print("//////")
-    # ------Fin------- #        
-    print("----BEST SOLUTION----")
-    # for i in bestAnswer:
-    #     print(" Object : V = ",set01.data.V[i]," W = ",set01.data.W[i])
-    print("values : ", globalValue)
-    print("weight : ", globalWeight)
-    print("number of data :", nbAnswer)
-
-    # binaryBestAnswer = set01.convertListAnswerToBinaryList(globalAnswer)
     
     return globalAnswer, nbAnswer, globalValue, globalWeight
 

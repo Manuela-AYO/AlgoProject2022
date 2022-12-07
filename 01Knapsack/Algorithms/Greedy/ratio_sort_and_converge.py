@@ -33,7 +33,6 @@ import set_knapsack as m
 # ---------------------------------MAIN FUNCTION------------------------------------ #
 
 def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
-    print("-----------Preprocess--------")
     # ------ time module ---------- #
     start_time = datetime.datetime.now()
     iteration_time = datetime.timedelta(milliseconds=int(time_min))
@@ -55,16 +54,11 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
     answerOriginIndex = []
     totalValue = []
     totalWeight = []
-
-    print("-----------Algo Ratio_sort_and_converge Running--------")
     
     for i in range(len(curent)**2): # it is the security, to avoid too much loop. Because it would mean the algo is useless. 
         # sort data by VoverW
         curent = curent.sort_values(['GlobalV','VoverW'], ascending=False)
         curent = curent.reset_index(drop=True)
-    
-        print("step n ",i)
-        print(curent)
         
         # take the first data in order to full the KnackSack
         sizeleft = set01.wmax
@@ -91,14 +85,6 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
 
         for d in answer:
             curent.GlobalV[d] = totalValue[i] / set01.wmax
-        
-    print("-----------Answers--------")
-    print("indexs :")
-    print(answerOriginIndex)
-    print("values :")
-    print(totalValue)
-    print("Weight :")
-    print(totalWeight)
 
     if (len(totalValue) > 1):
         if (totalValue[len(totalValue) - 2] >= totalValue[len(totalValue) - 1]):
@@ -115,17 +101,8 @@ def ratio_sort_and_converge(set01 : m.Set01KnapSack, time_min=0):
         bestAnswer = answerOriginIndex[0]
         print("ERROR : the algo did only one loop and the preprocess, time condition may be too short")
 
-    
-    print("----BEST SOLUTION (take index[n - 2])----")
-    # for i in bestAnswer:
-    #     print(" Object : V = ",set01.data.V[i]," W = ",set01.data.W[i])
-    print("values : ", bestValue)
-    print("weight : ", bestValueWeight)
-    print("number of data :", len(bestAnswer))
-
     binaryBestAnswer = set01.convertListAnswerToBinaryList(bestAnswer)
-
-    
+ 
     return binaryBestAnswer, len(bestAnswer), bestValue, bestValueWeight
 
 # ---------------------------------EXECUTE FILE------------------------------------ #

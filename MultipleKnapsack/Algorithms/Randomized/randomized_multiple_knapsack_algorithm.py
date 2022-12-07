@@ -20,6 +20,13 @@ import random
 import math
 import datetime
 
+
+def randomized(file, executions, time_min=0, selection_ratio=0.1):
+    if (selection_ratio != 0): # if = 0, then don't add it the param, and it will take the default value
+        return Multiple_Knapsack_randomized_algorithm(file,int(executions),int(time_min),float(selection_ratio)).multiple_knapsack_randomized_algorithm()
+    else:
+        return Multiple_Knapsack_randomized_algorithm(file,int(executions),int(time_min)).multiple_knapsack_randomized_algorithm()
+
 class Multiple_Knapsack_randomized_algorithm:
 
     def __init__(self, file, executions, selection_ratio=0.3, time_min=0):
@@ -33,7 +40,7 @@ class Multiple_Knapsack_randomized_algorithm:
             value_list (list): List containing all the values of the elements.
             executions (int): Number of iterations which the algorithm will perform.
             time_min (int): Time in milliseconds to execute the algorithm if there are no elements or the argument is 0, the executions will be taken into account.
-            selection_ration (float): Porcentage of the elements which are going to be taking into account for the elite group. This value should be greater than 0
+            selection_ratio (float): Percentage of the elements which are going to be taking into account for the elite group. This value should be greater than 0
         Complexity: O(1)
         '''
         self.n_elements = 0

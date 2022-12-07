@@ -46,10 +46,9 @@ if not str(Path(__file__).resolve().parent.parent) in sys.path :
 # Import external modules
 # A module for tracing Dynamic Programming's solution
 from helper import tracing_dynamic_programming_solution
+
 # A module for retrieving 0/1 Knapsack instance
 from classes import Set01KnapSack
-# A module for timing
-from external import compute_run_time
 
 def bottom_up_tabularization(num_items: int, maximum_weight: int, weights: np.array, values: np.array, tabularization: np.array, given_time: int, end_time: int) -> tuple([np.array, int]):
     """

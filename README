@@ -1,0 +1,41 @@
+From the home directory of the project,
+To execute an algorithm : 
+    cd TestingModule
+    python3 01Knapsack.py OutputFileName AlgoName TypeFile InstanceName MTheoricalValue MTime MIteration
+        where OutputFileName : Name of the File in which the result will be written(It will use a csv format)
+              AlgoName : the name of the algorithm we want to run
+              TypeFile : type of the instance file - t : for txt and c for csv
+              InstanceName : file containing the instance of the knapsack problem
+              MTheoreticalValue : optimal value of the problem. It is '-' if the theoretical value is unknown
+              MTime : the time in milliseconds to run the algorithm. '-' if we don't want to specify the time
+              MIteration : the number of iterations. This one is for algorithms that use iterations : 
+              randomized and ant colony. '-' if an algorithm doesn't need it
+
+              For genetic algorithm, the extra parameter is the number of individuals that we specify
+              by adding to the command line above :
+                --sp1 number_individuals
+              This value is an integer one.
+
+              For randomized algorithm : 
+                We need an extra parameter called the selection ratio. To specify it, we add to the command line : --sp1 selection_ratio
+                Its value is between 0.1 and 0.5
+              
+              For ant colony : 
+                We need two extra parameters : 
+                    - the number of ants : any integer value
+                    - the decay : [0,1]
+                To specify them, we add to the command line : --sp1 number_ants --sp2 decay
+
+    Note : OutputFileName will be stored in the folder 01Knapsack/Output
+           InputName should be located in 01Knapsack/Input
+
+To create an instance of the 0/1 knapsack problem :
+    cd 01Knapsack/Generators
+    python3 01_ks_1_gen.py nb_items knapsack_weight range distribution
+        where nb_items : total number of items
+              knapsack_weight : maximum capacity of the sack
+              range : maximum weight that an item can have. [1, knapsack_weight - knapsack_weight/4]
+              distribution : in {1,2,3} with 
+                - 1 : no correlation between weights and values
+                - 2 : weak correlation between weights and values
+                - 3 : strong correlation between weights and values

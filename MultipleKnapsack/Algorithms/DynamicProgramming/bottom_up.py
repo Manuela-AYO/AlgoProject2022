@@ -19,9 +19,14 @@
 import numpy as np
 from datetime import datetime, timedelta
 
+from classes import SetMultipleKnapSack
+
+def bottom_up_approach(setMult : SetMultipleKnapSack, time_min : int = 0):
+    return DPMultSack(setMult.nsack, setMult.data.W, setMult.data.V, setMult.wmax, time_min).bottom_multiple_knapsack()
+
 # ************** Perform bottom-up dynamic approach on a sack ************
 class DPMultSack:
-    def __init__(self, number_sack : int, weights_tab : np.array, values_tab : np.array, sack_weight : int, time : int = 0,  *args ) -> None:
+    def __init__(self, number_sack : int, weights_tab : np.array, values_tab : np.array, list_sack_weight : list, time : int = 0) -> None:
         self.values_tab = values_tab
         self.weights_tab = weights_tab
         self.number_sack = number_sack
@@ -30,17 +35,10 @@ class DPMultSack:
         self.total_value = 0 
         self.vector_items = np.zeros((number_sack, len(weights_tab)), dtype=int)
         self.sack_weights = np.zeros(number_sack, dtype=int)    # array of items weights
-        # prevent some misentries
-        if len(args)+1 != number_sack : 
-            print("Error !!!!\n\tThe number of weights capacity should be equal to the number of sack")
-            return
-        
-        self.sack_weights[0] = sack_weight
-        # fill that array
-        i = 1
-        for weight in args:
-            self.sack_weights[i] = weight
-            i += 1
+
+        for i in range(len(list_sack_weight)):
+            self.sack_weights[i] = list_sack_weight[i]
+    
         self.time = int(time)
     
     def bottom_up(self, index_sack : int, items_indexes : list) -> list:
@@ -127,11 +125,13 @@ class DPMultSack:
         # for each of the sack, perform bottom-up approach
         for i in range(self.number_sack) : 
             untaken = self.bottom_up(i, untaken)
+            if len(untaken) == 0:
+                break
             if self.time != 0:
                 if datetime.now() >= end_time:
                     break
             
-        return self.vector_items, self.nb_items_chosen, self.total_weight, self.total_value
+        return self.vector_items, self.nb_items_chosen, self.total_value, self.total_weight
             
         
     

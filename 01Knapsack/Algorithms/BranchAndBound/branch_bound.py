@@ -6,12 +6,15 @@ Description: This module is about the branch and bound algorithm of the 0/1 knap
     In other means, we want to minimize the lost of values when selecting items.
     This technique is called the LC-branch and bound. LC for Least Cost branch and bound.
     
-    With branch and bound, there are 3 things to consider : 
+    With LC-branch and bound, there are 3 things to consider : 
     1. The form of the solution : the solution is a vector v of bits such that for an object at
         the position i, v[i] = 0 if we don't take the object and 1 else
         e.g : if nb_ojects = 4, v = <?,?,?,?>
-    2. The upperbound : it's the maximum value we can get on a node
-    3. The cost : it is the lost we have on a node. And as so, it should be less than the upperbound 
+    2. The upper bound : it's the minimum value we can get on a node
+    3. The cost : it is the minimum lost we have on a node. And as so, it should be less than the upperbound 
+    
+    Branch and bound algorithm builds a binary tree where each node represents a decision on an item. 
+    This decision(represented by Node.value_index) is 0 if an item is not chosen and 1 else.
 
 Author: Christiane Manuela AYO NDAZO'O
 
@@ -21,6 +24,7 @@ References :
 
     update Landry : just formalized input (with the function) and output (change the order)
 """
+
 # some important modules
 import numpy as np
 from pathlib import Path
@@ -113,7 +117,8 @@ class BranchBoundKnapsack :
     def compute_upperbound(self, n : Node) -> None :
         """Compute the upperbound which represents the maximum value we can have on the node.
            Recall that we're doing and LC-branch and bound. So the value
-                of the cost for a node will be negative
+                of the cost for a node will be negative because we will multiply the value we'll
+                get by -1
 
         Args:
             n (Node): Node for which we compute the upperbound
@@ -162,10 +167,12 @@ class BranchBoundKnapsack :
     
     # *********************** branch and bound function *********************** # 
     def branch_bound(self) -> tuple([np.array, int, int, int]):
-        """Perform branch and bound
+        """Perform branch and bound by building the tree of binary decision
 
         Returns:
             tuple: the vector of items, the number of items chosen, total weight and total value
+            
+        Total complexity : O(2n²)
         """
         # create dummy node
         dummy_node = Node(-1,-1, weight_carried=self.sack_weight)

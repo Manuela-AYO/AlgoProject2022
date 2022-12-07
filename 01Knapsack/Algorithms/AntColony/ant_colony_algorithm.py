@@ -37,7 +37,6 @@ if not str(Path(__file__).resolve().parent.parent) in sys.path :
 
 # Other elements
 from classes import Set01KnapSack
-from external import compute_run_time
 
 
 # ----FOR TESTING MODULE---- #

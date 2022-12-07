@@ -10,6 +10,7 @@
     
     References :
         - https://en.wikipedia.org/wiki/Knapsack_problem#Fully_polynomial_time_approximation_scheme
+        - 920857251-MIT.pdf
 
 
     update Landry : just formalized input (with the function) and output (change the order)
@@ -198,6 +199,8 @@ class Fptas:
             int : number of items chosen
             int : value of those items
             int : weight of those items
+            
+        Total complexity : O(nP/ε)
         """
         if self.epsilon<0 or self.epsilon>1:
             print("ε should be in the interval [0,1]")

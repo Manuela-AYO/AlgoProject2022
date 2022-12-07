@@ -4,11 +4,8 @@ update : Landry Bailly, 25/11/2022
 
 # ------------------- IMPORT PART ------------ #
 
-# from asyncio.windows_events import NULL
-# from email.policy import default
 from pickle import NONE
 import sys, os
-import pandas as pd
 import numpy as np
 import argparse
 from datetime import datetime, timedelta
@@ -93,10 +90,6 @@ def execute_algo(knapSackObject,AlgoName,MTime="-",MIteration="-",SpecificParam=
 
 
 # ------------------------ BENCHMARK -------------------------- #
-def setEpsilon(): # for cross validation
-    # epsilon = knapsackInstance.getEpsilon(parameters['epsilon'])
-    print("finish")
-
 def benchmarkFor01(CsvName,AlgoName,TypeFile,InstanceName,MTheoricalValue="-",MTime="-",MIteration="-",SpecificParam=["-","-", "-"]): 
         # this will take the instance inside Input Folder and the output inside Output folder
     # ---- OUTPUT INIT --- #
@@ -138,12 +131,6 @@ def benchmarkFor01(CsvName,AlgoName,TypeFile,InstanceName,MTheoricalValue="-",MT
     return output, IndexOut
 
 if __name__ == '__main__':
-    # test = Set01KnapSack()
-    # test.uploadFile("Landrytest.csv","c")
-    # print(test)
-    # print(ant_colony_algorithm.ant_colony_algorithm(test, 4, 3, 0.4))
-    # # print(weight_sort_greedy.greedy_weight_selection(test))
-
     # generate the arguments in the command line
     parser = argparse.ArgumentParser(description=
                                      "Param for testing")
@@ -163,7 +150,7 @@ if __name__ == '__main__':
     benchmarkFor01(args.CsvName,args.AlgoName,args.TypeFile,args.InstanceName,args.MTheoricalValue,args.MTime,args.MIteration,[args.sp1,args.sp2, args.sp3])
 
     # commande Exemple : 
-    # python .\01Knapsack_2.py csv_file_name_in_output_folder Name_of_the_algo c_or_t input_file_name_in_input_folder theorical_max_value(- for nothing) max_time(- for nothing) max_iteration(- for nothing) --sp1 specific_param_1(optionnal) --sp2 specific_param_2(optionnal) --sp3 specific_param_3(optionnal)
+    # python3 ./01Knapsack_2.py csv_file_name_in_output_folder Name_of_the_algo c_or_t input_file_name_in_input_folder theorical_max_value(- for nothing) max_time(- for nothing) max_iteration(- for nothing) --sp1 specific_param_1(optionnal) --sp2 specific_param_2(optionnal) --sp3 specific_param_3(optionnal)
 
 
 

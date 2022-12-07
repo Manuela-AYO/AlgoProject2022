@@ -155,26 +155,15 @@ def top_down_approach(set01 : Set01KnapSack, given_time: int = 0) -> tuple([np.a
     delta = datetime.timedelta(milliseconds=given_time)
     end_time = start_time + delta
     memoization = -1*np.ones((num_items+1, maximum_weight+1))
-    print("Finish Running Initialization")
 
     # Algorithm
     maximum_value, memoization, item_calculated_at_stop_time = top_down_memoization(num_items, maximum_weight, weights, values, memoization, given_time, end_time)
-    print(f"Maximum Value = {maximum_value}")
-    print(f"Item calculated at stop time: {item_calculated_at_stop_time}")
-    print("Finish Running Algorithm")
 
      # Conclusion
     item_vector = np.zeros((num_items))
     item_vector = tracing_dynamic_programming_solution(item_calculated_at_stop_time, maximum_weight, weights, memoization, item_vector)
     num_items_choosen = sum(item_vector)
     occupied_weight = sum(weights[i] if item_vector[i]==1 else 0 for i in range(len(item_vector)))
-    
-    # Debugging
-    print("Finish Finding Conclusion")
-    print(f'Solution Value = {maximum_value}')
-    print(f'Number of Items Choosen = {num_items_choosen}')
-    print(f'Occupied Weight = {occupied_weight}')
-    print(f'Knapsack Capacity = {maximum_weight}')
     
     return item_vector, num_items_choosen, maximum_value, occupied_weight
 

@@ -42,7 +42,6 @@ def testWeight(index, object):
 
 # ---------------------------------MAIN FUNCTION------------------------------------ #
 def bruteforce(set01 : m.Set01KnapSack, time_min=0):
-    print("-----------Preprocess--------")
     # timing module 
     start_time = datetime.datetime.now()
     iteration_time = datetime.timedelta(milliseconds=int(time_min))
@@ -55,8 +54,6 @@ def bruteforce(set01 : m.Set01KnapSack, time_min=0):
     curentValue = 0
     curentWeight = 0
     curentAnswer = []
-
-    print("-----------Algo Brute_Froce Running--------")
 
     for a in range(1, set01.n + 1):
         # init first answer
@@ -92,12 +89,8 @@ def bruteforce(set01 : m.Set01KnapSack, time_min=0):
                     break
 
     # ------Answer------- #
-    print("----BEST SOLUTION----")
     for i in bestAnswer:
         print(" Object : V = ",set01.data.V[i]," W = ",set01.data.W[i])
-    print("values : ", bestValue)
-    print("weight : ", bestValueWeight)
-    print("number of data :", len(bestAnswer))
 
     binaryBestAnswer = set01.convertListAnswerToBinaryList(bestAnswer)
 
