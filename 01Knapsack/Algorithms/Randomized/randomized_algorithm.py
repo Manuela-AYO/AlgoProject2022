@@ -36,7 +36,6 @@ if not str(Path(__file__).resolve().parent.parent) in sys.path :
 from classes import Set01KnapSack
 
 
-
 # ----FOR TESTING MODULE---- #
 def randomized(set01 : Set01KnapSack, executions, time_min=0, selection_ratio=0.1):
     if (selection_ratio != 0): # if = 0, then don't add it the param, and it will take the default value

@@ -1,3 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+/.vs/git/FileContentIndex
+/.vs/git/v17
+*.sqlite
+/.vs/VSWorkspaceState.json

@@ -34,6 +34,7 @@ import set_multiple_knapsack as m
 
 def ratio_sort_and_converge(set01 : m.SetMultipleKnapSack, time_min=0):
     print("-----------Preprocess--------")
+    print(set01.wmax)
     # ------ time module ---------- #
     start_time = datetime.datetime.now()
     iteration_time = datetime.timedelta(milliseconds=int(time_min))
@@ -59,6 +60,7 @@ def ratio_sort_and_converge(set01 : m.SetMultipleKnapSack, time_min=0):
     print("-----------Algo Ratio_sort_and_converge Running--------")
     
     for i in range(len(curent)**2): # it is the security, to avoid too much loop. Because it would mean the algo is useless. 
+
         # sort data by VoverW
         curent = curent.sort_values(['GlobalV','VoverW'], ascending=False)
         curent = curent.reset_index(drop=True)
@@ -67,14 +69,15 @@ def ratio_sort_and_converge(set01 : m.SetMultipleKnapSack, time_min=0):
         print(curent)
         
         # take the first data in order to full the KnackSack
-        sizeleft = set01.wmax
+        sizeleft = [0]*len(set01.wmax)
+        for w in range(len(sizeleft)):
+            sizeleft[w] = set01.wmax[w]
+
         answer = [] # do double table for bag then item
-        for b in range(len(setM.wmax)):
+        for b in range(len(set01.wmax)):
             answer.append([])
         answerOriginIndex.append([])
         totalValue.append(0.0)
-
-        precision = 5
 
         # more difficult than just taking the first one, in wich bag do we put it ?
         # test even one answer for every bag it is number of bag ^ number of object in answer --> it is not polynomial
@@ -82,23 +85,28 @@ def ratio_sort_and_converge(set01 : m.SetMultipleKnapSack, time_min=0):
 
         for d in range(len(curent)):
             # first try to fill one bag
+            caseit = False
             for b in range(len(sizeleft)):
-                if curent.W[d] <= sizeleft[b]:
-                    if sizeleft[b] == curent.W[d]:
-                        print("put object here")
-                    for a in range(len(answer[b])):
-                        if sizeleft[b] + answer[b][a] == curent.W[d]:
-                            print("put object here and try to move the current one in an other bag, but how ????")
-
-
-            if (curent.W[d] <= sizeleft):
-                answer.append(d)
-                answerOriginIndex[i].append(curent.originalIndex[d])
-                totalValue[i] = totalValue[i] + curent.V[d]
-                sizeleft = sizeleft - curent.W[d]
-    
+                if sizeleft[b] == curent.W[d]:
+                    answer[b].append(d)
+                    sizeleft[b] = sizeleft[b] - curent.W[d]
+                    answerOriginIndex[i].append(curent.originalIndex[d])
+                    totalValue[i] = totalValue[i] + curent.V[d]
+                    caseit = True
+                    break
+            if caseit == False :
+                for b in range(len(sizeleft)):
+                    if curent.W[d] <= sizeleft[b]:
+                        answer[b].append(d)
+                        sizeleft[b] = sizeleft[b] - curent.W[d]
+                        answerOriginIndex[i].append(curent.originalIndex[d])
+                        totalValue[i] = totalValue[i] + curent.V[d]
+                        caseit = True
+                        break
         # print("curent value is ",totalValue[i], "step ",i)
-        totalWeight.append(set01.wmax - sizeleft)
+        totalWeight.append([])
+        for w in range(len(set01.wmax)):
+            totalWeight[i].append(set01.wmax[w] - sizeleft[w])
 
         if (i > 0 and totalValue[i] <= totalValue[i-1]):
             break
@@ -108,8 +116,13 @@ def ratio_sort_and_converge(set01 : m.SetMultipleKnapSack, time_min=0):
             if current_time > end_time:
                 break
 
+        someWeight = 0
+        for w in range(len(set01.wmax)):
+            # print(set01.wmax[w])
+            someWeight =someWeight+ set01.wmax[w]
         for d in answer:
-            curent.GlobalV[d] = totalValue[i] / set01.wmax
+            # print(totalValue[i], someWeight)
+            curent.GlobalV[d] = totalValue[i] / someWeight
         
     print("-----------Answers--------")
     print("indexs :")
