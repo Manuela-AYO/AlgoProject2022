@@ -48,7 +48,6 @@ def maxWeight(a, c):
 
 # ---------------------------------MAIN FUNCTION------------------------------------ #
 def bruteforce(setM : m.SetMultipleKnapSack, time_min=0):
-    print("-----------Preprocess--------")
     # timing module 
     start_time = datetime.datetime.now()
     iteration_time = datetime.timedelta(milliseconds=int(time_min))
@@ -62,8 +61,6 @@ def bruteforce(setM : m.SetMultipleKnapSack, time_min=0):
     curentWeight = []
     curentAnswer = []
 
-    print("-----------Algo Brute_Froce Running--------")
-
     for a in range(1, setM.n + 1):
         # init first answer
         curentAnswer = []
@@ -71,12 +68,9 @@ def bruteforce(setM : m.SetMultipleKnapSack, time_min=0):
             curentAnswer.append(i)
         # test all combination of a in set01.n
         while True:
-            print("A : ",curentAnswer)
-
             # choose each bag from 0 to number of bag - 1 !
             bag = [0]*len(curentAnswer)
             for s1 in range(setM.nsack**len(bag)):
-                print(bag)
                 curentValue = testValue(curentAnswer, setM)
                 curentWeight = testWeight(curentAnswer, bag, setM)
                 if curentValue > bestValue and maxWeight(curentWeight,setM.wmax):
@@ -108,14 +102,6 @@ def bruteforce(setM : m.SetMultipleKnapSack, time_min=0):
                 current_time = datetime.datetime.now()
                 if current_time > end_time:
                     break
-
-    # ------Answer------- #
-    print("----BEST SOLUTION----")
-    for i in bestAnswer:
-        print(" Object : V = ",setM.data.V[i]," W = ",setM.data.W[i])
-    print("values : ", bestValue)
-    print("weight : ", bestValueWeight)
-    print("number of data :", len(bestAnswer))
 
     binaryBestAnswer = setM.convertListAnswerToBinaryList(bestAnswer)
 

@@ -20,16 +20,17 @@ import random
 import math
 import datetime
 
+from classes import SetMultipleKnapSack
 
-def randomized(file, executions, time_min=0, selection_ratio=0.1):
+def randomized(set : SetMultipleKnapSack, executions, time_min=0, selection_ratio=0.1):
     if (selection_ratio != 0): # if = 0, then don't add it the param, and it will take the default value
-        return Multiple_Knapsack_randomized_algorithm(file,int(executions),int(time_min),float(selection_ratio)).multiple_knapsack_randomized_algorithm()
+        return Multiple_Knapsack_randomized_algorithm(set.n,set.nsack,set.data.W,set.data.V,set.wmax,int(executions),int(time_min),float(selection_ratio)).multiple_knapsack_randomized_algorithm()
     else:
-        return Multiple_Knapsack_randomized_algorithm(file,int(executions),int(time_min)).multiple_knapsack_randomized_algorithm()
+        return Multiple_Knapsack_randomized_algorithm(set.n,set.nsack,set.data.W,set.data.V,set.wmax,int(executions),int(time_min)).multiple_knapsack_randomized_algorithm()
 
 class Multiple_Knapsack_randomized_algorithm:
 
-    def __init__(self, file, executions, selection_ratio=0.3, time_min=0):
+    def __init__(self, number_items, number_sack : int, weights_tab, values_tab, list_sack_weight, executions,time_min=0,selection_ratio=0.3):
         '''
         Summary: Constructor, set the important variables for the algorithm execution.
         
@@ -43,11 +44,11 @@ class Multiple_Knapsack_randomized_algorithm:
             selection_ratio (float): Percentage of the elements which are going to be taking into account for the elite group. This value should be greater than 0
         Complexity: O(1)
         '''
-        self.n_elements = 0
-        self.n_sacks = 0
-        self.w = []
-        self.v = []
-        self.max_weights = []
+        self.n_elements = number_items
+        self.n_sacks = number_sack
+        self.w = weights_tab
+        self.v = values_tab
+        self.max_weights = list_sack_weight
         self.best_solution_w = 0
         self.best_solution_v = 0
         self.executions = executions
@@ -57,16 +58,6 @@ class Multiple_Knapsack_randomized_algorithm:
         self.previous_value = 0
         self.restart_flag = False
         self.time_min = int(time_min)
-        with open(file) as f:
-            definition_problem = f.readline().split()
-            self.n_sacks = int(definition_problem[0])
-            self.n_elements = int(definition_problem[1])
-            strings_max_weights = f.readline().split()
-            self.max_weights = list(map(int, strings_max_weights))
-            for line in f:
-                current_value_weight = line.split()
-                self.v.append(int(current_value_weight[0]))
-                self.w.append(int(current_value_weight[1]))
         self.control_sacks = [0] * self.n_sacks 
         self.selection_count = int(math.ceil(self.n_elements * selection_ratio))
         

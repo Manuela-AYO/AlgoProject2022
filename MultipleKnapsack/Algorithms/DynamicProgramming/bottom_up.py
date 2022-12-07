@@ -33,7 +33,7 @@ class DPMultSack:
         self.nb_items_chosen = 0
         self.total_weight = 0
         self.total_value = 0 
-        self.vector_items = np.zeros((number_sack, len(weights_tab)), dtype=int)
+        self.vector_items = np.zeros(len(weights_tab), dtype=int)
         self.sack_weights = np.zeros(number_sack, dtype=int)    # array of items weights
 
         for i in range(len(list_sack_weight)):
@@ -62,7 +62,6 @@ class DPMultSack:
         for i in range(1, len(items_indexes) + 1) : 
             weight = self.weights_tab[items_indexes[i-1]]  # get the weight of the object we are studying
             value = self.values_tab[items_indexes[i-1]]   # get the value of the object we're studying
-            print(weight, value)
             for j in range(1,self.sack_weights[index_sack] + 1):
                 # take or not the object
                 if weight > j:
@@ -82,7 +81,7 @@ class DPMultSack:
                 item = items_indexes[i-1]
                 
                 # update the value of the item in the vector of solution
-                self.vector_items[index_sack, item] = 1
+                self.vector_items[item] = index_sack + 1
                 
                 # update the number of items chosen
                 self.nb_items_chosen += 1

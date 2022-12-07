@@ -1,5 +1,3 @@
-#!/bin/bash
-
 python3 TestingModule/01Knapsack.py REPORT.csv BruteForce t low-dimensional/f1_l-d_kp_10_269 295 - - 
 python3 TestingModule/01Knapsack.py REPORT.csv BranchAndBound t low-dimensional/f1_l-d_kp_10_269 295 - - 
 python3 TestingModule/01Knapsack.py REPORT.csv RatioSortGreedy t low-dimensional/f1_l-d_kp_10_269 295 - - 
