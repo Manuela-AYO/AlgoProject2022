@@ -69,7 +69,7 @@ def ratio_sort_and_converge(set01 : m.SetMultipleKnapSack, time_min=0):
         # take the first data in order to full the KnackSack
         sizeleft = set01.wmax
         answer = [] # do double table for bag then item
-        for b in range(len(setM.wmax)):
+        for b in range(len(set01.wmax)):
             answer.append([])
         answerOriginIndex.append([])
         totalValue.append(0.0)
@@ -112,8 +112,11 @@ def ratio_sort_and_converge(set01 : m.SetMultipleKnapSack, time_min=0):
             if current_time > end_time:
                 break
 
+        someWeight = 0
+        for w in range(len(set01.wmax)):
+            someWeight += set01.wmax[w]
         for d in answer:
-            curent.GlobalV[d] = totalValue[i] / set01.wmax
+            curent.GlobalV[d] = totalValue[i] / someWeight
         
     print("-----------Answers--------")
     print("indexs :")

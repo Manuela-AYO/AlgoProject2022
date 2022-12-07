@@ -4,3 +4,5 @@ BruteForce,instance_p03.txt,10,[31, 37, 48, 152],-,-,-,0:19:56.077002,396,[29, 3
 BruteForce,instance_p04.txt,10,[165],-,-,-,0:00:00.129163,309,[165],5,-,-,
 BruteForce,instance_p05.txt,6,[65, 85],-,-,-,0:00:00.062629,345,[65, 80],4,-,-,
 BruteForce,instance_p06.txt,10,[103, 156],-,-,-,0:00:06.337967,452,[102, 155],6,-,-,
+RatiosortAndConvergeGreedy,instance_p01.txt,10,[-1260, 127],-,-,-,0:00:00.020005,679.0,[0, 0],10,-,-,
+RatiosortAndConvergeGreedy,instance_p01.txt,10,[-1260, 127],-,-,-,0:00:00.020127,679.0,[0, 0],10,-,-,
