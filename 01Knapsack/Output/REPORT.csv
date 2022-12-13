@@ -1,1 +1,13 @@
 
+BruteForce,low-dimensional/f1_l-d_kp_10_269,10,269,295,-,-,0:00:00.259105,295.0,269.0,6,-,-,
+BranchAndBound,low-dimensional/f1_l-d_kp_10_269,10,269,295,-,-,0:00:00.000999,295.0,269.0,6,-,-,
+RatioSortGreedy,low-dimensional/f1_l-d_kp_10_269,10,269,295,-,-,0:00:00.042030,290.0,237.0,5.0,-,-,
+ValueSortGreedy,low-dimensional/f1_l-d_kp_10_269,10,269,295,-,-,0:00:00.000979,288.0,268.0,4.0,-,-,
+WeightSortGreedy,low-dimensional/f1_l-d_kp_10_269,10,269,295,-,-,0:00:00.001005,214.0,227.0,6.0,-,-,
+RatiosortAndConvergeGreedy,low-dimensional/f1_l-d_kp_10_269,10,269,295,-,-,0:00:00.107314,294.0,260.0,6,-,-,
+TopDownDynamicProgramming,low-dimensional/f1_l-d_kp_10_269,10,269,295,-,-,0:00:00.018026,295.0,269.0,6.0,-,-,
+BottomUpDynamicProgramming,low-dimensional/f1_l-d_kp_10_269,10,269,295,-,-,0:00:00.111949,295.0,269.0,6.0,-,-,
+FullyPolyNomial,low-dimensional/f1_l-d_kp_10_269,10,269,295,-,-,0:00:00.087143,294.97350000000006,269.0,6,-,-,
+GeneticProgramming,low-dimensional/f1_l-d_kp_10_269,10,269,295,-,-,0:00:01.885398,288.0,268.0,4,50,-,
+AntColony,low-dimensional/f1_l-d_kp_10_269,10,269,295,-,50,0:00:00.010979,205.0,172.0,4,50,0.5,
+Randomized,low-dimensional/f1_l-d_kp_10_269,10,269,295,-,50,0:00:00.001007,253.0,263.0,5,0.1,-,
