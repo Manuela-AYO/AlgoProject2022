@@ -90,7 +90,7 @@ pytz==2022.1
 pyxdg==0.27
 PyYAML==5.4.1
 pyzmq==24.0.1
-reportlab==3.6.8
+reportlab==3.6.13
 requests==2.25.1
 seaborn==0.12.1
 SecretStorage==3.3.1
